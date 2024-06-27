@@ -10,11 +10,9 @@ const InputField = ({onChange, isRequired, type, placeholder,inputImg, isSpellCh
 
     return (
 
-        <div class="inputField" style={additionalStyle}>
-                        
-            
+        <div className="inputField grow" style={additionalStyle}>
             <input onChange={onChange} required={isRequired} spellCheck={isSpellCheck} type={type} placeholder={placeholder} ></input>
-            <img class="inputField-img" src={inputImg} alt='Input icon'></img>
+            <img className="inputField-img" src={inputImg} alt='Input icon'></img>
         </div>
     );
 };

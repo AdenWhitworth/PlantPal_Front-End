@@ -2,7 +2,7 @@ import SignUp from './SignUp';
 import Login from './Login';
 import React, { useState } from 'react';
 
-export default function UserAuthentication() {
+export default function UserAuthentication({setManageDevices}) {
 
     const [isCurrentUser, setIsCurrentUser] = useState(true);
     const [loginBtnStyle, setloginBtnStyle] = useState("userAuth-toggle-btn-selected");
@@ -32,7 +32,7 @@ export default function UserAuthentication() {
                     </div>
                 </div>
 
-                {isCurrentUser? <Login></Login> : <SignUp></SignUp>}
+                {isCurrentUser? <Login setManageDevices={setManageDevices}></Login> : <SignUp setManageDevices={setManageDevices}></SignUp>}
 
             </div>
 

@@ -8,17 +8,21 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({}) {
+export default function SignUp({setManageDevices}) {
 
     const handleButtonClick = () => {
         console.log("here");
+    }
+
+    const HandleReturnHome = () => {
+        setManageDevices(false);
     }
 
     return (
         <div className="userAuth-section-2">
                     
             <div className='userAuth-logo'>
-                <img className="userAuth-logo-img" src={plantpal_logo} alt="PlantPal auth logo"></img>
+                <img className="userAuth-logo-img grow" src={plantpal_logo} alt="PlantPal auth logo" onClick={HandleReturnHome}></img>
                 <h1 className="userAuth-logo-txt">PlantPal</h1>
             </div>
             
