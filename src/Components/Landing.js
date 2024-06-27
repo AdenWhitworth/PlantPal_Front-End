@@ -5,7 +5,7 @@ import house_plant from "./Images/house-plant.png";
 import calendar from "./Images/calendar-green.svg";
 import shower from "./Images/shower-green.svg";
 
-export default function landing() {
+export default function Landing() {
     return (
         <section className="landing">
             
