@@ -16,7 +16,10 @@ export default function userAuthentication() {
             <div className="userAuth-sections">
 
                 <div className="userAuth-section-1">
-
+                    <div className='userAuth-selection'>
+                        <button className='userAuth-toggle-btn-selected'><span>Login</span></button>
+                        <button className='userAuth-toggle-btn'><span>Sign Up</span></button>
+                    </div>
                 </div>
 
                 <div className="userAuth-section-2">
