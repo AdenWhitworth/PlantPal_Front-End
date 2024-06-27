@@ -248,6 +248,127 @@ li {
     font-weight: bold;
 }
 
+/* User Authentication */
+
+.userAuthentication{
+    width: 100%;
+    height: 100%;
+}
+
+.userAuth-sections{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+
+.userAuth-section-1{
+    width: 40%;
+    height: 100%;
+    
+    background-image: url("./Images/plant-background-2.png");
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.userAuth-section-2{
+    width: 60%;
+    height: 100%;
+    background-color: #E6F0DC;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.inputField{
+    height: 8vh;
+    position: relative;
+}
+
+.inputField input{
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: 4px solid #9A6735;
+    background: transparent;
+    padding-left: 15%;
+    color: #9A6735;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    font-size: 18px;
+    
+}
+
+.inputField input::placeholder {
+    color: #9A6735;
+    opacity: 1;
+}
+  
+.inputField input::-ms-input-placeholder {
+    color: #9A6735;
+}
+
+.inputField input:focus {
+    outline: none;
+}
+
+.inputField-img{
+    pointer-events: none;
+    position: absolute;
+    left: 2.5%;
+    width: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 50%;
+}
+
+.userAuth-logo{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.userAuth-logo-img{
+    width: 100%;
+    height: auto;
+}
+
+.userAuth-logo-txt{
+    font-weight: normal;
+    font-size: 48px;
+    color: #55883B;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.userAuth-section-2-btns{
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+    margin-top: 2%;
+}
+
+.text-btn{
+    border: none;
+    background: transparent;
+    cursor: default;
+    color: #9A6735;
+    font-weight: bold;
+    text-align: left;
+    font-size: 18px;
+    font-family: inherit;
+}
+
+.text-btn span{
+    cursor: pointer;
+}
+
 
 
 
