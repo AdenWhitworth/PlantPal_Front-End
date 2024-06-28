@@ -602,9 +602,24 @@ li {
 }
 
 .dashboard-connection{
-    background-color: brown;
+    background-color: #FFFFFF;
     grid-area: connection;
+    text-align: center;
+    
 }
+
+.dashboard-connection h4{
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+
+
+
+
+
+
+
+
 
 .dashboard-status{
     background-color: #FFFFFF;

@@ -8,6 +8,9 @@ import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
 import x_circle from "../Images/x-circle-red.svg";
 import check_circle from "../Images/check-circle-green.svg";
+import traingle from "../Images/triangle-orange.svg";
+import wifi from "../Images/wifi-green.svg";
+
 
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 
@@ -94,9 +97,13 @@ export default function Dashboard({}) {
                 </div>
 
                 <div className='dashboard-connection'>
-
                     
-
+                    <h3>Connection</h3>
+                    <img src={traingle} alt='Connection icon'></img>
+                    <h4>Missing</h4>
+                    <h4>SSID: WhitHome</h4>
+                    <button className='text-btn'><span>Change Wifi?</span></button>
+                    
                 </div>
 
                 <div className='dashboard-status'>
