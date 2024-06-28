@@ -10,7 +10,7 @@ const InputField = ({onChange, isRequired, type, placeholder,inputImg, isSpellCh
 
     return (
 
-        <div className="inputField grow" style={additionalStyle}>
+        <div className="inputField" style={additionalStyle}>
             <input onChange={onChange} required={isRequired} spellCheck={isSpellCheck} type={type} placeholder={placeholder} ></input>
             <img className="inputField-img" src={inputImg} alt='Input icon'></img>
         </div>
