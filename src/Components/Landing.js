@@ -4,7 +4,7 @@ import user from "../Images/user-grey.svg";
 import house_plant from "../Images/house-plant.png";
 import calendar from "../Images/calendar-green.svg";
 import shower from "../Images/shower-green.svg";
-import React, {  } from 'react';
+import React from 'react';
 
 export default function Landing({setManageDevices}) {
 
