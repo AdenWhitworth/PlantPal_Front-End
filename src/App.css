@@ -572,27 +572,41 @@ li {
     height: 70%;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .dashboard-moisture{
-    background-color: blue;
+    background-color: #FFFFFF;
     grid-area: moisture;
+    display: flex;
+    flex-direction: column;
 }
+
+.dashboard-moisture h3{
+    text-align: center;
+}
+
+.moisture-gauge{
+    flex-grow: 1;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.moisture-labels{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 60%;
+    margin-left: 20%;
+}
+
+.moisture-labels h4{
+    margin-top: 0;
+}
+
+
+
+
+
+
+
 
 .dashboard-connection{
     background-color: brown;
