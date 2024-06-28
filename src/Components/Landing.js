@@ -1,11 +1,17 @@
-import plantpal_logo from "./Images/PlantPal Logo.svg";
-import shopping_cart from "./Images/shopping-grey.svg";
-import user from "./Images/user-grey.svg";
-import house_plant from "./Images/house-plant.png";
-import calendar from "./Images/calendar-green.svg";
-import shower from "./Images/shower-green.svg";
+import plantpal_logo from "../Images/PlantPal Logo.svg";
+import shopping_cart from "../Images/shopping-grey.svg";
+import user from "../Images/user-grey.svg";
+import house_plant from "../Images/house-plant.png";
+import calendar from "../Images/calendar-green.svg";
+import shower from "../Images/shower-green.svg";
+import React from 'react';
 
-export default function landing() {
+export default function Landing({setManageDevices}) {
+
+    const HandleManageDevicesToggle = () => {
+        setManageDevices(true);
+    }
+
     return (
         <section className="landing">
             
@@ -16,7 +22,7 @@ export default function landing() {
                 </div>
                 <div className="nav-links">
                     <li><img className="shopping_cart grow" src={shopping_cart} alt="Shopping cart logo"></img></li>
-                    <li><img className="user grow" src={user} alt="User logo"></img></li>
+                    <li><img className="user grow" src={user} alt="User logo" onClick={HandleManageDevicesToggle}></img></li>
                 </div>
             </div>
 
@@ -29,7 +35,7 @@ export default function landing() {
 
                         <div className="landing-body-1-btns">
                             <button className="button-hollow grow">Shop</button>
-                            <button className="button-fill grow">Manage</button>
+                            <button className="button-fill grow" onClick={HandleManageDevicesToggle}>Manage</button>
                         </div>
                     </div>
 
