@@ -6,6 +6,9 @@ import DeviceItem from "../Components/DeviceItem";
 import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
+import x_circle from "../Images/x-circle-red.svg";
+import check_circle from "../Images/check-circle-green.svg";
+
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 
 export default function Dashboard({}) {
@@ -91,9 +94,19 @@ export default function Dashboard({}) {
                 </div>
 
                 <div className='dashboard-connection'>
+
                     
+
                 </div>
-                <div className='dashboard-status'></div>
+
+                <div className='dashboard-status'>
+                    <h3>Water Status</h3>
+
+                    <div className='status-indicator'>
+                        <img src={x_circle} alt='Status icon'></img>
+                        <h3>Needs Water</h3>
+                    </div>
+                </div>
                 <div className='dashboard-automate'></div>
             </div>
         </section>

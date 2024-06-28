@@ -601,21 +601,35 @@ li {
     margin-top: 0;
 }
 
-
-
-
-
-
-
-
 .dashboard-connection{
     background-color: brown;
     grid-area: connection;
 }
 
 .dashboard-status{
-    background-color: yellow;
+    background-color: #FFFFFF;
     grid-area: status;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.status-indicator{
+    flex-grow: 1;
+    background-image: url("./Images/water.svg");
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    margin-bottom: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.status-indicator h3{
+    font-weight: bold;
+    color: #E81B00;
 }
 
 .dashboard-automate{
