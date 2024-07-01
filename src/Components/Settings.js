@@ -6,6 +6,7 @@ import DeviceItem from "../Components/DeviceItem";
 import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
+import Account from "../Components/Account";
 
 export default function Settings({setSettingsToggle}) {
 
@@ -65,7 +66,7 @@ export default function Settings({setSettingsToggle}) {
             </div>
 
             <div className='dashboard-setting'>
-                
+                <Account></Account>
             </div>
 
         </div>
