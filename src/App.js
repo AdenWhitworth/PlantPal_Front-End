@@ -10,9 +10,9 @@ function App() {
 
   return (
     <div className="App">
-
+      
       <Dashboard></Dashboard>
-
+      
       {/*}
       {manageDevices? <UserAuthentication setManageDevices={setManageDevices}></UserAuthentication> : <Landing setManageDevices={setManageDevices}></Landing>}
       */}
