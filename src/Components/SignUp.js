@@ -8,10 +8,11 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({setManageDevices}) {
+export default function SignUp({setManageDevices, setUser}) {
 
-    const handleButtonClick = () => {
-        console.log("here");
+    const handleCreateClick = () => {
+        setUser(true);
+        setManageDevices(false);
     }
 
     const HandleReturnHome = () => {
@@ -33,7 +34,7 @@ export default function SignUp({setManageDevices}) {
             
             <div className='userAuth-section-2-btns'>
                 <button className='text-btn hidden'><span>Forgot Password?</span></button>
-                <Button children='Create' onClick={handleButtonClick} isPrimaryStyle={false} ></Button>
+                <Button children='Create' onClick={handleCreateClick} isPrimaryStyle={false} ></Button>
             </div>
         </div>
     );

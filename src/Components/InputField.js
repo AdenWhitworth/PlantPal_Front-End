@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const InputField = ({onChange, isRequired, type, placeholder,inputImg, isSpellCheck, setWidth, setMarginTop}) => {
+const InputField = ({onChange, isRequired, type, placeholder,inputImg, isSpellCheck, setWidth, setMarginTop, isDisabled}) => {
     
     const additionalStyle = { 
         width: setWidth,
@@ -10,8 +10,8 @@ const InputField = ({onChange, isRequired, type, placeholder,inputImg, isSpellCh
 
     return (
 
-        <div className="inputField grow" style={additionalStyle}>
-            <input onChange={onChange} required={isRequired} spellCheck={isSpellCheck} type={type} placeholder={placeholder} ></input>
+        <div className="inputField" style={additionalStyle}>
+            <input onChange={onChange} required={isRequired} disabled={isDisabled} spellCheck={isSpellCheck} type={type} placeholder={placeholder} ></input>
             <img className="inputField-img" src={inputImg} alt='Input icon'></img>
         </div>
     );
@@ -21,6 +21,7 @@ InputField.propTypes = {
 
     onChange: PropTypes.func,
     isRequired: PropTypes.bool.isRequired,
+    isRequired: PropTypes.bool,
     isSpellCheck: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,

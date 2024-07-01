@@ -6,10 +6,11 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function Login({setManageDevices}) {
+export default function Login({setManageDevices, setUser}) {
 
-    const handleButtonClick = () => {
-        console.log("here");
+    const handleSignInClick = () => {
+        setUser(true);
+        setManageDevices(false);
     }
 
     const HandleReturnHome = () => {
@@ -29,7 +30,7 @@ export default function Login({setManageDevices}) {
             
             <div className='userAuth-section-2-btns'>
                 <button className='text-btn'><span>Forgot Password?</span></button>
-                <Button children='Sign In' onClick={handleButtonClick} isPrimaryStyle={false} ></Button>
+                <Button children='Sign In' onClick={handleSignInClick} isPrimaryStyle={false} ></Button>
             </div>
         </div>
     );
