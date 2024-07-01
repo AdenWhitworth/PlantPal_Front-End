@@ -666,34 +666,5 @@ li {
     overflow-x: auto;
 }
 
-/*
-
-.bar-chart-line{
-    display: grid;
-    grid-template-areas: 'chartName chartBar';
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 6fr;
-    width: 80%;
-    background-color: aqua;
-}
-
-.bar-chart-line h4{
-    grid-area: chartName;
-}
-
-.bar-chart-item{
-    grid-area: chartBar;
-    position: relative;
-}
-
-.bar-item{
-    position: absolute;
-    height: 100%;
-    width: 30%;
-    background-color: green;
-}
-
-*/
-
 
 
