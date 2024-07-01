@@ -5,11 +5,12 @@ import Settings from '../Components/Settings';
 export default function Dashboard({}) {
 
     const [settingsToggle, setSettingsToggle] = useState(false);
+    const [addDeviceToggel, setAddDeviceToggle] = useState(false);
 
     return (
         <section className="dashboard">
 
-            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle}></PerformanceView>}
+            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle} addDeviceToggel={addDeviceToggel} setAddDeviceToggle={setAddDeviceToggle}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle}></PerformanceView>}
         </section>
     );
 }

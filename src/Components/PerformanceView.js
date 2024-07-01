@@ -121,7 +121,7 @@ const dataset = [
     },
   ];
 
-export default function PerformanceView({setSettingsToggle}) {
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle}) {
 
     const [autoSwitch, setAutoSwitch] = useState(false);
 
@@ -130,6 +130,11 @@ export default function PerformanceView({setSettingsToggle}) {
     };
 
     const handleSettingsClick = () => {
+        setSettingsToggle(true);
+    }
+
+    const handleAddDeviceClick = () => {
+        setAddDeviceToggle(true);
         setSettingsToggle(true);
     }
 
@@ -154,7 +159,7 @@ export default function PerformanceView({setSettingsToggle}) {
                 
                 <div className='menu-options'>
                     <InputField inputImg={glass} isRequired={false} type='text' placeholder='Search' isSpellCheck={false} setWidth={'100%'}></InputField>
-                    <img src={plus} alt='Plus Icon' className='add-device grow'></img>
+                    <img src={plus} alt='Plus Icon' className='add-device grow' onClick={handleAddDeviceClick}></img>
                 </div>
 
                 <div className='devices'>

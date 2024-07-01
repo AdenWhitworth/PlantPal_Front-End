@@ -7,11 +7,22 @@ import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
 import Account from "../Components/Account";
+import AddDevice from '../Components/AddDevice';
 
-export default function Settings({setSettingsToggle}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle}) {
 
     const handleSettingsUnclick = () => {
         setSettingsToggle(false);
+        setAddDeviceToggle(false);
+    }
+
+    const handleAddDeviceClick = () => {
+        setAddDeviceToggle(true);
+    }
+
+    const handleSettingsClick = () => {
+        setAddDeviceToggle(false);
+        setSettingsToggle(true);
     }
 
     return (
@@ -24,7 +35,7 @@ export default function Settings({setSettingsToggle}) {
                     <h1>PlantPal</h1>
                 </div>
                 <div className="dashboard-header-links">
-                    <li><img className="gear grow" src={gear} alt="Gear logo"></img></li>
+                    <li><img className="gear grow" src={gear} alt="Gear logo" onClick={handleSettingsClick}></img></li>
                     <li><img className="exit grow" src={exit} alt="Exit logo"></img></li>
                 </div>
             </div>
@@ -35,7 +46,7 @@ export default function Settings({setSettingsToggle}) {
                 
                 <div className='menu-options'>
                     <InputField inputImg={glass} isRequired={false} type='text' placeholder='Search' isSpellCheck={false} setWidth={'100%'}></InputField>
-                    <img src={plus} alt='Plus Icon' className='add-device grow'></img>
+                    <img src={plus} alt='Plus Icon' className='add-device grow' onClick={handleAddDeviceClick}></img>
                 </div>
 
                 <div className='devices'>
@@ -66,7 +77,9 @@ export default function Settings({setSettingsToggle}) {
             </div>
 
             <div className='dashboard-setting'>
-                <Account></Account>
+                
+                {addDeviceToggel? <AddDevice></AddDevice>:<Account></Account>}
+
             </div>
 
         </div>
