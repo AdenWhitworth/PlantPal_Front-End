@@ -9,7 +9,7 @@ import plus from "../Images/plus-circle-green.svg";
 import Account from "../Components/Account";
 import AddDevice from '../Components/AddDevice';
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, setUser}) {
 
     const handleSettingsUnclick = () => {
         setSettingsToggle(false);
@@ -25,12 +25,16 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
         setSettingsToggle(true);
     }
 
+    const handlePlantPalClick = () => {
+        setUser(false);
+    }
+
     return (
         
         <div className='dashboard-grid-settings'>
 
             <div className='dashboard-header'>
-                <div className="dashboard-header-logo grow">
+                <div className="dashboard-header-logo grow" onClick={handlePlantPalClick}>
                     <img src={plantpal_logo} alt="PlantPal main logo"></img>
                     <h1>PlantPal</h1>
                 </div>

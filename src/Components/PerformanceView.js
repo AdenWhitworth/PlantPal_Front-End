@@ -121,7 +121,7 @@ const dataset = [
     },
   ];
 
-export default function PerformanceView({setSettingsToggle, setAddDeviceToggle}) {
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, setUser}) {
 
     const [autoSwitch, setAutoSwitch] = useState(false);
 
@@ -138,12 +138,16 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle})
         setSettingsToggle(true);
     }
 
+    const handlePlantPalClick = () => {
+        setUser(false);
+    }
+
     return (
         
         <div className='dashboard-grid'>
 
             <div className='dashboard-header'>
-                <div className="dashboard-header-logo grow">
+                <div className="dashboard-header-logo grow" onClick={handlePlantPalClick}>
                     <img src={plantpal_logo} alt="PlantPal main logo"></img>
                     <h1>PlantPal</h1>
                 </div>

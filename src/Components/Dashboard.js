@@ -3,7 +3,7 @@ import PerformanceView from '../Components/PerformanceView';
 import Settings from '../Components/Settings';
 import AddDeviceModal from '../Components/AddDeviceModal';
 
-export default function Dashboard({}) {
+export default function Dashboard({setUser}) {
 
     const [settingsToggle, setSettingsToggle] = useState(false);
     const [addDeviceToggel, setAddDeviceToggle] = useState(false);
@@ -14,9 +14,7 @@ export default function Dashboard({}) {
             
             {connectDeviceToggle? <AddDeviceModal setConnectDeviceToggle={setConnectDeviceToggle}></AddDeviceModal> : <></>}
 
-            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle} addDeviceToggel={addDeviceToggel} setAddDeviceToggle={setAddDeviceToggle} setConnectDeviceToggle={setConnectDeviceToggle}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle}></PerformanceView>}
-
-            
+            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle} addDeviceToggel={addDeviceToggel} setAddDeviceToggle={setAddDeviceToggle} setConnectDeviceToggle={setConnectDeviceToggle} setUser={setUser}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} setUser={setUser}></PerformanceView>}
 
         </section>
     );
