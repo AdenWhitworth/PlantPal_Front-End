@@ -8,10 +8,10 @@ import plus_circle from '../Images/plus-circle-gray.svg';
 import "../App.css";
 import React from 'react';
 
-export default function AddDevice({}) {
+export default function AddDevice({setConnectDeviceToggle}) {
 
-    const handleButtonClick = () => {
-        console.log("here");
+    const handleConnectClick = () => {
+        setConnectDeviceToggle(true);
     }
 
     return (
@@ -29,7 +29,7 @@ export default function AddDevice({}) {
             
             <div className='new-device-section-2-btns'>
                 <button className='text-btn hidden'><span>Change Password?</span></button>
-                <Button children='Connect' onClick={handleButtonClick} isPrimaryStyle={false}></Button>
+                <Button children='Connect' onClick={handleConnectClick} isPrimaryStyle={false}></Button>
             </div>
         </div>
     );

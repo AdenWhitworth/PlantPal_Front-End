@@ -9,7 +9,7 @@ import plus from "../Images/plus-circle-green.svg";
 import Account from "../Components/Account";
 import AddDevice from '../Components/AddDevice';
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle}) {
 
     const handleSettingsUnclick = () => {
         setSettingsToggle(false);
@@ -78,7 +78,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
 
             <div className='dashboard-setting'>
                 
-                {addDeviceToggel? <AddDevice></AddDevice>:<Account></Account>}
+                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle}></AddDevice>:<Account></Account>}
 
             </div>
 
