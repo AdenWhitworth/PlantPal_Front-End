@@ -2,7 +2,7 @@
 
 
 
-export default function InvitesItem({}) {
+export default function InvitesItem() {
     return (
         <li>
             <div className="device-line">

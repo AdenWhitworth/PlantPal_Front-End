@@ -3,7 +3,7 @@ import Login from './Login';
 import React, { useState, useEffect } from 'react';
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const client = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL
@@ -12,15 +12,12 @@ const client = axios.create({
 export default function UserAuthentication({setManageDevices, setUser}) {
 
     const navigate = useNavigate();
-    const { state } = useLocation();
     const { setToken } = useAuth();
-    const from = state?.from || { pathname: '/' };
-    const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-
     const [isCurrentUser, setIsCurrentUser] = useState(true);
     const [loginBtnStyle, setloginBtnStyle] = useState("userAuth-toggle-btn-selected");
     const [signUpBtnStyle, setSignUpBtnStyle] = useState("userAuth-toggle-btn");
-    
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('Error');
@@ -31,26 +28,37 @@ export default function UserAuthentication({setManageDevices, setUser}) {
 
         try {
             const response = await client.post("/login", { email: email, password: password });
-            console.log("Sign in successful", response.data.msg, response.data.user);
             setErrorCSS('error-message hidden');
             setToken(response.data.token);
-            setRedirectToReferrer(true);
+            navigate('/dashboard', {
+                replace: true,
+            });
         } catch (error) {
             setError(error.response.data.msg);
             setErrorCSS('error-message');
         }
     }
 
-    const handleCreateClick = () => {
-        
-        //setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNzIwMDE4MjQ4LCJleHAiOjE3MjAwMjE4NDh9.WasiMQ7MqvqLHSqC6GkdL_Pgj6jzXVzp4HeR-S16jIY");
-        //ssetRedirectToReferrer(true);
+    const handleCreateClick = async (e) => {
+        e.preventDefault();
 
-        /*
-        fakeAuth.authenticate(() => {
-            setRedirectToReferrer(true);
-        });
-        */
+        try {
+            await client.post("/register", { email: email, password: password, first_name: firstName, last_name: lastName});
+            try {
+                const response = await client.post("/login", { email: email, password: password });
+                setErrorCSS('error-message hidden');
+                setToken(response.data.token);
+                navigate('/dashboard', {
+                    replace: true,
+                });
+            } catch (error) {
+                setError('User created but failed to authorize. Try logging in.');
+                setErrorCSS('error-message');
+            }
+        } catch (error) {
+            setError(error.response.data.msg);
+            setErrorCSS('error-message');
+        }
     }
 
     const HandleReturnHome = () => {
@@ -58,16 +66,6 @@ export default function UserAuthentication({setManageDevices, setUser}) {
             replace: true,
         });
     }
-
-    useEffect(() => {
-        if (redirectToReferrer) {
-            navigate(from.pathname, { replace: true });
-        }
-    }, [redirectToReferrer, navigate, from.pathname]);
-
-    useEffect(() => {
-        setErrorCSS('error-message hidden');
-    }, []);
 
     const HandleLoginToggle = () => {
         setIsCurrentUser(true);
@@ -81,6 +79,10 @@ export default function UserAuthentication({setManageDevices, setUser}) {
         setSignUpBtnStyle("userAuth-toggle-btn-selected");
     }
 
+    useEffect(() => {
+        setErrorCSS('error-message hidden');
+    }, []);
+
     return (
         <section className="userAuthentication">
             
@@ -93,18 +95,10 @@ export default function UserAuthentication({setManageDevices, setUser}) {
                     </div>
                 </div>
 
-                {isCurrentUser? <Login HandleReturnHome={HandleReturnHome} handleSignInClick={handleSignInClick} error={error} errorCSS={errorCSS} setEmail={setEmail} setPassword={setPassword}></Login> : <SignUp handleCreateClick={handleCreateClick} HandleReturnHome={HandleReturnHome}></SignUp>}
+                {isCurrentUser? <Login HandleReturnHome={HandleReturnHome} handleSignInClick={handleSignInClick} error={error} errorCSS={errorCSS} setEmail={setEmail} setPassword={setPassword}></Login> : <SignUp handleCreateClick={handleCreateClick} HandleReturnHome={HandleReturnHome} error={error} errorCSS={errorCSS} setEmail={setEmail} setPassword={setPassword} setFirstName={setFirstName} setLastName={setLastName}></SignUp>}
 
             </div>
 
         </section>
     );
 }
-
-export const fakeAuth = {
-    isAuthenticated: false,
-    authenticate(cb) {
-        this.isAuthenticated = true;
-        setTimeout(cb, 100);
-    },
-};
