@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-//import { fakeAuth } from '../Components/UserAuthentication';
 import { useAuth } from '../Provider/authProvider';
 
 const PrivateRoute = ({ children }) => {
@@ -18,19 +17,6 @@ const PrivateRoute = ({ children }) => {
   }, [navigate, location, token]);
 
   return token ? children : null;
-
-  /*
-  useEffect(() => {
-    if (!fakeAuth.isAuthenticated) {
-      navigate('/auth', {
-        state: { from: location },
-        replace: true,
-      });
-    }
-  }, [navigate, location]);
-
-  return fakeAuth.isAuthenticated ? children : null;
-  */
 };
 
 export default PrivateRoute;
