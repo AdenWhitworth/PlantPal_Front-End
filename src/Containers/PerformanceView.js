@@ -19,7 +19,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from "../Components/Button";
 import { useAuth } from "../Provider/authProvider";
-
 import { useNavigate } from "react-router-dom";
 
 const IOSSwitch = styled((props) => (
