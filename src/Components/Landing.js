@@ -5,11 +5,16 @@ import house_plant from "../Images/house-plant.png";
 import calendar from "../Images/calendar-green.svg";
 import shower from "../Images/shower-green.svg";
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 
-export default function Landing({setManageDevices}) {
+export default function Landing() {
+
+    const navigate = useNavigate();
 
     const HandleManageDevicesToggle = () => {
-        setManageDevices(true);
+        navigate('/dashboard', {
+            replace: true,
+        });
     }
 
     return (

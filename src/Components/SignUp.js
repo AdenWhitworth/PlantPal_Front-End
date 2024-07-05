@@ -8,16 +8,7 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({setManageDevices, setUser}) {
-
-    const handleCreateClick = () => {
-        setUser(true);
-        setManageDevices(false);
-    }
-
-    const HandleReturnHome = () => {
-        setManageDevices(false);
-    }
+export default function SignUp({handleCreateClick, HandleReturnHome}) {
 
     return (
         <div className="userAuth-section-2">
