@@ -7,9 +7,9 @@ import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
 import x_circle from "../Images/x-circle-red.svg";
-import check_circle from "../Images/check-circle-green.svg";
+//import check_circle from "../Images/check-circle-green.svg";
 import traingle from "../Images/triangle-orange.svg";
-import wifi from "../Images/wifi-green.svg";
+//import wifi from "../Images/wifi-green.svg";
 import tap from "../Images/tap-green.svg";
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 import { BarChart  } from '@mui/x-charts/BarChart';
@@ -18,6 +18,8 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from "../Components/Button";
+import { useAuth } from "../Provider/authProvider";
+import { useNavigate } from "react-router-dom";
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -125,6 +127,15 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
     const [autoSwitch, setAutoSwitch] = useState(false);
 
+    const navigate = useNavigate();
+
+    const { clearToken } = useAuth();
+
+    const handleLogout = () => {
+        clearToken();
+        navigate("/auth", { replace: true });
+    };
+
     const handleAutoSwitch = (e) => {
         setAutoSwitch(e.target.checked);
     };
@@ -139,7 +150,9 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     }
 
     const handlePlantPalClick = () => {
-        setUser(false);
+        navigate('/', {
+            replace: true,
+        });
     }
 
     return (
@@ -153,7 +166,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 </div>
                 <div className="dashboard-header-links">
                     <li><img className="gear grow" src={gear} alt="Gear logo" onClick={handleSettingsClick}></img></li>
-                    <li><img className="exit grow" src={exit} alt="Exit logo"></img></li>
+                    <li><img className="exit grow" src={exit} alt="Exit logo" onClick={handleLogout}></img></li>
                 </div>
             </div>
 

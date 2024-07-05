@@ -6,10 +6,13 @@ import DeviceItem from "../Components/DeviceItem";
 import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
-import Account from "../Components/Account";
-import AddDevice from '../Components/AddDevice';
+import Account from "./Account";
+import AddDevice from './AddDevice';
+import { useNavigate } from "react-router-dom";
 
 export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, setUser}) {
+
+    const navigate = useNavigate();
 
     const handleSettingsUnclick = () => {
         setSettingsToggle(false);
@@ -26,7 +29,9 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
     }
 
     const handlePlantPalClick = () => {
-        setUser(false);
+        navigate('/', {
+            replace: true,
+        });
     }
 
     return (

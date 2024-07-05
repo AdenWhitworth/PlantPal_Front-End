@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import PerformanceView from '../Components/PerformanceView';
-import Settings from '../Components/Settings';
-import AddDeviceModal from '../Components/AddDeviceModal';
+import PerformanceView from '../Containers/PerformanceView';
+import Settings from '../Containers/Settings';
+import AddDeviceModal from '../Modals/AddDeviceModal';
 
 export default function Dashboard({setUser}) {
 

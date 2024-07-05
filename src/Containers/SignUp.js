@@ -8,16 +8,7 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({setManageDevices, setUser}) {
-
-    const handleCreateClick = () => {
-        setUser(true);
-        setManageDevices(false);
-    }
-
-    const HandleReturnHome = () => {
-        setManageDevices(false);
-    }
+export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName}) {
 
     return (
         <div className="userAuth-section-2">
@@ -27,10 +18,10 @@ export default function SignUp({setManageDevices, setUser}) {
                 <h1 className="userAuth-logo-txt">PlantPal</h1>
             </div>
             
-            <InputField inputImg={user_circle} isRequired={true} type='text' placeholder='First Name' isSpellCheck={false} setWidth={'60%'}></InputField>
-            <InputField inputImg={tag} isRequired={true} type='text' placeholder='Last Name' isSpellCheck={false} setWidth={'60%'}></InputField>
-            <InputField inputImg={mail} isRequired={true} type='email' placeholder='Email' isSpellCheck={false} setWidth={'60%'}></InputField>
-            <InputField inputImg={lock} isRequired={true} type='password' placeholder='Password' isSpellCheck={false} setWidth={'60%'}></InputField>
+            <InputField onChange={(e) => setFirstName(e.target.value)} inputImg={user_circle} isRequired={true} type='text' placeholder='First Name' isSpellCheck={false} setWidth={'60%'}></InputField>
+            <InputField onChange={(e) => setLastName(e.target.value)} inputImg={tag} isRequired={true} type='text' placeholder='Last Name' isSpellCheck={false} setWidth={'60%'}></InputField>
+            <InputField onChange={(e) => setEmail(e.target.value)} inputImg={mail} isRequired={true} type='email' placeholder='Email' isSpellCheck={false} setWidth={'60%'}></InputField>
+            <InputField onChange={(e) => setPassword(e.target.value)} inputImg={lock} isRequired={true} type='password' placeholder='Password' isSpellCheck={false} setWidth={'60%'}></InputField>
             
             <div className='userAuth-section-2-btns'>
                 <button className='text-btn hidden'><span>Forgot Password?</span></button>

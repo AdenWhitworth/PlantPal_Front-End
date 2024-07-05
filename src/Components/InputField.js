@@ -21,7 +21,6 @@ InputField.propTypes = {
 
     onChange: PropTypes.func,
     isRequired: PropTypes.bool.isRequired,
-    isRequired: PropTypes.bool,
     isSpellCheck: PropTypes.bool.isRequired,
     type: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,

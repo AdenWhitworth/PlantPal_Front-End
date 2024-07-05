@@ -8,7 +8,7 @@ import gear from '../Images/gear-grey.svg';
 import "../App.css";
 import React from 'react';
 
-export default function Account({}) {
+export default function Account() {
 
     const handleButtonClick = () => {
         console.log("here");

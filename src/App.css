@@ -423,6 +423,10 @@ li {
     visibility: hidden;
 }
 
+.error-message{
+    color: red;
+}
+
 /* Dashboard */
 
 .dashboard{
