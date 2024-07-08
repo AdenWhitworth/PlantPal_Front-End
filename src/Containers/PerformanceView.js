@@ -7,7 +7,7 @@ import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
 import x_circle from "../Images/x-circle-red.svg";
-//import check_circle from "../Images/check-circle-green.svg";
+import check_circle from "../Images/check-circle-green.svg";
 import traingle from "../Images/triangle-orange.svg";
 //import wifi from "../Images/wifi-green.svg";
 import refresh from "../Images/refresh-gray.svg";
@@ -22,6 +22,7 @@ import Button from "../Components/Button";
 import { useAuth} from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { bool } from 'prop-types';
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -133,6 +134,9 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [deviceLogs, setDeviceLogs] = useState([]);
     const [lastLog, setLastLog] = useState({});
     const [moistureLevel, setMoistureLevel] = useState(0);
+    const [waterStatus, setWaterStatus] = useState("");
+    const [waterStatusCSS, setWaterStatusCSS] = useState("good-water");
+    const [waterStatusImg, setWaterStatusImg] = useState("");
 
     const navigate = useNavigate();
     const { clearToken, token } = useAuth();
@@ -207,6 +211,34 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         setMoistureLevel(formatCap);
     }
 
+    const formatWaterStatus = () => {
+        const cap_target = 600;
+
+        const status_images = {
+            bad_water: x_circle,
+            good_water: check_circle,
+            error_water: traingle
+        }
+
+        if(typeof lastLog === "undefined"){
+            setWaterStatusImg(status_images.error_water);
+            setWaterStatusCSS("good-water");
+            setWaterStatus("");
+            return
+        }
+
+        if (lastLog.soil_cap > cap_target){
+            setWaterStatusImg(status_images.good_water);
+            setWaterStatusCSS("good-water");
+            setWaterStatus("Sufficient Water");
+        } else {
+            setWaterStatusImg(status_images.bad_water);
+            setWaterStatusCSS("bad-water");
+            setWaterStatus("Needs Water");
+        }
+
+    }
+
     useEffect(() => {
         fetchUserDevices();
     }, [device]);
@@ -221,6 +253,10 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         if(typeof lastLog !== "undefined"){
             formatMostureLevel();
         }
+    }, [lastLog]);
+
+    useEffect(() => {
+        formatWaterStatus();
     }, [lastLog]);
 
     return (
@@ -267,7 +303,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 {(typeof lastLog === "undefined")?
                     <div className='start-moisture'>
                         <img src={traingle} alt='Connection icon'></img>
-                        <h4>Connect PlantPal to get first moisture level</h4>
+                        <h4>Connect PlantPal to get first moisture level reading.</h4>
                     </div>
                      :
                     <div className='show-moisture'>
@@ -318,10 +354,11 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 <h3>Water Status</h3>
 
                 <div className='status-indicator'>
-                    <img src={x_circle} alt='Status icon'></img>
-                    <h3>Needs Water</h3>
+                    <img src={waterStatusImg} alt='Status icon'></img>
+                    <h3 className={waterStatusCSS}>{waterStatus}</h3>
                 </div>
             </div>
+            
             <div className='dashboard-automate'>
                 <h3>Automate Watering</h3>
 

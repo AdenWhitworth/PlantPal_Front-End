@@ -667,7 +667,12 @@ li {
     margin-right: 5%;
 }
 
-.status-indicator h3{
+.good-water{
+    font-weight: bold;
+    color: #0C9B05;
+}
+
+.bad-water{
     font-weight: bold;
     color: #E81B00;
 }
