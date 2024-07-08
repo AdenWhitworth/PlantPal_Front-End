@@ -136,9 +136,11 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
+        
         headers: {
             "Authorization": "Bearer " + token
         }
+        
     });
 
     const handleLogout = () => {
@@ -172,7 +174,8 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
             setDevices(response.data.devices);
             
         } catch (error) {
-            console.log(error);
+            clearToken();
+            navigate("/auth", { replace: true });
         }
     }
 
