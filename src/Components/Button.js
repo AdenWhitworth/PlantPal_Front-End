@@ -16,6 +16,6 @@ export default function Button ({ children, isPrimaryStyle, onClick, type }) {
 Button.propTypes = {
     children: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
-    isPrimary: PropTypes.bool.isRequired,
+    isPrimaryStyle: PropTypes.bool.isRequired,
     type: PropTypes.string,
 };

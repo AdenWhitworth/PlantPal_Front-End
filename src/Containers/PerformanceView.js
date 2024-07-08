@@ -298,7 +298,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     <div className='manual'>
                         
                         <img src={tap} alt='Tap Icon'></img>
-                        <Button className='manual-btn' children='Pump Water' isPrimaryStyle={false} ></Button>
+                        <Button className='manual-btn' children='Pump Water' isPrimaryStyle={false} onClick={() => {console.log("clicked")}} ></Button>
                             
                     </div>
                     
