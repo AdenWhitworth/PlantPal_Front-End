@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import plantpal_logo from "../Images/PlantPal Logo.svg";
 import gear from "../Images/gear-grey.svg";
 import exit from "../Images/exit-grey.svg";
@@ -10,6 +10,7 @@ import x_circle from "../Images/x-circle-red.svg";
 //import check_circle from "../Images/check-circle-green.svg";
 import traingle from "../Images/triangle-orange.svg";
 //import wifi from "../Images/wifi-green.svg";
+import refresh from "../Images/refresh-gray.svg";
 import tap from "../Images/tap-green.svg";
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 import { BarChart  } from '@mui/x-charts/BarChart';
@@ -18,8 +19,9 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from "../Components/Button";
-import { useAuth } from "../Provider/authProvider";
+import { useAuth} from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -126,10 +128,18 @@ const dataset = [
 export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, setUser}) {
 
     const [autoSwitch, setAutoSwitch] = useState(false);
+    const [devices, setDevices] = useState([]);
+    const [device, setDevice] = useState({});
 
     const navigate = useNavigate();
+    const { clearToken, token } = useAuth();
 
-    const { clearToken } = useAuth();
+    const client = axios.create({
+        baseURL: process.env.REACT_APP_BASE_URL,
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+    });
 
     const handleLogout = () => {
         clearToken();
@@ -155,6 +165,25 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         });
     }
 
+    const fetchUserDevices = async () => {
+        try {
+            const response = await client.get("/dashboard/userDevices");
+
+            setDevices(response.data.devices);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleRefreshClick = () => {
+        fetchUserDevices();
+    }
+
+    useEffect(() => {
+        fetchUserDevices();
+    }, []);
+
     return (
         
         <div className='dashboard-grid'>
@@ -165,6 +194,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     <h1>PlantPal</h1>
                 </div>
                 <div className="dashboard-header-links">
+                    <li><img className="refresh grow" src={refresh} alt="Refresh logo" onClick={handleRefreshClick}></img></li>
                     <li><img className="gear grow" src={gear} alt="Gear logo" onClick={handleSettingsClick}></img></li>
                     <li><img className="exit grow" src={exit} alt="Exit logo" onClick={handleLogout}></img></li>
                 </div>
@@ -182,24 +212,9 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 <div className='devices'>
                     
                     <ul className='device-list'>
-                        <li>
-                            <div className="device-line selected">
-                                <h4 className="device-identifier">Kitchen-1: A5D1CJ</h4>
-                            </div>
-                        </li>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
+                        
+                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device}></DeviceItem>)}
+
                     </ul>
                     
                 </div>

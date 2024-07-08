@@ -514,6 +514,11 @@ li {
     cursor: pointer;
 }
 
+.refresh{
+    height: 40px;
+    cursor: pointer;
+}
+
 .dashboard-menu{
     background-color: #FFFFFF;
     grid-area: menu;

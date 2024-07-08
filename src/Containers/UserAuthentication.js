@@ -27,13 +27,17 @@ export default function UserAuthentication({setManageDevices, setUser}) {
         e.preventDefault();
 
         try {
-            const response = await client.post("/login", { email: email, password: password });
+            const response = await client.post("/users/login", { email: email, password: password });
             setErrorCSS('error-message hidden');
             setToken(response.data.token);
+            
             navigate('/dashboard', {
                 replace: true,
             });
+            
+
         } catch (error) {
+            console.log(error);
             setError(error.response.data.msg);
             setErrorCSS('error-message');
         }
@@ -43,7 +47,7 @@ export default function UserAuthentication({setManageDevices, setUser}) {
         e.preventDefault();
 
         try {
-            await client.post("/register", { email: email, password: password, first_name: firstName, last_name: lastName});
+            await client.post("/users/register", { email: email, password: password, first_name: firstName, last_name: lastName});
             try {
                 const response = await client.post("/login", { email: email, password: password });
                 setErrorCSS('error-message hidden');

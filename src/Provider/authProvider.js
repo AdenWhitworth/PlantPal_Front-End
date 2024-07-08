@@ -11,8 +11,9 @@ const ACTIONS = {
 const authReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.setToken:
-      axios.defaults.headers.common["Authorization"] = "Bearer " + action.payload;
+      //axios.defaults.headers.common["Authorization"] = "Bearer " + action.payload;
       localStorage.setItem("token", action.payload);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
       return { ...state, token: action.payload };
 
