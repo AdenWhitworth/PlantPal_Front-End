@@ -22,7 +22,6 @@ import Button from "../Components/Button";
 import { useAuth} from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { bool } from 'prop-types';
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -137,6 +136,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [waterStatus, setWaterStatus] = useState("");
     const [waterStatusCSS, setWaterStatusCSS] = useState("good-water");
     const [waterStatusImg, setWaterStatusImg] = useState("");
+    const [refreshDate, setRefreshDate] = useState("");
 
     const navigate = useNavigate();
     const { clearToken, token } = useAuth();
@@ -239,6 +239,17 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
     }
 
+    const formatRefreshDate = () => {
+        const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const dateObject = new Date(lastLog.log_date);
+
+        const localTimeString = dateObject.toLocaleString(undefined, {
+            timeZone: userTimeZone,
+        });
+          
+        setRefreshDate(localTimeString);
+    }
+
     useEffect(() => {
         fetchUserDevices();
     }, [device]);
@@ -259,6 +270,14 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         formatWaterStatus();
     }, [lastLog]);
 
+    useEffect(() => {
+        if(typeof lastLog !== "undefined"){
+            formatRefreshDate();
+        } else {
+            setRefreshDate("");
+        }
+    }, [lastLog]);
+
     return (
         
         <div className='dashboard-grid'>
@@ -269,6 +288,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     <h1>PlantPal</h1>
                 </div>
                 <div className="dashboard-header-links">
+                    <li><h4 className="last-refresh">{refreshDate}</h4></li>
                     <li><img className="refresh grow" src={refresh} alt="Refresh logo" onClick={handleRefreshClick}></img></li>
                     <li><img className="gear grow" src={gear} alt="Gear logo" onClick={handleSettingsClick}></img></li>
                     <li><img className="exit grow" src={exit} alt="Exit logo" onClick={handleLogout}></img></li>
@@ -358,7 +378,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     <h3 className={waterStatusCSS}>{waterStatus}</h3>
                 </div>
             </div>
-            
+
             <div className='dashboard-automate'>
                 <h3>Automate Watering</h3>
 

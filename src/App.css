@@ -519,6 +519,11 @@ li {
     cursor: pointer;
 }
 
+.last-refresh{
+    color: #C0C0C0;
+    font-weight: bold;
+}
+
 .dashboard-menu{
     background-color: #FFFFFF;
     grid-area: menu;
