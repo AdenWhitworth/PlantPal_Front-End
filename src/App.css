@@ -601,6 +601,17 @@ li {
     flex-direction: column;
 }
 
+.show-moisture{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.start-moisture{
+    text-align: center;
+}
+
 .dashboard-moisture h3{
     text-align: center;
 }

@@ -130,6 +130,9 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [autoSwitch, setAutoSwitch] = useState(false);
     const [devices, setDevices] = useState([]);
     const [device, setDevice] = useState({});
+    const [deviceLogs, setDeviceLogs] = useState([]);
+    const [lastLog, setLastLog] = useState({});
+    const [moistureLevel, setMoistureLevel] = useState(0);
 
     const navigate = useNavigate();
     const { clearToken, token } = useAuth();
@@ -183,9 +186,42 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         fetchUserDevices();
     }
 
+    const fethDeviceLogs = async () => {
+        try {
+            const response = await client.get("/dashboard/deviceLogs", { params: {cat_num: device.cat_num}});
+
+            setDeviceLogs(response.data.deviceLogs);
+            setLastLog(response.data.lastLog);
+            
+        } catch (error) {
+            clearToken();
+            navigate("/auth", { replace: true });
+        }
+    }
+
+    const formatMostureLevel = () => {
+        const cap_max = 2000;
+        const cap_min = 200;
+
+        var formatCap = ( lastLog.soil_cap - cap_min) / (cap_max - cap_min) * 100;
+        setMoistureLevel(formatCap);
+    }
+
     useEffect(() => {
         fetchUserDevices();
-    }, []);
+    }, [device]);
+
+    useEffect(() => {
+        if(typeof device !== "undefined"){
+            fethDeviceLogs();
+        }
+    }, [device]);
+
+    useEffect(() => {
+        if(typeof lastLog !== "undefined"){
+            formatMostureLevel();
+        }
+    }, [lastLog]);
 
     return (
         
@@ -228,35 +264,45 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 
                 <h3>Plant Moisture Level</h3>
 
-                <div className='moisture-gauge'>
-                    <Gauge
-                        className='moisture-gauge'
-                        value={40}
-                        startAngle={-90}
-                        endAngle={90}
-                        innerRadius="60%"
-                        outerRadius="100%"
-                        cornerRadius="20%"
-                        sx={{
-                            [`& .${gaugeClasses.valueText}`]: {
-                                display: 'none',
-                            },
-                            [`& .${gaugeClasses.valueArc}`]: {
-                                fill: '#C1E899',
-                            },
-                            [`& .${gaugeClasses.referenceArc}`]: {
-                                fill: '#D9D9D9',
-                            },
-                        }}
-                    />
-                </div>
+                {(typeof lastLog === "undefined")?
+                    <div className='start-moisture'>
+                        <img src={traingle} alt='Connection icon'></img>
+                        <h4>Connect PlantPal to get first moisture level</h4>
+                    </div>
+                     :
+                    <div className='show-moisture'>
+                        <div className='moisture-gauge'>
+                            <Gauge
+                                className='moisture-gauge'
+                                value={moistureLevel}
+                                startAngle={-90}
+                                endAngle={90}
+                                innerRadius="60%"
+                                outerRadius="100%"
+                                cornerRadius="20%"
+                                sx={{
+                                    [`& .${gaugeClasses.valueText}`]: {
+                                        display: 'none',
+                                    },
+                                    [`& .${gaugeClasses.valueArc}`]: {
+                                        fill: '#C1E899',
+                                    },
+                                    [`& .${gaugeClasses.referenceArc}`]: {
+                                        fill: '#D9D9D9',
+                                    },
+                                }}
+                            />
+                        </div>
 
-                <div className='moisture-labels'>
-                    <h4>Dry</h4>
-                    <h4>Wet</h4>
-                </div>
-                
+                        <div className='moisture-labels'>
+                            <h4>Dry</h4>
+                            <h4>Wet</h4>
+                        </div>
+                    </div>
+                }
             </div>
+
+                    
 
             <div className='dashboard-connection'>
                 
