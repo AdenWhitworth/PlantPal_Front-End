@@ -6,18 +6,11 @@ import DeviceItem from "../Components/DeviceItem";
 import InputField from "../Components/InputField";
 import glass from "../Images/glass-brown.svg";
 import plus from "../Images/plus-circle-green.svg";
+import refresh from "../Images/refresh-gray.svg";
 import Account from "./Account";
 import AddDevice from './AddDevice';
-import { useNavigate } from "react-router-dom";
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, setUser}) {
-
-    const navigate = useNavigate();
-
-    const handleSettingsUnclick = () => {
-        setSettingsToggle(false);
-        setAddDeviceToggle(false);
-    }
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle}) {
 
     const handleAddDeviceClick = () => {
         setAddDeviceToggle(true);
@@ -26,12 +19,6 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
     const handleSettingsClick = () => {
         setAddDeviceToggle(false);
         setSettingsToggle(true);
-    }
-
-    const handlePlantPalClick = () => {
-        navigate('/', {
-            replace: true,
-        });
     }
 
     return (
@@ -44,8 +31,10 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
                     <h1>PlantPal</h1>
                 </div>
                 <div className="dashboard-header-links">
+                    {settingsToggle? <></> : <li><h4 className="last-refresh">{refreshDate}</h4></li> }
+                    {settingsToggle? <></> : <li><img className="refresh grow" src={refresh} alt="Refresh logo" onClick={handleRefreshClick}></img></li>}
                     <li><img className="gear grow" src={gear} alt="Gear logo" onClick={handleSettingsClick}></img></li>
-                    <li><img className="exit grow" src={exit} alt="Exit logo"></img></li>
+                    <li><img className="exit grow" src={exit} alt="Exit logo" onClick={handleLogout}></img></li>
                 </div>
             </div>
 
@@ -61,24 +50,9 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
                 <div className='devices'>
                     
                     <ul className='device-list'>
-                        <li>
-                            <div className="device-line selected" onClick={handleSettingsUnclick}>
-                                <h4 className="device-identifier">Kitchen-1: A5D1CJ</h4>
-                            </div>
-                        </li>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
-                        <DeviceItem></DeviceItem>
+                        
+                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Settings" settingsToggle={settingsToggle}></DeviceItem>)}
+
                     </ul>
                     
                 </div>
