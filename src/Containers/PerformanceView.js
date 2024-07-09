@@ -129,6 +129,10 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [waterStatus, setWaterStatus] = useState("");
     const [waterStatusCSS, setWaterStatusCSS] = useState("good-water");
     const [waterStatusImg, setWaterStatusImg] = useState("");
+    const [moistureCSS, setMoistureCSS] = useState("dashboard-moisture hidden")
+    const [connectionCSS, setConnectionCSS] = useState("dashboard-connection hidden")
+    const [statusCSS, setStatusCSS] = useState("dashboard-status hidden")
+    const [automateCSS, setAutomateCSS] = useState("dashboard-automate hidden")
 
     const handleAutoSwitch = (e) => {
         setAutoSwitch(e.target.checked);
@@ -186,6 +190,21 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     }, [lastLog]);
 
     useEffect(() => {
+        console.log(devices);
+        if (devices.length !== 0 ){
+            setMoistureCSS("dashboard-moisture");
+            setConnectionCSS("dashboard-connection");
+            setStatusCSS("dashboard-status");
+            setAutomateCSS("dashboard-automate");
+        } else {
+            setMoistureCSS("dashboard-moisture hidden");
+            setConnectionCSS("dashboard-connection hidden");
+            setStatusCSS("dashboard-status hidden");
+            setAutomateCSS("dashboard-automate hidden");
+        }
+    }, [devices]);
+
+    useEffect(() => {
         formatWaterStatus();
     }, [lastLog]);
 
@@ -226,8 +245,8 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 </div>
 
             </div>
-
-            <div className='dashboard-moisture'>
+            
+            <div className={moistureCSS}>
                 
                 <h3>Plant Moisture Level</h3>
 
@@ -236,7 +255,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                         <img src={traingle} alt='Connection icon'></img>
                         <h4>Connect PlantPal to get first moisture level reading.</h4>
                     </div>
-                     :
+                    :
                     <div className='show-moisture'>
                         <div className='moisture-gauge'>
                             <Gauge
@@ -271,7 +290,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
                     
 
-            <div className='dashboard-connection'>
+            <div className={connectionCSS}>
                 
                 <h3>Connection</h3>
                 <img src={traingle} alt='Connection icon'></img>
@@ -281,7 +300,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 
             </div>
 
-            <div className='dashboard-status'>
+            <div className={statusCSS}>
                 <h3>Water Status</h3>
 
                 <div className='status-indicator'>
@@ -290,7 +309,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 </div>
             </div>
 
-            <div className='dashboard-automate'>
+            <div className={automateCSS}>
                 <h3>Automate Watering</h3>
 
                 <FormControlLabel
@@ -323,6 +342,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 }
 
             </div>
+            
         </div>
         
     );
