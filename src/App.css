@@ -415,6 +415,10 @@ li {
     font-family: inherit;
 }
 
+.padded{
+    padding-top: 5%;
+}
+
 .text-btn span{
     cursor: pointer;
 }
@@ -650,6 +654,12 @@ li {
 .dashboard-connection h4{
     margin-top: 0;
     margin-bottom: 2%;
+}
+
+.update-wifi{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dashboard-status{

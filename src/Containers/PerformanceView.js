@@ -9,9 +9,11 @@ import plus from "../Images/plus-circle-green.svg";
 import x_circle from "../Images/x-circle-red.svg";
 import check_circle from "../Images/check-circle-green.svg";
 import traingle from "../Images/triangle-orange.svg";
-//import wifi from "../Images/wifi-green.svg";
+import wifi from "../Images/wifi-green.svg";
 import refresh from "../Images/refresh-gray.svg";
 import tap from "../Images/tap-green.svg";
+import wifi_logo from '../Images/wifi-brown.svg';
+import lock from '../Images/lock-brown.svg';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 import { BarChart  } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
@@ -19,6 +21,8 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Button from "../Components/Button";
+import {useAuth} from '../Provider/authProvider';
+import axios from "axios";
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -122,17 +126,32 @@ const dataset = [
     },
   ];
 
-export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle}) {
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle}) {
 
     const [autoSwitch, setAutoSwitch] = useState(false);
     const [moistureLevel, setMoistureLevel] = useState(0);
     const [waterStatus, setWaterStatus] = useState("");
     const [waterStatusCSS, setWaterStatusCSS] = useState("good-water");
     const [waterStatusImg, setWaterStatusImg] = useState("");
-    const [moistureCSS, setMoistureCSS] = useState("dashboard-moisture hidden")
-    const [connectionCSS, setConnectionCSS] = useState("dashboard-connection hidden")
-    const [statusCSS, setStatusCSS] = useState("dashboard-status hidden")
-    const [automateCSS, setAutomateCSS] = useState("dashboard-automate hidden")
+    const [moistureCSS, setMoistureCSS] = useState("dashboard-moisture hidden");
+    const [connectionCSS, setConnectionCSS] = useState("dashboard-connection hidden");
+    const [statusCSS, setStatusCSS] = useState("dashboard-status hidden");
+    const [automateCSS, setAutomateCSS] = useState("dashboard-automate hidden");
+    const [updateWifiToggle, setUpdateWifiToggle] = useState(false);
+    const [wifiSSID, setWifiSSID] = useState('');
+    const [wifiPassword, setWifiPassword] = useState('');
+    const [error, setError] = useState('Error');
+    const [errorCSS, setErrorCSS] = useState('error-message hidden');
+    const { token } = useAuth();
+
+    const client = axios.create({
+        baseURL: process.env.REACT_APP_BASE_URL,
+        
+        headers: {
+            "Authorization": "Bearer " + token
+        }
+        
+    });
 
     const handleAutoSwitch = (e) => {
         setAutoSwitch(e.target.checked);
@@ -181,6 +200,26 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
             setWaterStatus("Needs Water");
         }
 
+    }
+
+    const handleChangeWifiClick = () => {
+        setUpdateWifiToggle(true);
+    }
+
+    const handleUpdateWifi = async (e) => {
+        e.preventDefault();
+
+        try {
+            await client.post("/dashboard/updateWifi", { device_id: device.device_id, wifi_ssid: wifiSSID, wifi_password: wifiPassword});
+            setErrorCSS('error-message hidden');
+            document.getElementById("update-wifi").reset();
+            handleRefreshClick();
+            setUpdateWifiToggle(false);
+            setConnectDeviceToggle(true);
+        } catch (error) {
+            setError(error.response.data.msg);
+            setErrorCSS('error-message');
+        }  
     }
 
     useEffect(() => {
@@ -287,15 +326,26 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 }
             </div>
 
-                    
-
             <div className={connectionCSS}>
                 
-                <h3>Connection</h3>
-                <img src={traingle} alt='Connection icon'></img>
-                <h4>Missing</h4>
-                <h4>SSID: WhitHome</h4>
-                <button className='text-btn'><span>Change Wifi?</span></button>
+                {updateWifiToggle?
+                
+                    <form id='update-wifi' className='update-wifi' onSubmit={handleUpdateWifi}>
+                        <h3>Connection</h3>
+                        <InputField onChange={(e) => setWifiSSID(e.target.value)} inputImg={wifi_logo} isRequired={true} type='text' placeholder='Wifi SSID' isSpellCheck={false} setWidth={'60%'}></InputField>
+                        <InputField onChange={(e) => setWifiPassword(e.target.value)} inputImg={lock} isRequired={true} type='password' placeholder='Wifi Password' isSpellCheck={false} setWidth={'60%'}></InputField>
+                        <button type='submit' className='text-btn padded'><span>Connect Wifi?</span></button>
+                        <h4 className={errorCSS}>{error}</h4>
+                    </form>
+                    :
+                    <div>
+                        <h3>Connection</h3>
+                        <img src={device.connection_status? wifi: traingle} alt='Connection icon'></img>
+                        <h4>{device.connection_status? "Connected": "Missing"}</h4>
+                        <h4>SSID: {device.wifi_ssid}</h4>
+                        <button className='text-btn' onClick={handleChangeWifiClick}><span>Change Wifi?</span></button>
+                    </div>
+                }
                 
             </div>
 
@@ -336,7 +386,6 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                         <Button className='manual-btn' children='Pump Water' isPrimaryStyle={false} onClick={() => {console.log("clicked")}} ></Button>
                             
                     </div>
-                    
                     
                 }
 

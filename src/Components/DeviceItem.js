@@ -40,10 +40,20 @@ export default function DeviceItem({devices, index, setDevice, device, setAddDev
 
     },[device,settingsToggle])
 
+    useEffect(() =>{
+        if (Object.keys(device).length !== 0){
+            if(device.cat_num === devices.cat_num){
+
+                setDevice(devices);
+                
+            }
+        } 
+    },[devices])
+
     return (
         <li>
             <div className={colorStyle} onClick={handleDeviceClick}>
-                <h4 className="device-identifier">{devices.cat_num}</h4>
+                <h4 className="device-identifier">{devices.location} - {devices.cat_num}</h4>
             </div>
         </li>
     );
