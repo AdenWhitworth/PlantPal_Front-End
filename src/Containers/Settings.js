@@ -61,7 +61,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
 
             <div className='dashboard-setting'>
                 
-                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle}></AddDevice>:<Account></Account>}
+                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle}></AddDevice>:<Account></Account>}
 
             </div>
 

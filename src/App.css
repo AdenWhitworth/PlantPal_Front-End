@@ -425,6 +425,7 @@ li {
 
 .error-message{
     color: red;
+    margin: 0;
 }
 
 /* Dashboard */
@@ -767,6 +768,7 @@ li {
     color: #C0C0C0;
     text-align: center;
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .modal{
