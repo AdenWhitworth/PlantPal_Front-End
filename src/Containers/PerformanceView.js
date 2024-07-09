@@ -190,7 +190,6 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     }, [lastLog]);
 
     useEffect(() => {
-        console.log(devices);
         if (devices.length !== 0 ){
             setMoistureCSS("dashboard-moisture");
             setConnectionCSS("dashboard-connection");

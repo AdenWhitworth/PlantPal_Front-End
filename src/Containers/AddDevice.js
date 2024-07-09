@@ -10,7 +10,7 @@ import React, {useState} from 'react';
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
 
-export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle}) {
+export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick}) {
 
     const [deviceLocation, setDeviceLocation] = useState('');
     const [assetNumber, setAssetNumber] = useState('');
@@ -38,7 +38,7 @@ export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, se
             setErrorCSS('error-message hidden');
             document.getElementById("new-device").reset();
             setConnectDeviceToggle(true);
-            
+            handleRefreshClick();
             setAddDeviceToggle(false);
             setSettingsToggle(false);
 
