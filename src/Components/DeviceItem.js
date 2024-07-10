@@ -33,7 +33,7 @@ export default function DeviceItem({devices, index, setDevice, device, setAddDev
                     
                 }
 
-                if (device.cat_num === devices.cat_num && (device.wifi_ssid !== devices.wifi_ssid || device.wifi_password !== devices.wifi_password)){
+                if (device.cat_num === devices.cat_num && (device.wifi_ssid !== devices.wifi_ssid || device.wifi_password !== devices.wifi_password || device.connection_status !== devices.connection_status || device.automate !== devices.automate)){
                     setDevice(devices);
                 }
 
