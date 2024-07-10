@@ -10,7 +10,7 @@ import refresh from "../Images/refresh-gray.svg";
 import Account from "./Account";
 import AddDevice from './AddDevice';
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, connectDeviceToggle}) {
 
     const handleAddDeviceClick = () => {
         setAddDeviceToggle(true);
@@ -51,7 +51,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
                     
                     <ul className='device-list'>
                         
-                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Settings" settingsToggle={settingsToggle}></DeviceItem>)}
+                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Settings" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
 
                     </ul>
                     
@@ -61,7 +61,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
 
             <div className='dashboard-setting'>
                 
-                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick}></AddDevice>:<Account></Account>}
+                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick} setDevice={setDevice}></AddDevice>:<Account></Account>}
 
             </div>
 

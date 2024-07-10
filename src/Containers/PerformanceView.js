@@ -126,7 +126,7 @@ const dataset = [
     },
   ];
 
-export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle}) {
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle, deviceLogs, connectDeviceToggle}) {
 
     const [autoSwitch, setAutoSwitch] = useState(false);
     const [moistureLevel, setMoistureLevel] = useState(0);
@@ -142,6 +142,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [wifiPassword, setWifiPassword] = useState('');
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
+    const [waterOccurance, setWaterOccurance] = useState([]);
     const { token } = useAuth();
 
     const client = axios.create({
@@ -222,6 +223,42 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         }  
     }
 
+    const countWaterOccurances = () => {
+        const dateCount = {};
+        const now = new Date();
+        const sevenDaysAgo = new Date(now);
+        sevenDaysAgo.setDate(now.getDate() - 7);
+
+        if (deviceLogs.length === 0){
+            return setWaterOccurance([]);
+        }
+
+        deviceLogs.filter(deviceLog => {
+            const localLogDate = new Date(deviceLog.log_date);
+            return localLogDate >= sevenDaysAgo && localLogDate <= now;
+          }).forEach(deviceLog => {
+            const localLogDate = new Date(deviceLog.log_date);
+            const dayDate = localLogDate.toISOString().split('T')[0];
+            if (deviceLog.water === 1){
+                
+                if(!dateCount[dayDate]){
+                    dateCount[dayDate] = 0;
+                }
+
+                dateCount[dayDate]++;
+            }
+        });
+
+        const occuranceArray = Object.keys(dateCount).map(date => ({
+            times: dateCount[date],
+            date: date,
+        }));
+
+        occuranceArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        setWaterOccurance(occuranceArray);
+    }
+
     useEffect(() => {
         if(typeof lastLog !== "undefined"){
             formatMostureLevel();
@@ -245,6 +282,12 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     useEffect(() => {
         formatWaterStatus();
     }, [lastLog]);
+
+    useEffect(() => {
+        
+        countWaterOccurances();
+        
+    }, [deviceLogs]);
 
     return (
         
@@ -276,7 +319,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     
                     <ul className='device-list'>
                         
-                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle}></DeviceItem>)}
+                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
 
                     </ul>
                     
@@ -361,34 +404,42 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
             <div className={automateCSS}>
                 <h3>Automate Watering</h3>
 
-                <FormControlLabel
-                    control={<IOSSwitch sx={{ m: 1 }} checked={autoSwitch} onChange={handleAutoSwitch} />}
-                    label={autoSwitch? "Auto": "Manual"}
-                />
+                {(typeof lastLog === "undefined")?
 
-                {autoSwitch?
-                    <div className='auto'>
-                        
-                        <BarChart
-                            dataset={dataset}
-                            xAxis={[
-                                { scaleType: 'band', dataKey: 'date', tickPlacement:'middle', tickLabelPlacement:'middle'},
-                            ]}
-                            {...chartSetting}
-                            borderRadius={5}
-                        />
-                        
-                    </div>
+                    <img src={ traingle} alt='Auto Error icon'></img>
                     :
-                    <div className='manual'>
+                
+                    <div className='auto-status'>
                         
-                        <img src={tap} alt='Tap Icon'></img>
-                        <Button className='manual-btn' children='Pump Water' isPrimaryStyle={false} onClick={() => {console.log("clicked")}} ></Button>
-                            
-                    </div>
-                    
-                }
+                        <FormControlLabel
+                            control={<IOSSwitch sx={{ m: 1 }} checked={autoSwitch} onChange={handleAutoSwitch} />}
+                            label={autoSwitch? "Auto": "Manual"}
+                        />
 
+                        {autoSwitch?
+                            <div className='auto'>
+                                
+                                <BarChart
+                                    dataset={waterOccurance}
+                                    xAxis={[
+                                        { scaleType: 'band', dataKey: 'date', tickPlacement:'middle', tickLabelPlacement:'middle'},
+                                    ]}
+                                    {...chartSetting}
+                                    borderRadius={5}
+                                />
+                                
+                            </div>
+                            :
+                            <div className='manual'>
+                                <div className='manual-tap'>
+                                    <img className='grow' src={tap} alt='Tap Icon'></img>
+                                </div>
+                                <h4>Pump Water</h4>
+                            </div>
+                        }
+                        
+                    </div>
+                }
             </div>
             
         </div>

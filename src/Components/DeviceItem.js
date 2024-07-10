@@ -1,6 +1,6 @@
 import {useState , useEffect} from "react";
 
-export default function DeviceItem({devices, index, setDevice, device, setAddDeviceToggle, setSettingsToggle, from, settingsToggle}) {
+export default function DeviceItem({devices, index, setDevice, device, setAddDeviceToggle, setSettingsToggle, from, settingsToggle, connectDeviceToggle}) {
 
     const [colorStyle, setColorStyle] = useState("device-line");
 
@@ -19,37 +19,38 @@ export default function DeviceItem({devices, index, setDevice, device, setAddDev
         if (Object.keys(device).length !== 0){
             if(device.cat_num === devices.cat_num){
 
-                if (settingsToggle){
+                if (settingsToggle && connectDeviceToggle == false){
+                    console.log("here1");
                     setColorStyle("device-line");
-                    return
+                    return;
                 }
 
                 setColorStyle("device-line selected");
+                
                 if (from === "Performance"){
                     setSettingsToggle(false);
                     setAddDeviceToggle(false);
+                    
                 }
+
+                if (device.cat_num === devices.cat_num && (device.wifi_ssid !== devices.wifi_ssid || device.wifi_password !== devices.wifi_password)){
+                    setDevice(devices);
+                }
+
             } else {
                 setColorStyle("device-line");
             }
+
         } else{
             if (index === 0){
-                setDevice(devices);
+                if(device.cat_num !== devices.cat_num){
+                    setDevice(devices);
+                }
             }
         }
 
-    },[device,settingsToggle])
-
-    useEffect(() =>{
-        if (Object.keys(device).length !== 0){
-            if(device.cat_num === devices.cat_num){
-
-                setDevice(devices);
-                
-            }
-        } 
-    },[devices])
-
+    },[devices,settingsToggle])
+    
     return (
         <li>
             <div className={colorStyle} onClick={handleDeviceClick}>

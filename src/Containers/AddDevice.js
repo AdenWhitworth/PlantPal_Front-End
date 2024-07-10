@@ -10,7 +10,7 @@ import React, {useState} from 'react';
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
 
-export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick}) {
+export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick, setDevice}) {
 
     const [deviceLocation, setDeviceLocation] = useState('');
     const [assetNumber, setAssetNumber] = useState('');
@@ -34,16 +34,19 @@ export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, se
         e.preventDefault();
         
         try {
-            await client.post("/dashboard/addDevice", { location: deviceLocation, cat_num: assetNumber, wifi_ssid: wifiSSID, wifi_password: wifiPassword });
+            const newDevice = await client.post("/dashboard/addDevice", { location: deviceLocation, cat_num: assetNumber, wifi_ssid: wifiSSID, wifi_password: wifiPassword });
+            console.log(newDevice);
+            
+            setDevice(newDevice.data.newDevice);
             setErrorCSS('error-message hidden');
             document.getElementById("new-device").reset();
             setConnectDeviceToggle(true);
-            handleRefreshClick();
             setAddDeviceToggle(false);
             setSettingsToggle(false);
+            
 
         } catch (error) {
-            setError(error.response.data.msg);
+            setError(error.response.data.message);
             setErrorCSS('error-message');
         }
     }
