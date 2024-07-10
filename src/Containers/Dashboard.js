@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import triangle from '../Images/triangle-orange.svg';
 import PerformanceView from '../Containers/PerformanceView';
 import Settings from '../Containers/Settings';
 import AddDeviceModal from '../Modals/AddDeviceModal';
+import ConfirmActionModal from '../Modals/ConfirmActionModal';
 import { useAuth } from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -17,6 +19,8 @@ export default function Dashboard() {
     const [deviceLogs, setDeviceLogs] = useState([]);
     const [lastLog, setLastLog] = useState({});
     const [refreshDate, setRefreshDate] = useState("");
+    const [autoSwitch, setAutoSwitch] = useState(false);
+    const [confirmAuto, setConfirmAuto] = useState(false);
 
     const navigate = useNavigate();
     const { clearToken, token } = useAuth();
@@ -104,7 +108,9 @@ export default function Dashboard() {
             
             {connectDeviceToggle? <AddDeviceModal setConnectDeviceToggle={setConnectDeviceToggle}></AddDeviceModal> : <></>}
 
-            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle} addDeviceToggel={addDeviceToggel} setAddDeviceToggle={setAddDeviceToggle} setConnectDeviceToggle={setConnectDeviceToggle} handlePlantPalClick={handlePlantPalClick} handleRefreshClick={handleRefreshClick} devices={devices} lastLog={lastLog} device={device} setDevice={setDevice} refreshDate={refreshDate} handleLogout={handleLogout} settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handlePlantPalClick={handlePlantPalClick} handleRefreshClick={handleRefreshClick} devices={devices} lastLog={lastLog} device={device} setDevice={setDevice} refreshDate={refreshDate} handleLogout={handleLogout} settingsToggle={settingsToggle} setConnectDeviceToggle={setConnectDeviceToggle} deviceLogs={deviceLogs} connectDeviceToggle={connectDeviceToggle}></PerformanceView>}
+            {confirmAuto?  <ConfirmActionModal device={device} autoSwitch={autoSwitch} setConfirmAuto={setConfirmAuto} setAutoSwitch={setAutoSwitch} mainIcon={triangle} children={autoSwitch? "Confirm setting PlantPal to automatic watering." : "Confirm setting PlantPal to manual watering"}></ConfirmActionModal>: <></> }
+
+            {settingsToggle? <Settings setSettingsToggle={setSettingsToggle} addDeviceToggel={addDeviceToggel} setAddDeviceToggle={setAddDeviceToggle} setConnectDeviceToggle={setConnectDeviceToggle} handlePlantPalClick={handlePlantPalClick} handleRefreshClick={handleRefreshClick} devices={devices} lastLog={lastLog} device={device} setDevice={setDevice} refreshDate={refreshDate} handleLogout={handleLogout} settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></Settings> : <PerformanceView setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handlePlantPalClick={handlePlantPalClick} handleRefreshClick={handleRefreshClick} devices={devices} lastLog={lastLog} device={device} setDevice={setDevice} refreshDate={refreshDate} handleLogout={handleLogout} settingsToggle={settingsToggle} setConnectDeviceToggle={setConnectDeviceToggle} deviceLogs={deviceLogs} connectDeviceToggle={connectDeviceToggle} autoSwitch={autoSwitch} setAutoSwitch={setAutoSwitch} setConfirmAuto={setConfirmAuto}></PerformanceView>}
 
         </section>
     );

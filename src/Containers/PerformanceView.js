@@ -20,7 +20,6 @@ import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import Button from "../Components/Button";
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
 
@@ -91,44 +90,8 @@ const chartSetting = {
   },
 };
 
-const dataset = [
-    {
-        times: 4,
-        date: '6/30/2024',
-    },
-    {
-        times: 2,
-        date: '6/29/2024',
-    },
-    {
-        times: 3,
-        date: '6/28/2024',
-    },
-    {
-        times: 1,
-        date: '6/27/2024',
-    },
-    {
-        times: 4,
-        date: '6/26/2024',
-    },
-    {
-        times: 2,
-        date: '6/25/2024',
-    },
-    {
-        times: 3,
-        date: '6/24/2024',
-    },
-    {
-        times: 1,
-        date: '6/23/2024',
-    },
-  ];
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle, deviceLogs, connectDeviceToggle, autoSwitch, setAutoSwitch, setConfirmAuto}) {
 
-export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle, deviceLogs, connectDeviceToggle}) {
-
-    const [autoSwitch, setAutoSwitch] = useState(false);
     const [moistureLevel, setMoistureLevel] = useState(0);
     const [waterStatus, setWaterStatus] = useState("");
     const [waterStatusCSS, setWaterStatusCSS] = useState("good-water");
@@ -156,6 +119,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
     const handleAutoSwitch = (e) => {
         setAutoSwitch(e.target.checked);
+        setConfirmAuto(true);
     };
 
     const handleSettingsClick = () => {
@@ -292,7 +256,6 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     return (
         
         <div className='dashboard-grid'>
-
             <div className='dashboard-header'>
                 <div className="dashboard-header-logo grow" onClick={handlePlantPalClick}>
                     <img src={plantpal_logo} alt="PlantPal main logo"></img>
