@@ -10,7 +10,7 @@ import refresh from "../Images/refresh-gray.svg";
 import Account from "./Account";
 import AddDevice from './AddDevice';
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, connectDeviceToggle}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, connectDeviceToggle, user, setUser}) {
 
     const handleAddDeviceClick = () => {
         setAddDeviceToggle(true);
@@ -61,7 +61,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
 
             <div className='dashboard-setting'>
                 
-                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick} setDevice={setDevice}></AddDevice>:<Account></Account>}
+                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick} setDevice={setDevice}></AddDevice>:<Account setUser={setUser} user={user}></Account>}
 
             </div>
 

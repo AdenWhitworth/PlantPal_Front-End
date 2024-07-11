@@ -20,7 +20,6 @@ export default function DeviceItem({devices, index, setDevice, device, setAddDev
             if(device.cat_num === devices.cat_num){
 
                 if (settingsToggle && connectDeviceToggle == false){
-                    console.log("here1");
                     setColorStyle("device-line");
                     return;
                 }

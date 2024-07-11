@@ -377,6 +377,38 @@ li {
     max-height: 50%;
 }
 
+.inputField-locked{
+    height: 8vh;
+    position: relative;
+}
+
+.inputField-locked input{
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: 4px solid #C0C0C0;
+    background: transparent;
+    padding-left: 15%;
+    color: #9A6735;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    font-size: 18px;
+    
+}
+
+.inputField-locked input::placeholder {
+    color: #9A6735;
+    opacity: 1;
+}
+  
+.inputField-locked input::-ms-input-placeholder {
+    color: #9A6735;
+}
+
+.inputField-locked input:focus {
+    outline: none;
+}
+
 .userAuth-logo{
     display: flex;
     flex-direction: column;
@@ -760,6 +792,19 @@ li {
     align-items: center;
     width: 100%;
     height: 100%;
+    position: relative;
+}
+
+.account-close{
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    cursor: pointer;
+}
+
+.account-close img{
+    width: 40px;
+    height: 40px;
 }
 
 .account-section-2-btns{

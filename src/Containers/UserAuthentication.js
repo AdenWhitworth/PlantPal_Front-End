@@ -9,7 +9,7 @@ const client = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL
 });
   
-export default function UserAuthentication({setManageDevices, setUser}) {
+export default function UserAuthentication({setUser}) {
 
     const navigate = useNavigate();
     const { setToken } = useAuth();
@@ -30,6 +30,11 @@ export default function UserAuthentication({setManageDevices, setUser}) {
             const response = await client.post("/users/login", { email: email, password: password });
             setErrorCSS('error-message hidden');
             setToken(response.data.token);
+            setUser({
+                firstName: response.data.user.first_name,
+                lastName: response.data.user.last_name,
+                email: response.data.user.email
+            });
             
             navigate('/dashboard', {
                 replace: true,
@@ -37,7 +42,6 @@ export default function UserAuthentication({setManageDevices, setUser}) {
             
 
         } catch (error) {
-            console.log(error);
             setError(error.response.data.msg);
             setErrorCSS('error-message');
         }
@@ -52,6 +56,12 @@ export default function UserAuthentication({setManageDevices, setUser}) {
                 const response = await client.post("/login", { email: email, password: password });
                 setErrorCSS('error-message hidden');
                 setToken(response.data.token);
+                setUser({
+                    firstName: response.data.user.first_name,
+                    lastName: response.data.user.last_name,
+                    email: response.data.user.email,
+                    hashPassword: response.data.user.password
+                });
                 navigate('/dashboard', {
                     replace: true,
                 });

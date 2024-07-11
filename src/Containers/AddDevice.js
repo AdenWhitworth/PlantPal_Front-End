@@ -35,7 +35,6 @@ export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, se
         
         try {
             const newDevice = await client.post("/dashboard/addDevice", { location: deviceLocation, cat_num: assetNumber, wifi_ssid: wifiSSID, wifi_password: wifiPassword });
-            console.log(newDevice);
             
             setDevice(newDevice.data.newDevice);
             setErrorCSS('error-message hidden');
