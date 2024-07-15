@@ -95,7 +95,7 @@ export default function UserAuthentication({setUser}) {
 
     useEffect(() => {
         setErrorCSS('error-message hidden');
-    }, []);
+    }, [isCurrentUser]);
 
     return (
         <section className="userAuthentication">

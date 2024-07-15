@@ -8,7 +8,7 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName}) {
+export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName, error, errorCSS}) {
 
     return (
         <form className="userAuth-section-2" onSubmit={handleCreateClick}>
@@ -27,6 +27,7 @@ export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, s
                 <button className='text-btn hidden'><span>Forgot Password?</span></button>
                 <Button children='Create' type='submit' isPrimaryStyle={false} ></Button>
             </div>
+            <h4 className={errorCSS}>{error}</h4>
         </form>
     );
 }
