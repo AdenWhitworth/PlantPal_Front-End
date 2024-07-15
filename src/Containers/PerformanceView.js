@@ -105,9 +105,11 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [wifiPassword, setWifiPassword] = useState('');
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
+    const [searchItem, setSearchItem] = useState('');
+    const [filteredDevices, setFilteredDevices] = useState([]);
     const [waterOccurance, setWaterOccurance] = useState([]);
     const { token } = useAuth();
-
+    
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
         
@@ -223,6 +225,21 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         setWaterOccurance(occuranceArray);
     }
 
+    const handleSearchChange = (e) => {
+        const searchTerm = e.target.value;
+        setSearchItem(searchTerm);
+
+        setFilteredDevices(devices.filter((device) => device.location.toLowerCase().includes(searchTerm.toLowerCase()) || device.cat_num.toLowerCase().includes(searchTerm.toLowerCase())));
+    }
+
+    useEffect(() => {
+        setFilteredDevices(devices);
+    },[devices]);
+
+    useEffect(() => {
+        setSearchItem('');
+    },[device]);
+
     useEffect(() => {
         if(typeof lastLog !== "undefined"){
             formatMostureLevel();
@@ -274,7 +291,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                 <h2 className='menu-txt'>Devices</h2>
                 
                 <div className='menu-options'>
-                    <InputField inputImg={glass} isRequired={false} type='text' placeholder='Search' isSpellCheck={false} setWidth={'100%'}></InputField>
+                    <InputField inputImg={glass} isRequired={false} type='text' placeholder='Search' isSpellCheck={false} setWidth={'100%'} value={searchItem} onChange={handleSearchChange}></InputField>
                     <img src={plus} alt='Plus Icon' className='add-device grow' onClick={handleAddDeviceClick}></img>
                 </div>
 
@@ -282,7 +299,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     
                     <ul className='device-list'>
                         
-                        { devices.map((devices, index) => <DeviceItem key={devices.device_id} devices={devices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
+                        { filteredDevices.map((filteredDevices, index) => <DeviceItem key={filteredDevices.device_id} devices={filteredDevices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
 
                     </ul>
                     

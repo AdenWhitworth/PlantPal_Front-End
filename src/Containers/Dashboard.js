@@ -88,7 +88,7 @@ export default function Dashboard({user, setUser}) {
     useEffect(() => {
         fetchUserDevices();
     }, [device]);
-
+    
     useEffect(() => {
         if(typeof device !== "undefined"){
             fethDeviceLogs();
