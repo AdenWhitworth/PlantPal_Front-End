@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { useSocket } from '../Hooks/SocketProvider';
 
 const client = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL
 });
   
-export default function UserAuthentication({setUser}) {
+export default function UserAuthentication({setUser,user}) {
 
     const navigate = useNavigate();
     const { setToken } = useAuth();
@@ -23,6 +24,9 @@ export default function UserAuthentication({setUser}) {
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
 
+    const { sendAddUser } = useSocket();
+    
+
     const handleSignInClick = async (e) => {
         e.preventDefault();
 
@@ -33,13 +37,15 @@ export default function UserAuthentication({setUser}) {
             setUser({
                 firstName: response.data.user.first_name,
                 lastName: response.data.user.last_name,
-                email: response.data.user.email
+                email: response.data.user.email,
+                user_id: response.data.user.user_id
             });
-            
+
+            sendAddUser(response.data.user.user_id);
+
             navigate('/dashboard', {
                 replace: true,
             });
-            
 
         } catch (error) {
             setError(error.response.data.msg);
@@ -60,16 +66,19 @@ export default function UserAuthentication({setUser}) {
                     firstName: response.data.user.first_name,
                     lastName: response.data.user.last_name,
                     email: response.data.user.email,
-                    hashPassword: response.data.user.password
+                    user_id: response.data.user_id
                 });
+
                 navigate('/dashboard', {
                     replace: true,
                 });
             } catch (error) {
+
                 setError('User created but failed to authorize. Try logging in.');
                 setErrorCSS('error-message');
             }
         } catch (error) {
+
             setError(error.response.data.msg);
             setErrorCSS('error-message');
         }

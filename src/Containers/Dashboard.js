@@ -7,6 +7,7 @@ import ConfirmActionModal from '../Modals/ConfirmActionModal';
 import { useAuth } from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSocket } from '../Hooks/SocketProvider';
 
 export default function Dashboard({user, setUser}) {
 
@@ -24,6 +25,7 @@ export default function Dashboard({user, setUser}) {
 
     const navigate = useNavigate();
     const { clearToken, token } = useAuth();
+    const { sendRemoveUser } = useSocket();
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -43,10 +45,14 @@ export default function Dashboard({user, setUser}) {
     const fetchUserDevices = async () => {
         try {
             const response = await client.get("/dashboard/userDevices");
-
             setDevices(response.data.devices);
             
         } catch (error) {
+            try {
+                sendRemoveUser(user.user_id)
+            } catch (error) {
+                return;
+            }
             clearToken();
             navigate("/auth", { replace: true });
         }
@@ -59,11 +65,16 @@ export default function Dashboard({user, setUser}) {
     const fethDeviceLogs = async () => {
         try {
             const response = await client.get("/dashboard/deviceLogs", { params: {cat_num: device.cat_num}});
-
             setDeviceLogs(response.data.deviceLogs);
             setLastLog(response.data.lastLog);
             
         } catch (error) {
+            try {
+                sendRemoveUser(user.user_id)
+            } catch (error) {
+                return;
+            }
+
             clearToken();
             navigate("/auth", { replace: true });
         }
@@ -81,16 +92,24 @@ export default function Dashboard({user, setUser}) {
     }
 
     const handleLogout = () => {
+        try {
+            sendRemoveUser(user.user_id)
+        } catch (error) {
+            return;
+        }
+        
         clearToken();
         navigate("/auth", { replace: true });
     };
 
     useEffect(() => {
-        fetchUserDevices();
+        if (user.user_id){
+            fetchUserDevices();
+        }
     }, [device]);
     
     useEffect(() => {
-        if(typeof device !== "undefined"){
+        if(device.cat_num){
             fethDeviceLogs();
         }
     }, [device]);
