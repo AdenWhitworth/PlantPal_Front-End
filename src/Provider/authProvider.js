@@ -6,6 +6,8 @@ const AuthContext = createContext();
 const ACTIONS = {
   setToken: "setToken",
   clearToken: "clearToken",
+  setUser: "setUser",
+  clearUser: "clearUser",
 };
 
 const authReducer = (state, action) => {
@@ -22,6 +24,12 @@ const authReducer = (state, action) => {
       localStorage.removeItem("token");
 
       return { ...state, token: null };
+    
+    case ACTIONS.setUser:
+      return { ...state, user: action.payload };
+
+    case ACTIONS.clearUser:
+      return { ...state, user: null };
 
     default:
       console.error(
@@ -32,6 +40,7 @@ const authReducer = (state, action) => {
 
 const initialData = {
   token: localStorage.getItem("token"),
+  user: null,
 };
 
 const AuthProvider = ({ children }) => {
@@ -45,11 +54,21 @@ const AuthProvider = ({ children }) => {
     dispatch({ type: ACTIONS.clearToken });
   };
 
+  const setUser = (userData) => {
+    dispatch({ type: ACTIONS.setUser, payload: userData });
+  };
+
+  const clearUser = () => {
+    dispatch({ type: ACTIONS.clearUser });
+  };
+
   const contextValue = useMemo(
     () => ({
       ...state,
       setToken,
       clearToken,
+      setUser,
+      clearUser,
     }),
     [state]
   );

@@ -7,9 +7,9 @@ import ConfirmActionModal from '../Modals/ConfirmActionModal';
 import { useAuth } from "../Provider/authProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSocket } from '../Hooks/SocketProvider';
+import { useSocket } from '../Provider/SocketProvider';
 
-export default function Dashboard({user, setUser}) {
+export default function Dashboard() {
 
     const [settingsToggle, setSettingsToggle] = useState(false);
     const [addDeviceToggel, setAddDeviceToggle] = useState(false);
@@ -24,7 +24,7 @@ export default function Dashboard({user, setUser}) {
     const [confirmAuto, setConfirmAuto] = useState(false);
 
     const navigate = useNavigate();
-    const { clearToken, token } = useAuth();
+    const { clearToken, token, user, setUser, clearUser } = useAuth();
     const { sendRemoveUser } = useSocket();
 
     const client = axios.create({
@@ -53,6 +53,7 @@ export default function Dashboard({user, setUser}) {
             } catch (error) {
                 return;
             }
+            clearUser();
             clearToken();
             navigate("/auth", { replace: true });
         }
@@ -74,7 +75,7 @@ export default function Dashboard({user, setUser}) {
             } catch (error) {
                 return;
             }
-
+            clearUser();
             clearToken();
             navigate("/auth", { replace: true });
         }
@@ -97,7 +98,7 @@ export default function Dashboard({user, setUser}) {
         } catch (error) {
             return;
         }
-        
+        clearUser();
         clearToken();
         navigate("/auth", { replace: true });
     };

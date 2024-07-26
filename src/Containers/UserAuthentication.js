@@ -4,16 +4,16 @@ import React, { useState, useEffect } from 'react';
 import {useAuth} from '../Provider/authProvider';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { useSocket } from '../Hooks/SocketProvider';
+import { useSocket } from '../Provider/SocketProvider';
 
 const client = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL
 });
   
-export default function UserAuthentication({setUser,user}) {
+export default function UserAuthentication() {
 
     const navigate = useNavigate();
-    const { setToken } = useAuth();
+    const { setToken, setUser } = useAuth();
     const [isCurrentUser, setIsCurrentUser] = useState(true);
     const [loginBtnStyle, setloginBtnStyle] = useState("userAuth-toggle-btn-selected");
     const [signUpBtnStyle, setSignUpBtnStyle] = useState("userAuth-toggle-btn");
@@ -23,7 +23,6 @@ export default function UserAuthentication({setUser,user}) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
-
     const { sendAddUser } = useSocket();
     
 
