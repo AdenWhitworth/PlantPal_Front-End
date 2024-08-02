@@ -42,7 +42,7 @@ export default function UserAuthentication() {
 
       
     } catch (error) {
-      setError(error.response.data.msg);
+      setError(error.response.data.message);
       setErrorCSS('error-message');
     }
   };
@@ -84,13 +84,13 @@ export default function UserAuthentication() {
         });
 
         connectSocket(response.data.token);
-        
+
       } catch (error) {
         setError('User created but failed to authorize. Try logging in.');
         setErrorCSS('error-message');
       }
     } catch (error) {
-      setError(error.response.data.msg);
+      setError(error.response.data.message);
       setErrorCSS('error-message');
     }
   };

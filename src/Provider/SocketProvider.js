@@ -92,6 +92,7 @@ export const SocketProvider = ({ url, children }) => {
         } else {
           setErrorSocket(null);
           console.log('User removed:', user_id);
+          disconnectSocket();
         }
       });
     } else {
