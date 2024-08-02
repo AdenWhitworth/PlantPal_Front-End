@@ -12,7 +12,7 @@ const client = axios.create({
 
 export default function UserAuthentication() {
   const navigate = useNavigate();
-  const { setToken, setUser } = useAuth();
+  const { setToken, setUser, user } = useAuth();
   const [isCurrentUser, setIsCurrentUser] = useState(true);
   const [loginBtnStyle, setLoginBtnStyle] = useState('userAuth-toggle-btn-selected');
   const [signUpBtnStyle, setSignUpBtnStyle] = useState('userAuth-toggle-btn');
@@ -22,7 +22,7 @@ export default function UserAuthentication() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('Error');
   const [errorCSS, setErrorCSS] = useState('error-message hidden');
-  const { sendAddUser, isConnected } = useSocket();
+  const { sendAddUser, isConnected, connectSocket } = useSocket();
 
   const handleSignInClick = async (e) => {
     e.preventDefault();
@@ -38,20 +38,29 @@ export default function UserAuthentication() {
         user_id: response.data.user.user_id,
       });
 
-      if (isConnected) {
-        sendAddUser(response.data.user.user_id);
-      } else {
-        console.error('Socket is not connected');
-      }
+      connectSocket(response.data.token);
 
-      navigate('/dashboard', {
-        replace: true,
-      });
+      
     } catch (error) {
       setError(error.response.data.msg);
       setErrorCSS('error-message');
     }
   };
+
+  useEffect(() => {
+    try {
+      if (isConnected && user) {
+        console.log("here", isConnected, user)
+        sendAddUser(user.user_id);
+        navigate('/dashboard', {
+          replace: true,
+        });
+      } 
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }, [isConnected, user]);
 
   const handleCreateClick = async (e) => {
     e.preventDefault();
@@ -74,15 +83,8 @@ export default function UserAuthentication() {
           user_id: response.data.user.user_id,
         });
 
-        if (isConnected) {
-          sendAddUser(response.data.user.user_id);
-        } else {
-          console.error('Socket is not connected');
-        }
-
-        navigate('/dashboard', {
-          replace: true,
-        });
+        connectSocket(response.data.token);
+        
       } catch (error) {
         setError('User created but failed to authorize. Try logging in.');
         setErrorCSS('error-message');

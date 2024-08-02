@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
-import { useAuth } from '../Provider/authProvider';
 
 const SocketContext = createContext();
 
@@ -10,9 +9,8 @@ export const SocketProvider = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState(null);
   const socketRef = useRef(null);
-  const { token } = useAuth();
 
-  const connectSocket = useCallback(() => {
+  const connectSocket = useCallback((token) => {
     if (socketRef.current) return;
 
     const socketInstance = io(url, {
@@ -63,7 +61,6 @@ export const SocketProvider = ({ url, children }) => {
   }, []);
 
   useEffect(() => {
-    connectSocket();
     return () => {
       disconnectSocket();
     };
