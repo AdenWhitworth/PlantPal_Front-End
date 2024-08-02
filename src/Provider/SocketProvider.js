@@ -1,122 +1,129 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
+import { useAuth } from '../Provider/authProvider';
 
 const SocketContext = createContext();
 
 export const useSocket = () => useContext(SocketContext);
 
-export const SocketProvider = ({ url, options, children }) => {
+export const SocketProvider = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorSocket, setErrorSocket] = useState(null);
   const socketRef = useRef(null);
+  const { token } = useAuth();
 
   const connectSocket = useCallback(() => {
-    if (socketRef.current) return; 
+    if (socketRef.current) return;
 
-    try {
-      const socketInstance = io(url, options);
-      socketRef.current = socketInstance;
+    const socketInstance = io(url, {
+      auth: {
+        token: token ? token : null,
+      },
+    });
 
-      socketInstance.on('connect', () => {
-        setIsConnected(true);
-        setError(null);
-        console.log('Socket connected', socketInstance.id);
-      });
+    socketRef.current = socketInstance;
 
-      socketInstance.on('disconnect', () => {
-        setIsConnected(false);
-        setError(null);
-        console.log('Connection Disconnected');
-      });
+    socketInstance.on('connect', () => {
+      setIsConnected(true);
+      setErrorSocket(null);
+      console.log('Socket connected', socketInstance.id);
+    });
 
-      socketInstance.on('connect_error', (err) => {
-        setError('Connection error');
-        console.error('Connection error:', err);
-      });
+    socketInstance.on('disconnect', () => {
+      setIsConnected(false);
+      setErrorSocket(null);
+      console.log('Socket disconnected');
+    });
 
-      socketInstance.on('error', (err) => {
-        setError('Socket error');
-        console.error('Socket error:', err);
-      });
+    socketInstance.on('connect_error', (err) => {
+      setErrorSocket('Connection error');
+      console.error('Connection error:', err);
+    });
 
-      socketInstance.on('shadowUpdate', (data) => {
-        setIsConnected(true);
-        setError(null);
-        console.log('Shadow Update - Thing Connected: ', data.shadow_connection);
-      });
+    socketInstance.on('error', (err) => {
+      setErrorSocket('Socket error');
+      console.error('Socket error:', err);
+    });
 
-    } catch (err) {
-      setError('Failed to initialize socket');
-      console.error('Failed to initialize socket:', err);
-    }
-  }, [url, options]);
+    socketInstance.on('shadowUpdate', (data) => {
+      setIsConnected(true);
+      setErrorSocket(null);
+      console.log('Shadow Update - Thing Connected:', data.shadow_connection);
+    });
+  }, [url]);
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
       socketRef.current.disconnect();
       socketRef.current = null;
+      setIsConnected(false);
+      setErrorSocket(null);
+      console.log('Socket disconnected manually');
     }
-    setIsConnected(false);
-    setError(null);
-    console.log('Socket disconnected manually');
   }, []);
 
   useEffect(() => {
     connectSocket();
-
     return () => {
       disconnectSocket();
     };
   }, [connectSocket, disconnectSocket]);
 
   const sendAddUser = useCallback((user_id) => {
-    try {
-      if (socketRef.current) {
-        socketRef.current.emit('addUser', user_id, (response) => {
-          if (response.error) {
-            setError('Add user error');
-            console.error('Add user error:', response.message);
-            return;
-          }
-
-          setError(null);
+    if (socketRef.current && isConnected) {
+      socketRef.current.emit('addUser', user_id, (response) => {
+        if (response.error) {
+          setErrorSocket('Add user error');
+          console.error('Add user error:', response.message);
+        } else {
+          setErrorSocket(null);
           console.log('User added:', user_id);
-        });
-      } else {
-        setError('Socket is not connected');
-        console.error('Socket is not connected');
-      }
-    } catch (err) {
-      setError('Failed to add user');
-      console.error('Failed to add user:', err);
+        }
+      });
+    } else {
+      setErrorSocket('Socket is not connected');
+      console.error('Socket is not connected');
     }
-  }, []);
+  }, [isConnected]);
 
   const sendRemoveUser = useCallback((user_id) => {
-    try {
-      if (socketRef.current) {
-        socketRef.current.emit('removeUser', user_id, (response) => {
-          if (response.error) {
-            setError('Remove user error');
-            console.error('Remove user error:', response.message);
-            return;
-          }
-
-          setError(null);
-          console.log('User Removed:', user_id);
-        });
-      } else {
-        setError('Socket is not connected');
-        console.error('Socket is not connected');
-      }
-    } catch (err) {
-      setError('Failed to remove user');
-      console.error('Failed to remove user:', err);
+    if (socketRef.current && isConnected) {
+      socketRef.current.emit('removeUser', user_id, (response) => {
+        if (response.error) {
+          setErrorSocket('Remove user error');
+          console.error('Remove user error:', response.message);
+        } else {
+          setErrorSocket(null);
+          console.log('User removed:', user_id);
+        }
+      });
+    } else {
+      setErrorSocket('Socket is not connected');
+      console.error('Socket is not connected');
     }
-  }, []);
+  }, [isConnected]);
+
+  const sendCheckSocket = useCallback((user_id) => {
+    if (socketRef.current && isConnected) {
+      socketRef.current.emit('checkSocket', user_id, (response) => {
+        if (response.error) {
+          setErrorSocket(response.message);
+          console.error('Check Socket Error:', response.message);
+          setIsConnected(false);
+        } else {
+          setErrorSocket(null);
+          console.log('Socket check returned current socket up to date for user:', user_id);
+        }
+      });
+    } else {
+      setErrorSocket('Socket is not connected');
+      setIsConnected(false);
+      console.error('Socket is not connected');
+    }
+  }, [isConnected]);
 
   return (
-    <SocketContext.Provider value={{ socket: socketRef.current, isConnected, error, sendAddUser, sendRemoveUser, connectSocket, disconnectSocket }}>
+    <SocketContext.Provider value={{ isConnected, errorSocket, sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket }}>
       {children}
     </SocketContext.Provider>
   );

@@ -3,6 +3,8 @@ import { createContext, useContext, useMemo, useReducer } from "react";
 
 const AuthContext = createContext();
 
+export const useAuth = () => useContext(AuthContext);
+
 const ACTIONS = {
   setToken: "setToken",
   clearToken: "clearToken",
@@ -43,7 +45,7 @@ const initialData = {
   user: null,
 };
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialData);
 
   const setToken = (newToken) => {
@@ -78,8 +80,3 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export default AuthProvider;

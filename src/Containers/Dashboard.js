@@ -25,7 +25,7 @@ export default function Dashboard() {
 
     const navigate = useNavigate();
     const { clearToken, token, user, setUser, clearUser } = useAuth();
-    const { sendRemoveUser } = useSocket();
+    const { sendRemoveUser, isConnected, sendCheckSocket } = useSocket();
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -51,7 +51,7 @@ export default function Dashboard() {
             try {
                 sendRemoveUser(user.user_id)
             } catch (error) {
-                return;
+                //return;
             }
             clearUser();
             clearToken();
@@ -96,7 +96,7 @@ export default function Dashboard() {
         try {
             sendRemoveUser(user.user_id)
         } catch (error) {
-            return;
+            console.log(error);
         }
         clearUser();
         clearToken();
@@ -104,7 +104,19 @@ export default function Dashboard() {
     };
 
     useEffect(() => {
-        if (user.user_id){
+        if (isConnected) {
+            try {
+                sendCheckSocket(user.user_id)
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            handleLogout();
+        }
+    }, [isConnected])
+
+    useEffect(() => {
+        if (typeof user !== "undefined"){
             fetchUserDevices();
         }
     }, [device]);
