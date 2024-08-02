@@ -8,6 +8,7 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState(null);
+  const [refresh, setRefresh] = useState(false);
   const socketRef = useRef(null);
 
   const connectSocket = useCallback((token) => {
@@ -43,10 +44,11 @@ export const SocketProvider = ({ url, children }) => {
       console.error('Socket error:', err);
     });
 
-    socketInstance.on('shadowUpdate', (data) => {
+    socketInstance.on('shadowUpdateConnection', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
       console.log('Shadow Update - Thing Connected:', data.shadow_connection);
+      setRefresh(true);
     });
   }, [url]);
 
@@ -121,7 +123,7 @@ export const SocketProvider = ({ url, children }) => {
   }, [isConnected]);
 
   return (
-    <SocketContext.Provider value={{ isConnected, errorSocket, sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket }}>
+    <SocketContext.Provider value={{ isConnected, errorSocket, refresh, setRefresh, sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket }}>
       {children}
     </SocketContext.Provider>
   );

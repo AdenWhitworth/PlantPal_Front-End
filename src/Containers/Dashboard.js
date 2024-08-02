@@ -25,7 +25,7 @@ export default function Dashboard() {
 
     const navigate = useNavigate();
     const { clearToken, token, user, setUser, clearUser } = useAuth();
-    const { sendRemoveUser, isConnected, sendCheckSocket } = useSocket();
+    const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh } = useSocket();
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -120,6 +120,13 @@ export default function Dashboard() {
             fetchUserDevices();
         }
     }, [device]);
+
+    useEffect(() => {
+        if (typeof user !== "undefined" && refresh === true){
+            fetchUserDevices();
+            setRefresh(false);
+        }
+    }, [refresh]);
     
     useEffect(() => {
         if(device.cat_num){

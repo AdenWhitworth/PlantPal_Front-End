@@ -363,8 +363,8 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     :
                     <div>
                         <h3>Connection</h3>
-                        <img src={device.connection_status? wifi: traingle} alt='Connection icon'></img>
-                        <h4>{device.connection_status? "Connected": "Missing"}</h4>
+                        <img src={device.shadow_connection? wifi : traingle} alt='Connection icon'></img>
+                        <h4>{device.shadow_connection? "Connected": "Missing"}</h4>
                         <h4>SSID: {device.wifi_ssid}</h4>
                         <button className='text-btn' onClick={handleChangeWifiClick}><span>Change Wifi?</span></button>
                     </div>
