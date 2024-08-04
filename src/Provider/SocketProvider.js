@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
+import { useAuth } from '../Provider/authProvider';
 
 const SocketContext = createContext();
 
@@ -9,15 +10,19 @@ export const SocketProvider = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState(null);
   const [refresh, setRefresh] = useState(false);
+  const [errorReconnect, setErrorReconnect] = useState(false);
   const socketRef = useRef(null);
+  const { token, user } = useAuth();
 
-  const connectSocket = useCallback((token) => {
+  const connectSocket = useCallback((passedToken) => {
     if (socketRef.current) return;
 
     const socketInstance = io(url, {
-      auth: {
-        token: token ? token : null,
-      },
+      auth: { token: passedToken },
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
     });
 
     socketRef.current = socketInstance;
@@ -26,6 +31,7 @@ export const SocketProvider = ({ url, children }) => {
       setIsConnected(true);
       setErrorSocket(null);
       console.log('Socket connected', socketInstance.id);
+      if (user) sendAddUser(user.user_id);
     });
 
     socketInstance.on('disconnect', () => {
@@ -36,12 +42,27 @@ export const SocketProvider = ({ url, children }) => {
 
     socketInstance.on('connect_error', (err) => {
       setErrorSocket('Connection error');
+      setErrorReconnect(true);
       console.error('Connection error:', err);
     });
 
     socketInstance.on('error', (err) => {
       setErrorSocket('Socket error');
+      setErrorReconnect(true);
       console.error('Socket error:', err);
+    });
+
+    socketInstance.on('reconnect_attempt', () => {
+      console.log('Attempting to reconnect...');
+    });
+
+    socketInstance.on('reconnect_error', (err) => {
+      console.error('Reconnection error:', err);
+    });
+
+    socketInstance.on('reconnect_failed', () => {
+      console.error('Reconnection failed');
+      setErrorReconnect(true);
     });
 
     socketInstance.on('shadowUpdateConnection', (data) => {
@@ -50,7 +71,7 @@ export const SocketProvider = ({ url, children }) => {
       console.log('Shadow Update - Thing Connected:', data.shadow_connection);
       setRefresh(true);
     });
-  }, [url]);
+  }, [url, user]);
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -63,13 +84,17 @@ export const SocketProvider = ({ url, children }) => {
   }, []);
 
   useEffect(() => {
+    if (token) {
+      connectSocket(token);
+    }
+
     return () => {
       disconnectSocket();
     };
-  }, [connectSocket, disconnectSocket]);
+  }, [connectSocket, disconnectSocket, token]);
 
   const sendAddUser = useCallback((user_id) => {
-    if (socketRef.current && isConnected) {
+    if (socketRef.current) {
       socketRef.current.emit('addUser', user_id, (response) => {
         if (response.error) {
           setErrorSocket('Add user error');
@@ -101,7 +126,7 @@ export const SocketProvider = ({ url, children }) => {
       setErrorSocket('Socket is not connected');
       console.error('Socket is not connected');
     }
-  }, [isConnected]);
+  }, [isConnected, disconnectSocket]);
 
   const sendCheckSocket = useCallback((user_id) => {
     if (socketRef.current && isConnected) {
@@ -123,8 +148,12 @@ export const SocketProvider = ({ url, children }) => {
   }, [isConnected]);
 
   return (
-    <SocketContext.Provider value={{ isConnected, errorSocket, refresh, setRefresh, sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket }}>
+    <SocketContext.Provider value={{
+      isConnected, errorSocket, refresh, errorReconnect, setErrorReconnect, setRefresh,
+      sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket
+    }}>
       {children}
     </SocketContext.Provider>
   );
 };
+

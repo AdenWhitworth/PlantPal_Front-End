@@ -30,37 +30,15 @@ export default function UserAuthentication() {
     try {
       const response = await client.post('/users/login', { email, password });
       setErrorCSS('error-message hidden');
-      setToken(response.data.token);
-      setUser({
-        firstName: response.data.user.first_name,
-        lastName: response.data.user.last_name,
-        email: response.data.user.email,
-        user_id: response.data.user.user_id,
-      });
-
-      connectSocket(response.data.token);
-
-      
+      const { token, user } = response.data;
+      setToken(token);
+      setUser(user);
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       setError(error.response.data.message);
       setErrorCSS('error-message');
     }
   };
-
-  useEffect(() => {
-    try {
-      if (isConnected && user) {
-        console.log("here", isConnected, user)
-        sendAddUser(user.user_id);
-        navigate('/dashboard', {
-          replace: true,
-        });
-      } 
-    } catch (error) {
-      console.log(error);
-    }
-    
-  }, [isConnected, user]);
 
   const handleCreateClick = async (e) => {
     e.preventDefault();

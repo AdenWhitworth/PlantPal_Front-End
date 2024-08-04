@@ -25,7 +25,7 @@ export default function Dashboard() {
 
     const navigate = useNavigate();
     const { clearToken, token, user, setUser, clearUser } = useAuth();
-    const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh } = useSocket();
+    const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh, errorReconnect, setErrorReconnect } = useSocket();
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -44,20 +44,12 @@ export default function Dashboard() {
 
     const fetchUserDevices = async () => {
         try {
-            const response = await client.get("/dashboard/userDevices");
-            setDevices(response.data.devices);
-            
+          const response = await client.get("/dashboard/userDevices");
+          setDevices(response.data.devices);
         } catch (error) {
-            try {
-                sendRemoveUser(user.user_id)
-            } catch (error) {
-                //return;
-            }
-            clearUser();
-            clearToken();
-            navigate("/auth", { replace: true });
+          handleLogout();
         }
-    }
+      };
 
     const handleRefreshClick = () => {
         fetchUserDevices();
@@ -65,21 +57,13 @@ export default function Dashboard() {
 
     const fethDeviceLogs = async () => {
         try {
-            const response = await client.get("/dashboard/deviceLogs", { params: {cat_num: device.cat_num}});
+            const response = await client.get("/dashboard/deviceLogs", { params: { cat_num: device.cat_num } });
             setDeviceLogs(response.data.deviceLogs);
             setLastLog(response.data.lastLog);
-            
         } catch (error) {
-            try {
-                sendRemoveUser(user.user_id)
-            } catch (error) {
-                return;
-            }
-            clearUser();
-            clearToken();
-            navigate("/auth", { replace: true });
+            handleLogout();
         }
-    }
+    };
 
     const formatRefreshDate = () => {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -94,9 +78,9 @@ export default function Dashboard() {
 
     const handleLogout = () => {
         try {
-            sendRemoveUser(user.user_id)
+          if (user) sendRemoveUser(user.user_id);
         } catch (error) {
-            console.log(error);
+          console.log(error);
         }
         clearUser();
         clearToken();
@@ -104,29 +88,27 @@ export default function Dashboard() {
     };
 
     useEffect(() => {
-        if (isConnected) {
-            try {
-                sendCheckSocket(user.user_id)
-            } catch (error) {
-                console.log(error);
-            }
+        if (!token || !user) {
+          navigate("/auth", { replace: true });
         } else {
+          sendCheckSocket(user.user_id);
+          fetchUserDevices();
+        }
+    }, [token, user]);
+
+    useEffect(() => {
+        if(errorReconnect){
+            setErrorReconnect(false);
             handleLogout();
         }
-    }, [isConnected])
+    }, [errorReconnect])
 
     useEffect(() => {
-        if (typeof user !== "undefined"){
-            fetchUserDevices();
+        if (isConnected && refresh) {
+          fetchUserDevices();
+          setRefresh(false);
         }
-    }, [device]);
-
-    useEffect(() => {
-        if (typeof user !== "undefined" && refresh === true){
-            fetchUserDevices();
-            setRefresh(false);
-        }
-    }, [refresh]);
+    }, [isConnected, refresh]);
     
     useEffect(() => {
         if(device.cat_num){
