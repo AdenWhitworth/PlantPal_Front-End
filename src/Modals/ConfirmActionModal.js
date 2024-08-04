@@ -33,6 +33,12 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
     const handleButtonClick = async () => {
         
         try {
+            if (device.pump_water && autoSwitch){
+                setError("Cannot switch to auto while waiting to pump water");
+                setErrorCSS('error-message');
+                return;
+            }
+
             await client.post("/dashboard/updateAuto", { device_id: device.device_id, automate: autoSwitch});
             setErrorCSS('error-message hidden');
             setConfirmAuto(false);

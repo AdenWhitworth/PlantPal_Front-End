@@ -460,7 +460,7 @@ li {
 }
 
 .error-message{
-    color: red;
+    color: red !important;
     margin: 0;
 }
 
@@ -762,6 +762,9 @@ li {
 }
 .manual img{
     height: 100%;
+}
+
+.curser{
     cursor: pointer;
 }
 

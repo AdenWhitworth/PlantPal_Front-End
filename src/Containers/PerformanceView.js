@@ -12,6 +12,7 @@ import traingle from "../Images/triangle-orange.svg";
 import wifi from "../Images/wifi-green.svg";
 import refresh from "../Images/refresh-gray.svg";
 import tap from "../Images/tap-green.svg";
+import tap_locked from "../Images/tap-gray.svg";
 import wifi_logo from '../Images/wifi-brown.svg';
 import lock from '../Images/lock-brown.svg';
 import time from '../Images/time-green.svg';
@@ -425,11 +426,15 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                             :
                             <div className='manual'>
                                 <div className='manual-tap'>
-                                    {device.pump_water? 
+                                    {device.pump_water ? (
                                         <img className='flip-image' src={time} alt='Time Icon'></img>
-                                        :
-                                        <img onClick={handleUpdatePumpWater} className='grow' src={tap} alt='Tap Icon'></img>
-                                    } 
+                                        ) : (
+                                        device.shadow_connection ? (
+                                            <img onClick={handleUpdatePumpWater} className='grow curser' src={tap} alt='Tap Icon'></img>
+                                        ) : (
+                                            <img src={tap_locked} alt='Tap Gray Icon'></img>
+                                        )
+                                    )}
                                 </div>
                                 <h4>Pump Water</h4>
                             </div>
