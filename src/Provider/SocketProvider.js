@@ -68,9 +68,17 @@ export const SocketProvider = ({ url, children }) => {
     socketInstance.on('shadowUpdateConnection', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Shadow Update - Thing Connected:', data.shadow_connection);
+      console.log('Shadow Update - Thing Connected:', data.device.pump_water);
       setRefresh(true);
     });
+
+    socketInstance.on('shadowUpdatePumpWater', (data) => {
+      setIsConnected(true);
+      setErrorSocket(null);
+      console.log('Shadow Update - Water Pumped:', data.shadow_pump);
+      setRefresh(true);
+    });
+
   }, [url, user]);
 
   const disconnectSocket = useCallback(() => {

@@ -14,6 +14,7 @@ import refresh from "../Images/refresh-gray.svg";
 import tap from "../Images/tap-green.svg";
 import wifi_logo from '../Images/wifi-brown.svg';
 import lock from '../Images/lock-brown.svg';
+import time from '../Images/time-green.svg';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 import { BarChart  } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
@@ -21,6 +22,7 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {useAuth} from '../Provider/authProvider';
+import { useSocket } from '../Provider/SocketProvider';
 import axios from "axios";
 
 const IOSSwitch = styled((props) => (
@@ -109,6 +111,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [filteredDevices, setFilteredDevices] = useState([]);
     const [waterOccurance, setWaterOccurance] = useState([]);
     const { token } = useAuth();
+    const { setRefresh} = useSocket();
     
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -186,6 +189,16 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
         } catch (error) {
             setError(error.response.data.msg);
             setErrorCSS('error-message');
+        }  
+    }
+
+    const handleUpdatePumpWater = async (e) => {
+        e.preventDefault();
+        try {
+            await client.post("/dashboard/updatePumpWater", { device_id: device.device_id, pump_water: true});
+            setRefresh(true);
+        } catch (error) {
+            console.log(error);
         }  
     }
 
@@ -412,7 +425,11 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                             :
                             <div className='manual'>
                                 <div className='manual-tap'>
-                                    <img className='grow' src={tap} alt='Tap Icon'></img>
+                                    {device.pump_water? 
+                                        <img className='flip-image' src={time} alt='Time Icon'></img>
+                                        :
+                                        <img onClick={handleUpdatePumpWater} className='grow' src={tap} alt='Tap Icon'></img>
+                                    } 
                                 </div>
                                 <h4>Pump Water</h4>
                             </div>
