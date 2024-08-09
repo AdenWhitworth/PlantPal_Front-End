@@ -25,6 +25,7 @@ import Switch from '@mui/material/Switch';
 import {useAuth} from '../Provider/authProvider';
 import { useSocket } from '../Provider/SocketProvider';
 import axios from "axios";
+import useBluetooth from '../Hooks/useBluetooth';
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -113,6 +114,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const [waterOccurance, setWaterOccurance] = useState([]);
     const { token } = useAuth();
     const { setRefresh} = useSocket();
+    const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
     
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -245,6 +247,8 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
         setFilteredDevices(devices.filter((device) => device.location.toLowerCase().includes(searchTerm.toLowerCase()) || device.cat_num.toLowerCase().includes(searchTerm.toLowerCase())));
     }
+
+
 
     useEffect(() => {
         setFilteredDevices(devices);
