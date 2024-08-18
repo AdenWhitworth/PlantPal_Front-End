@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDevice } from '../Provider/DeviceProvider';
 
 const useBluetooth = () => {
   const [bleDevice, setBleDevice] = useState(null);
@@ -6,23 +7,26 @@ const useBluetooth = () => {
   const [service, setService] = useState(null);
   const [characteristic, setCharacteristic] = useState(null);
   const [bleStatus, setBleStatus] = useState('');
+  const { device } = useDevice();
 
   const connectBluetooth = async () => {
     try {
         setBleStatus('Requesting Bluetooth device...');
-        const device = await navigator.bluetooth.requestDevice({
-            filters: [{ name: 'ESP32_BLE' }],
-            optionalServices: ['0000ffe0-0000-1000-8000-00805f9b34fb']
+        const connectDevice = await navigator.bluetooth.requestDevice({
+            filters: [{ name: device.cat_num }],
+            optionalServices: [process.env.REACT_APP_BLE_SERVICE_UUID]
         });
 
-        setBleStatus('Connecting to Bluetooth device...');
-        const server = await device.gatt.connect();
-        setBleStatus('Getting primary service...');
-        const service = await server.getPrimaryService('0000ffe0-0000-1000-8000-00805f9b34fb');
-        setBleStatus('Getting characteristic...');
-        const characteristic = await service.getCharacteristic('0000ffe1-0000-1000-8000-00805f9b34fb');
+        connectDevice.addEventListener('gattserverdisconnected', onDisconnected);
 
-        setBleDevice(bleDevice);
+        setBleStatus('Connecting to Bluetooth device...');
+        const server = await connectDevice.gatt.connect();
+        setBleStatus('Getting primary service...');
+        const service = await server.getPrimaryService(process.env.REACT_APP_BLE_SERVICE_UUID);
+        setBleStatus('Getting characteristic...');
+        const characteristic = await service.getCharacteristic(process.env.REACT_APP_BLE_CHARACTERISTIC_UUID);
+
+        setBleDevice(connectDevice);
         setServer(server);
         setService(service);
         setCharacteristic(characteristic);
@@ -33,13 +37,25 @@ const useBluetooth = () => {
     }
   };
 
-  const sendCredentials = async (ssid, password) => {
+  const onDisconnected = () => {
+    setBleStatus('Bluetooth device disconnected');
+    cleanUpConnection();
+  };
+
+  const cleanUpConnection = () => {
+    setServer(null);
+    setService(null);
+    setCharacteristic(null);
+    setBleDevice(null);
+  };
+
+  const sendCredentials = async (wifi_ssid, wifi_password) => {
     try {
       if (!characteristic) throw new Error('No characteristic found');
 
       const encoder = new TextEncoder();
-      await characteristic.writeValue(encoder.encode(`SSID:${ssid}\n`));
-      await characteristic.writeValue(encoder.encode(`PASS:${password}\n`));
+      await characteristic.writeValue(encoder.encode(`SSID:${wifi_ssid}\n`));
+      await characteristic.writeValue(encoder.encode(`PASS:${wifi_password}\n`));
       setBleStatus('Credentials sent, waiting for response...');
 
       characteristic.addEventListener('characteristicvaluechanged', (event) => {
@@ -51,8 +67,18 @@ const useBluetooth = () => {
     } catch (error) {
       console.error('Error sending WiFi credentials:', error);
       setBleStatus('Failed to send WiFi credentials');
+      throw new Error('Error sending WiFi credentials');
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (bleDevice) {
+        bleDevice.removeEventListener('gattserverdisconnected', onDisconnected);
+      }
+      cleanUpConnection();
+    };
+  }, [bleDevice]);
 
   return { connectBluetooth, sendCredentials, bleStatus, bleDevice, server, service };
 };

@@ -178,14 +178,21 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     }
 
     const handleChangeWifiClick = () => {
-        setUpdateWifiToggle(true);
+        connectBluetooth();
     }
+
+    useEffect(() => {
+        if (bleDevice){
+            setUpdateWifiToggle(true);
+        }
+    },[bleDevice]);
 
     const handleUpdateWifi = async (e) => {
         e.preventDefault();
 
         try {
             await client.post("/dashboard/updateWifi", { device_id: device.device_id, wifi_ssid: wifiSSID, wifi_password: wifiPassword});
+            sendCredentials(wifiSSID,wifiPassword);
             setErrorCSS('error-message hidden');
             document.getElementById("update-wifi").reset();
             handleRefreshClick();
@@ -381,8 +388,8 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     :
                     <div>
                         <h3>Connection</h3>
-                        <img src={device.shadow_connection? wifi : traingle} alt='Connection icon'></img>
-                        <h4>{device.shadow_connection? "Connected": "Missing"}</h4>
+                        <img src={device.presence_connection? wifi : traingle} alt='Connection icon'></img>
+                        <h4>{device.presence_connection? "Connected": "Missing"}</h4>
                         <h4>SSID: {device.wifi_ssid}</h4>
                         <button className='text-btn' onClick={handleChangeWifiClick}><span>Change Wifi?</span></button>
                     </div>

@@ -6,9 +6,10 @@ import location from '../Images/location-brown.svg';
 import tag from '../Images/tag-brown.svg';
 import plus_circle from '../Images/plus-circle-gray.svg';
 import "../App.css";
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useAuth} from '../Provider/AuthProvider';
 import axios from "axios";
+import useBluetooth from '../Hooks/useBluetooth';
 
 export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick, setDevice}) {
 
@@ -18,7 +19,7 @@ export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, se
     const [wifiPassword, setWifiPassword] = useState('');
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
-
+    const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
     const { token } = useAuth();
 
     const client = axios.create({
@@ -34,21 +35,34 @@ export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, se
         e.preventDefault();
         
         try {
+            connectBluetooth();
+        } catch (error) {
+            setError(error.response.data.message);
+            setErrorCSS('error-message');
+        }
+    }
+
+    const handleNewConnection = async () => {
+        try {
             const newDevice = await client.post("/dashboard/addDevice", { location: deviceLocation, cat_num: assetNumber, wifi_ssid: wifiSSID, wifi_password: wifiPassword });
-            
+            sendCredentials();
             setDevice(newDevice.data.newDevice);
             setErrorCSS('error-message hidden');
             document.getElementById("new-device").reset();
             setConnectDeviceToggle(true);
             setAddDeviceToggle(false);
             setSettingsToggle(false);
-            
-
         } catch (error) {
             setError(error.response.data.message);
             setErrorCSS('error-message');
-        }
+        } 
     }
+
+    useEffect(() => {
+        if (bleDevice){
+            handleNewConnection();
+        }
+    },[bleDevice]);
 
     return (
         <form id="new-device" className="new-device-section-2" onSubmit={handleConnectClick}>
