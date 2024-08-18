@@ -5,23 +5,26 @@ import Dashboard from  './Containers/Dashboard';
 import React from 'react';
 import PrivateRoute from './Routes/PrivateRoute';
 import { Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './Provider/authProvider';
+import { AuthProvider } from './Provider/AuthProvider';
 import { SocketProvider } from './Provider/SocketProvider';
+import { DeviceProvider } from './Provider/DeviceProvider';
 
 function App() {
   
   return (
 
     <div className="App">
-      <AuthProvider>
-        <SocketProvider url={process.env.REACT_APP_BASE_URL}>
-          <Routes>
-            <Route path='/' element={<Landing></Landing>}></Route>
-            <Route path='/auth' element={<UserAuthentication></UserAuthentication>}></Route>
-            <Route path='/dashboard' element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}></Route>
-          </Routes>
-        </SocketProvider>
-      </AuthProvider>
+      <DeviceProvider>
+        <AuthProvider>
+          <SocketProvider url={process.env.REACT_APP_BASE_URL}>
+            <Routes>
+              <Route path='/' element={<Landing></Landing>}></Route>
+              <Route path='/auth' element={<UserAuthentication></UserAuthentication>}></Route>
+              <Route path='/dashboard' element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}></Route>
+            </Routes>
+          </SocketProvider>
+        </AuthProvider>
+      </DeviceProvider>
     </div>
 
   );

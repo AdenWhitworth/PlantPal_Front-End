@@ -22,10 +22,11 @@ import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import {useAuth} from '../Provider/authProvider';
+import {useAuth} from '../Provider/AuthProvider';
 import { useSocket } from '../Provider/SocketProvider';
 import axios from "axios";
 import useBluetooth from '../Hooks/useBluetooth';
+import { useDevice } from '../Provider/DeviceProvider';
 
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -94,7 +95,7 @@ const chartSetting = {
   },
 };
 
-export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, setConnectDeviceToggle, deviceLogs, connectDeviceToggle, autoSwitch, setAutoSwitch, setConfirmAuto}) {
+export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, handlePlantPalClick, handleRefreshClick, handleLogout, settingsToggle, setConnectDeviceToggle, connectDeviceToggle, autoSwitch, setAutoSwitch, setConfirmAuto}) {
 
     const [moistureLevel, setMoistureLevel] = useState(0);
     const [waterStatus, setWaterStatus] = useState("");
@@ -115,6 +116,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const { token } = useAuth();
     const { setRefresh} = useSocket();
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
+    const { devices, lastLog, device, setDevice, refreshDate, deviceLogs } = useDevice();
     
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -247,9 +249,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
 
         setFilteredDevices(devices.filter((device) => device.location.toLowerCase().includes(searchTerm.toLowerCase()) || device.cat_num.toLowerCase().includes(searchTerm.toLowerCase())));
     }
-
-
-
+    
     useEffect(() => {
         setFilteredDevices(devices);
     },[devices]);

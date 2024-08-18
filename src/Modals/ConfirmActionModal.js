@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import Modal from '../Components/Modal';
 import PropTypes from 'prop-types';
-import { useAuth } from "../Provider/authProvider";
+import { useAuth } from "../Provider/AuthProvider";
 import axios from "axios";
+import { useDevice } from '../Provider/DeviceProvider';
 
-export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, setConfirmAuto, autoSwitch, device}) {
+export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, setConfirmAuto, autoSwitch}) {
     
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
     const { token } = useAuth();
+    const { device } = useDevice();
+
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -44,12 +47,9 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
             setConfirmAuto(false);
             
         } catch (error) {
-            setError(error.response.data.msg);
+            setError(error.response.data.message);
             setErrorCSS('error-message');
         } 
-
-        
-        
     }
 
     return (

@@ -7,7 +7,7 @@ import tag from '../Images/tag-brown.svg';
 import plus_circle from '../Images/plus-circle-gray.svg';
 import "../App.css";
 import React, {useState} from 'react';
-import {useAuth} from '../Provider/authProvider';
+import {useAuth} from '../Provider/AuthProvider';
 import axios from "axios";
 
 export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick, setDevice}) {

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
-import { useAuth } from '../Provider/authProvider';
+import { useAuth } from './AuthProvider';
 
 const SocketContext = createContext();
 
@@ -65,10 +65,10 @@ export const SocketProvider = ({ url, children }) => {
       setErrorReconnect(true);
     });
 
-    socketInstance.on('shadowUpdateConnection', (data) => {
+    socketInstance.on('presenceUpdateConnection', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Shadow Update - Thing Connected:', data.device.pump_water);
+      console.log('Presence Update - Thing Connected:', data.presence_connection);
       setRefresh(true);
     });
 
@@ -76,6 +76,13 @@ export const SocketProvider = ({ url, children }) => {
       setIsConnected(true);
       setErrorSocket(null);
       console.log('Shadow Update - Water Pumped:', data.shadow_pump);
+      setRefresh(true);
+    });
+
+    socketInstance.on('shadowUpdateAuto', (data) => {
+      setIsConnected(true);
+      setErrorSocket(null);
+      console.log('Shadow Update - Auto Toggled:', data.shadow_auto);
       setRefresh(true);
     });
 

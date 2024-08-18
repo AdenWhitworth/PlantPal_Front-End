@@ -9,8 +9,13 @@ import plus from "../Images/plus-circle-green.svg";
 import refresh from "../Images/refresh-gray.svg";
 import Account from "./Account";
 import AddDevice from './AddDevice';
+import { useDevice } from '../Provider/DeviceProvider';
+import {useAuth} from '../Provider/AuthProvider';
 
-export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, devices, lastLog, device, setDevice, refreshDate, handleLogout, settingsToggle, connectDeviceToggle, user, setUser}) {
+export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, handleLogout, settingsToggle, connectDeviceToggle}) {
+
+    const { devices, device, setDevice, refreshDate } = useDevice();
+    const { user, setUser } = useAuth();
 
     const handleAddDeviceClick = () => {
         setAddDeviceToggle(true);

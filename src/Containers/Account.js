@@ -7,7 +7,7 @@ import tag from '../Images/tag-brown.svg';
 import gear from '../Images/gear-grey.svg';
 import "../App.css";
 import React, {useState} from 'react';
-import {useAuth} from '../Provider/authProvider';
+import {useAuth} from '../Provider/AuthProvider';
 import axios from "axios";
 
 export default function Account({setUser, user}) {
