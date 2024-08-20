@@ -6,11 +6,11 @@ import user_circle from '../Images/user-circle-brown.svg';
 import tag from '../Images/tag-brown.svg';
 import gear from '../Images/gear-grey.svg';
 import "../App.css";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuth} from '../Provider/AuthProvider';
 import axios from "axios";
 
-export default function Account({setUser, user}) {
+export default function Account() {
 
     const [editToggle, setEditToggle] = useState(false);
     const [dissableInput, setDissableInput] = useState(true);
@@ -19,7 +19,7 @@ export default function Account({setUser, user}) {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
-    const { token } = useAuth();
+    const { token, user, setUser } = useAuth();
 
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -30,14 +30,18 @@ export default function Account({setUser, user}) {
         
     });
 
+    useEffect(() => {
+        console.log(user);
+    },[user])
+
     const handleSaveClick = async () => {
         
         try {
             const response = await client.post("/users/updateUser", { email: email, first_name: firstName, last_name: lastName});
             setErrorCSS('error-message hidden');
             setUser({
-                firstName: response.data.user.first_name,
-                lastName: response.data.user.last_name,
+                first_name: response.data.user.first_name,
+                last_name: response.data.user.last_name,
                 email: response.data.user.email,
                 user_id: response.data.user_id
             });
@@ -77,8 +81,8 @@ export default function Account({setUser, user}) {
                 <h1 className="account-logo-txt">Account</h1>
             </div>
             
-            <InputField onChange={(e) => setFirstName(e.target.value)} inputImg={user_circle} isRequired={true} type='text' placeholder={editToggle? "First Name" : user.firstName} isSpellCheck={false} setWidth={'60%'} isDisabled={dissableInput} isPrimaryStyle={editToggle}></InputField>
-            <InputField onChange={(e) => setLastName(e.target.value)} inputImg={tag} isRequired={true} type='text' placeholder={editToggle? "Last Name" : user.lastName} isSpellCheck={false} setWidth={'60%'} isDisabled={dissableInput} isPrimaryStyle={editToggle}></InputField>
+            <InputField onChange={(e) => setFirstName(e.target.value)} inputImg={user_circle} isRequired={true} type='text' placeholder={editToggle? "First Name" : user.first_name} isSpellCheck={false} setWidth={'60%'} isDisabled={dissableInput} isPrimaryStyle={editToggle}></InputField>
+            <InputField onChange={(e) => setLastName(e.target.value)} inputImg={tag} isRequired={true} type='text' placeholder={editToggle? "Last Name" : user.last_name} isSpellCheck={false} setWidth={'60%'} isDisabled={dissableInput} isPrimaryStyle={editToggle}></InputField>
             <InputField onChange={(e) => setEmail(e.target.value)} inputImg={mail} isRequired={true} type='email' placeholder={editToggle? "Email" :user.email} isSpellCheck={false} setWidth={'60%'} isDisabled={dissableInput} isPrimaryStyle={editToggle}></InputField>
             
             <div className='account-section-2-btns'>

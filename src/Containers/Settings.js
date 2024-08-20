@@ -15,7 +15,6 @@ import {useAuth} from '../Provider/AuthProvider';
 export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, handleLogout, settingsToggle, connectDeviceToggle}) {
 
     const { devices, device, setDevice, refreshDate } = useDevice();
-    const { user, setUser } = useAuth();
 
     const handleAddDeviceClick = () => {
         setAddDeviceToggle(true);
@@ -66,7 +65,7 @@ export default function Settings({setSettingsToggle, addDeviceToggel, setAddDevi
 
             <div className='dashboard-setting'>
                 
-                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick} setDevice={setDevice}></AddDevice>:<Account setUser={setUser} user={user}></Account>}
+                {addDeviceToggel? <AddDevice setConnectDeviceToggle={setConnectDeviceToggle} setSettingsToggle={setSettingsToggle} setAddDeviceToggle={setAddDeviceToggle} handleRefreshClick={handleRefreshClick} setDevice={setDevice}></AddDevice>:<Account></Account>}
 
             </div>
 
