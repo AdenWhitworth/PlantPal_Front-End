@@ -324,7 +324,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                     
                     <ul className='device-list'>
                         
-                        { filteredDevices.map((filteredDevices, index) => <DeviceItem key={filteredDevices.device_id} devices={filteredDevices} index={index} setDevice={setDevice} device={device} deviceShadow={deviceShadow} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
+                        { filteredDevices.map((filteredDevices, index) => <DeviceItem key={filteredDevices.device_id} devices={filteredDevices} index={index} setDevice={setDevice} device={device} setAddDeviceToggle={setAddDeviceToggle} setSettingsToggle={setSettingsToggle} from="Performance" settingsToggle={settingsToggle} connectDeviceToggle={connectDeviceToggle}></DeviceItem>)}
 
                     </ul>
                     
