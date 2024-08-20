@@ -10,7 +10,7 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
     const { token } = useAuth();
-    const { device } = useDevice();
+    const { device, deviceShadow } = useDevice();
 
 
     const client = axios.create({
@@ -36,7 +36,7 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
     const handleButtonClick = async () => {
         
         try {
-            if (device.pump_water && autoSwitch){
+            if (deviceShadow.state.reported.pump || deviceShadow.state.desired.pump && autoSwitch){
                 setError("Cannot switch to auto while waiting to pump water");
                 setErrorCSS('error-message');
                 return;

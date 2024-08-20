@@ -116,7 +116,7 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
     const { token } = useAuth();
     const { setRefresh} = useSocket();
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
-    const { devices, lastLog, device, setDevice, refreshDate, deviceLogs } = useDevice();
+    const { devices, lastLog, device, setDevice, refreshDate, deviceLogs, deviceShadow } = useDevice();
     
     const client = axios.create({
         baseURL: process.env.REACT_APP_BASE_URL,
@@ -437,15 +437,19 @@ export default function PerformanceView({setSettingsToggle, setAddDeviceToggle, 
                             :
                             <div className='manual'>
                                 <div className='manual-tap'>
-                                    {device.pump_water ? (
-                                        <img className='flip-image' src={time} alt='Time Icon'></img>
-                                        ) : (
-                                        device.shadow_connection ? (
+                                    {deviceShadow?.state?.desired?.pump === false && deviceShadow?.state?.reported?.pump === false ?  (
+                                        device.presence_connection ? (
                                             <img onClick={handleUpdatePumpWater} className='grow curser' src={tap} alt='Tap Icon'></img>
-                                        ) : (
+                                            ) : (
                                             <img src={tap_locked} alt='Tap Gray Icon'></img>
+                                        ))
+                                        :
+                                        ( deviceShadow?.state?.desired?.pump === true && deviceShadow?.state?.reported?.pump === false ? (
+                                            <img className='flip-image' src={time} alt='Time Icon'></img>)
+                                            :
+                                            (<></>)
                                         )
-                                    )}
+                                    }
                                 </div>
                                 <h4>Pump Water</h4>
                             </div>
