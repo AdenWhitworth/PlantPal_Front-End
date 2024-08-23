@@ -1,13 +1,13 @@
-import Button from '../Components/Button';
-import InputField from '../Components/InputField';
-import mail from '../Images/email-brown.svg';
-import x_circle from '../Images/x-circle-black.svg';
-import user_circle from '../Images/user-circle-brown.svg';
-import tag from '../Images/tag-brown.svg';
-import gear from '../Images/gear-grey.svg';
-import "../App.css";
+import Button from '../../Components/Button';
+import InputField from '../../Components/InputField';
+import mail from '../../Images/email-brown.svg';
+import x_circle from '../../Images/x-circle-black.svg';
+import user_circle from '../../Images/user-circle-brown.svg';
+import tag from '../../Images/tag-brown.svg';
+import gear from '../../Images/gear-grey.svg';
+import "../../App.css";
 import React, {useEffect, useState} from 'react';
-import {useAuth} from '../Provider/AuthProvider';
+import {useAuth} from '../../Provider/AuthProvider';
 import axios from "axios";
 
 export default function Account() {

@@ -36,7 +36,6 @@ export const useDeviceData = (handleLogout) => {
         try {
             const response = await client.get("/dashboard/deviceShadow", { params: { thingName: device.thing_name } });
             setDeviceShadow(response.data.deviceShadow);
-            console.log(response.data.deviceShadow)
         } catch (error) {
             handleLogout();
         }

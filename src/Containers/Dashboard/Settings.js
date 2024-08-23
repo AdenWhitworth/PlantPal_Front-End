@@ -1,16 +1,16 @@
 import React from 'react';
-import plantpal_logo from "../Images/PlantPal Logo.svg";
-import gear from "../Images/gear-grey.svg";
-import exit from "../Images/exit-grey.svg";
-import DeviceItem from "../Components/DeviceItem";
-import InputField from "../Components/InputField";
-import glass from "../Images/glass-brown.svg";
-import plus from "../Images/plus-circle-green.svg";
-import refresh from "../Images/refresh-gray.svg";
+import plantpal_logo from "../../Images/PlantPal Logo.svg";
+import gear from "../../Images/gear-grey.svg";
+import exit from "../../Images/exit-grey.svg";
+import DeviceItem from "./DeviceItem";
+import InputField from "../../Components/InputField";
+import glass from "../../Images/glass-brown.svg";
+import plus from "../../Images/plus-circle-green.svg";
+import refresh from "../../Images/refresh-gray.svg";
 import Account from "./Account";
 import AddDevice from './AddDevice';
-import { useDevice } from '../Provider/DeviceProvider';
-import {useAuth} from '../Provider/AuthProvider';
+import { useDevice } from '../../Provider/DeviceProvider';
+import {useAuth} from '../../Provider/AuthProvider';
 
 export default function Settings({setSettingsToggle, addDeviceToggel, setAddDeviceToggle, setConnectDeviceToggle, handlePlantPalClick, handleRefreshClick, handleLogout, settingsToggle, connectDeviceToggle}) {
 

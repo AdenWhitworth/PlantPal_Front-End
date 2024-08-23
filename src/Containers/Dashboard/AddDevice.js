@@ -1,15 +1,15 @@
-import Button from '../Components/Button';
-import InputField from '../Components/InputField';
-import wifi from '../Images/wifi-brown.svg';
-import lock from '../Images/lock-brown.svg';
-import location from '../Images/location-brown.svg';
-import tag from '../Images/tag-brown.svg';
-import plus_circle from '../Images/plus-circle-gray.svg';
-import "../App.css";
+import Button from '../../Components/Button';
+import InputField from '../../Components/InputField';
+import wifi from '../../Images/wifi-brown.svg';
+import lock from '../../Images/lock-brown.svg';
+import location from '../../Images/location-brown.svg';
+import tag from '../../Images/tag-brown.svg';
+import plus_circle from '../../Images/plus-circle-gray.svg';
+import "../../App.css";
 import React, {useState, useEffect} from 'react';
-import {useAuth} from '../Provider/AuthProvider';
+import {useAuth} from '../../Provider/AuthProvider';
 import axios from "axios";
-import useBluetooth from '../Hooks/useBluetooth';
+import useBluetooth from '../../Hooks/useBluetooth';
 
 export default function AddDevice({setConnectDeviceToggle, setSettingsToggle, setAddDeviceToggle, handleRefreshClick, setDevice}) {
 
