@@ -8,10 +8,10 @@ import plantpal_logo from '../Images/PlantPal Logo.svg';
 import "../App.css";
 import React from 'react';
 
-export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName}) {
+export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName, error, errorCSS}) {
 
     return (
-        <div className="userAuth-section-2">
+        <form className="userAuth-section-2" onSubmit={handleCreateClick}>
                     
             <div className='userAuth-logo'>
                 <img className="userAuth-logo-img grow" src={plantpal_logo} alt="PlantPal auth logo" onClick={HandleReturnHome}></img>
@@ -25,8 +25,9 @@ export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, s
             
             <div className='userAuth-section-2-btns'>
                 <button className='text-btn hidden'><span>Forgot Password?</span></button>
-                <Button children='Create' onClick={handleCreateClick} isPrimaryStyle={false} ></Button>
+                <Button children='Create' type='submit' isPrimaryStyle={false} ></Button>
             </div>
-        </div>
+            <h4 className={errorCSS}>{error}</h4>
+        </form>
     );
 }

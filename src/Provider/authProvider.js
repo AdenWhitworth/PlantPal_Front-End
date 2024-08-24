@@ -1,65 +1,65 @@
 import axios from "axios";
-import { createContext, useContext, useMemo, useReducer } from "react";
+import { createContext, useContext, useMemo, useReducer, useEffect } from "react";
 
 const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 const ACTIONS = {
   setToken: "setToken",
   clearToken: "clearToken",
+  setUser: "setUser",
+  clearUser: "clearUser",
 };
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.setToken:
-      axios.defaults.headers.common["Authorization"] = "Bearer " + action.payload;
       localStorage.setItem("token", action.payload);
-
+      axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload}`;
       return { ...state, token: action.payload };
-
     case ACTIONS.clearToken:
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
-
       return { ...state, token: null };
-
+    case ACTIONS.setUser:
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      return { ...state, user: action.payload };
+    case ACTIONS.clearUser:
+      localStorage.removeItem("user");
+      return { ...state, user: null };
     default:
-      console.error(
-        `You passed an action.type: ${action.type} which doesn't exist`
-      );
+      console.error(`Unhandled action type: ${action.type}`);
+      return state;
   }
 };
 
 const initialData = {
   token: localStorage.getItem("token"),
+  user: JSON.parse(localStorage.getItem("user")),
 };
 
-const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialData);
 
-  const setToken = (newToken) => {
-    dispatch({ type: ACTIONS.setToken, payload: newToken });
-  };
+  const setToken = (newToken) => dispatch({ type: ACTIONS.setToken, payload: newToken });
+  const clearToken = () => dispatch({ type: ACTIONS.clearToken });
+  const setUser = (userData) => dispatch({ type: ACTIONS.setUser, payload: userData });
+  const clearUser = () => dispatch({ type: ACTIONS.clearUser });
 
-  const clearToken = () => {
-    dispatch({ type: ACTIONS.clearToken });
-  };
+  const contextValue = useMemo(() => ({
+    ...state, setToken, clearToken, setUser, clearUser,
+  }), [state]);
 
-  const contextValue = useMemo(
-    () => ({
-      ...state,
-      setToken,
-      clearToken,
-    }),
-    [state]
-  );
+  useEffect(() => {
+    if (state.token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+    }
+  }, [state.token]);
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export default AuthProvider;

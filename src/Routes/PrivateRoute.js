@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../Provider/authProvider';
+import { useAuth } from '../Provider/AuthProvider';
 
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();

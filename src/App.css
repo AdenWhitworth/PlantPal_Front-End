@@ -377,6 +377,38 @@ li {
     max-height: 50%;
 }
 
+.inputField-locked{
+    height: 8vh;
+    position: relative;
+}
+
+.inputField-locked input{
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    border: 4px solid #C0C0C0;
+    background: transparent;
+    padding-left: 15%;
+    color: #9A6735;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 15px;
+    font-size: 18px;
+    
+}
+
+.inputField-locked input::placeholder {
+    color: #9A6735;
+    opacity: 1;
+}
+  
+.inputField-locked input::-ms-input-placeholder {
+    color: #9A6735;
+}
+
+.inputField-locked input:focus {
+    outline: none;
+}
+
 .userAuth-logo{
     display: flex;
     flex-direction: column;
@@ -415,6 +447,10 @@ li {
     font-family: inherit;
 }
 
+.padded{
+    padding-top: 5%;
+}
+
 .text-btn span{
     cursor: pointer;
 }
@@ -424,7 +460,8 @@ li {
 }
 
 .error-message{
-    color: red;
+    color: red !important;
+    margin: 0;
 }
 
 /* Dashboard */
@@ -514,6 +551,16 @@ li {
     cursor: pointer;
 }
 
+.refresh{
+    height: 40px;
+    cursor: pointer;
+}
+
+.last-refresh{
+    color: #C0C0C0;
+    font-weight: bold;
+}
+
 .dashboard-menu{
     background-color: #FFFFFF;
     grid-area: menu;
@@ -563,6 +610,10 @@ li {
     padding-right: 15%;
 }
 
+.device-identifier{
+    cursor: pointer;
+}
+
 .selected{
     background-color: #E6F0DC;
     margin-left: 10%;
@@ -594,6 +645,17 @@ li {
     grid-area: moisture;
     display: flex;
     flex-direction: column;
+}
+
+.show-moisture{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.start-moisture{
+    text-align: center;
 }
 
 .dashboard-moisture h3{
@@ -630,6 +692,12 @@ li {
     margin-bottom: 2%;
 }
 
+.update-wifi{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .dashboard-status{
     background-color: #FFFFFF;
     grid-area: status;
@@ -651,7 +719,12 @@ li {
     margin-right: 5%;
 }
 
-.status-indicator h3{
+.good-water{
+    font-weight: bold;
+    color: #0C9B05;
+}
+
+.bad-water{
     font-weight: bold;
     color: #E81B00;
 }
@@ -663,24 +736,45 @@ li {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
+}
+
+.auto-status{
+    flex: 1;
+    width: 100%;
 }
 
 .manual{
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
+.manual h4{
+    padding: 0;
+    margin: 0;
+}
+
+.manual-tap{
+    height: 100px;
+    margin-top: 3%;
+    margin-bottom: 3%;
+}
 .manual img{
-    height: 40%;
-    padding-bottom: 20%;
+    height: 100%;
+}
+
+.curser{
+    cursor: pointer;
 }
 
 .auto{
     flex-grow: 1;
     display: flex;
     width: 90%;
+    height: 80%;
     overflow-x: auto;
+    margin-left: 5%;
 }
 
 .dashboard-setting{
@@ -701,6 +795,19 @@ li {
     align-items: center;
     width: 100%;
     height: 100%;
+    position: relative;
+}
+
+.account-close{
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    cursor: pointer;
+}
+
+.account-close img{
+    width: 40px;
+    height: 40px;
 }
 
 .account-section-2-btns{
@@ -741,6 +848,7 @@ li {
     color: #C0C0C0;
     text-align: center;
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .modal{
