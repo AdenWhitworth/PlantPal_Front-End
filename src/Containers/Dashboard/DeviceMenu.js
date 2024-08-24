@@ -6,25 +6,21 @@ import plus from "../../Images/plus-circle-green.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
 
 export default function DeviceMenu({
-    settingsToggle, 
-    setSettingsToggle, 
     connectDeviceToggle, 
-    setAddDeviceToggle
+    showAddDeviceView,
+    isSettingsVisible,
+    showPerformanceView
 }) {
 
     const { device, devices } = useDevice();
     const [searchTerm, setSearchTerm] = useState('');
-    
-    const handleAddDeviceClick = useCallback(() => {
-        setAddDeviceToggle(true);
-        setSettingsToggle(true);
-    }, [setAddDeviceToggle, setSettingsToggle]);
 
     const handleSearchChange = useCallback((e) => {
         setSearchTerm(e.target.value);
     }, []);
 
     const filteredDevices = useMemo(() => {
+        if (!devices) return [];
         if (!searchTerm) return devices;
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return devices.filter(device => 
@@ -57,7 +53,7 @@ export default function DeviceMenu({
                     src={plus} 
                     alt='Plus Icon' 
                     className='add-device grow' 
-                    onClick={handleAddDeviceClick}
+                    onClick={showAddDeviceView}
                 ></img>
             </div>
 
@@ -67,12 +63,10 @@ export default function DeviceMenu({
                         <DeviceItem 
                             key={filteredDevices.device_id} 
                             devices={filteredDevices} 
-                            index={index} 
-                            setAddDeviceToggle={setAddDeviceToggle} 
-                            setSettingsToggle={setSettingsToggle} 
-                            from="Performance" 
-                            settingsToggle={settingsToggle} 
+                            index={index}  
                             connectDeviceToggle={connectDeviceToggle}
+                            isSettingsVisible={isSettingsVisible}
+                            showPerformanceView={showPerformanceView}
                         ></DeviceItem>)
                     }
                 </ul>

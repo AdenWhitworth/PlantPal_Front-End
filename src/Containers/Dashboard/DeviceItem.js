@@ -3,54 +3,41 @@ import { useDevice } from '../../Provider/DeviceProvider';
 
 export default function DeviceItem({
     devices, 
-    index, 
-    setAddDeviceToggle, 
-    setSettingsToggle, 
-    from, 
-    settingsToggle, 
-    connectDeviceToggle
+    index,  
+    connectDeviceToggle,
+    isSettingsVisible,
+    showPerformanceView
 }) {
 
     const [colorStyle, setColorStyle] = useState("device-line");
     const { device, setDevice } = useDevice();
 
     const handleDeviceClick = useCallback(() => {
-        if (from === "Settings") {
-            setSettingsToggle(false);
-            setAddDeviceToggle(false);
+        if (isSettingsVisible) {
+            showPerformanceView();
         }
         setDevice(devices);
-    }, [from, devices, setSettingsToggle, setAddDeviceToggle, setDevice]);
+    }, [isSettingsVisible, devices, setDevice]);
     
     useEffect(() => {
-        const isSameDevice = device.cat_num === devices.cat_num;
+        const isSameDevice = device?.cat_num === devices.cat_num;
+        const hasDeviceChanged = 
+            device?.wifi_ssid !== devices.wifi_ssid || 
+            device?.wifi_password !== devices.wifi_password || 
+            device?.presence_connection !== devices.presence_connection;
 
-        if (Object.keys(device).length !== 0 && isSameDevice) {
-            if (settingsToggle && !connectDeviceToggle) {
-                setColorStyle("device-line");
-                return;
-            }
-
-            setColorStyle("device-line selected");
-
-            if (from === "Performance") {
-                setSettingsToggle(false);
-                setAddDeviceToggle(false);
-            }
-
-            const hasDeviceChanged = device.wifi_ssid !== devices.wifi_ssid || device.wifi_password !== devices.wifi_password || device.presence_connection !== devices.presence_connection;
-
+        if (isSameDevice) {
+            setColorStyle(isSettingsVisible && !connectDeviceToggle ? "device-line" : "device-line selected");
             if (hasDeviceChanged) {
                 setDevice(devices);
             }
-
-        } else if (index === 0 && device.cat_num !== devices.cat_num) {
+        } else if (index === 0) {
             setDevice(devices);
         } else {
             setColorStyle("device-line");
         }
 
-    }, [devices, device, from, index, settingsToggle, connectDeviceToggle, setDevice, setSettingsToggle, setAddDeviceToggle]);
+    }, [devices, device, index, connectDeviceToggle, setDevice, isSettingsVisible]);
     
     return (
         <li>

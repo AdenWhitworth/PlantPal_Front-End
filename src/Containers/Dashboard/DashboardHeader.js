@@ -9,15 +9,13 @@ export default function DashboardHeader({
     handlePlantPalClick, 
     handleRefreshClick, 
     handleLogout,
-    setSettingsToggle
+    showAccountView,
+    isSettingsVisible
 }) {
     const { refreshDate } = useDevice();
 
-    const handleSettingsClick = () => setSettingsToggle(true);
-
     const links = [
-        { alt: "Refresh logo", imgSrc: refresh, onClick: handleRefreshClick, className: "refresh" },
-        { alt: "Settings logo", imgSrc: gear, onClick: handleSettingsClick, className: "gear" },
+        { alt: "Settings logo", imgSrc: gear, onClick: showAccountView, className: "gear" },
         { alt: "Logout logo", imgSrc: exit, onClick: handleLogout, className: "exit" },
     ];
 
@@ -28,7 +26,19 @@ export default function DashboardHeader({
                 <h1>PlantPal</h1>
             </div>
             <nav className="dashboard-header-links">
-                <li><h4 className="last-refresh">{refreshDate}</h4></li>
+                {!isSettingsVisible && (
+                    <>
+                        <li><h4 className="last-refresh">{refreshDate}</h4></li>
+                        <li>
+                            <img 
+                                className="refresh grow" 
+                                src={refresh} 
+                                alt="Refresh logo" 
+                                onClick={handleRefreshClick} 
+                            />
+                        </li>
+                    </>
+                )}
                 {links.map(({ alt, imgSrc, onClick, className }) => (
                     <li key={alt}>
                         <img className={`${className} grow`} src={imgSrc} alt={alt} onClick={onClick} />
@@ -38,3 +48,4 @@ export default function DashboardHeader({
         </header>
     );
 }
+

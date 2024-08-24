@@ -1,26 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import triangle from '../../Images/triangle-orange.svg';
 import PerformanceView from './PerformanceView';
-import Settings from './Settings';
+import Account from './Account';
 import AddDeviceModal from '../../Modals/AddDeviceModal';
 import ConfirmActionModal from '../../Modals/ConfirmActionModal';
+import DashboardHeader from './DashboardHeader';
+import DeviceMenu from './DeviceMenu';
+import AddDevice from './AddDevice';
 import { useAuth } from "../../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from '../../Provider/SocketProvider';
 import { useDeviceData } from '../../Hooks/useDeviceData';
 
 export default function Dashboard() {
-
-    const [settingsToggle, setSettingsToggle] = useState(false);
-    const [addDeviceToggel, setAddDeviceToggle] = useState(false);
-    const [connectDeviceToggle, setConnectDeviceToggle] = useState(false);
-    const [autoSwitch, setAutoSwitch] = useState(false);
-    const [confirmAuto, setConfirmAuto] = useState(false);
+    const [state, setState] = useState({
+        connectDeviceToggle: false,
+        autoSwitch: false,
+        confirmAuto: false,
+        currentDashboardView: 'performanceView',
+        isSettingsVisible: false,
+    });
 
     const navigate = useNavigate();
-
+    
     const { 
-        clearToken, 
+        clearToken,
         token, 
         user, 
         clearUser 
@@ -36,102 +40,118 @@ export default function Dashboard() {
         setErrorReconnect 
     } = useSocket();
 
-    const handlePlantPalClick = () => {
-        navigate('/', {
-            replace: true,
-        });
-    }
-
-    const handleRefreshClick = () => {
-        fetchUserDevices();
-    }
-
-    const handleLogout = () => {
-        try {
-          if (user) sendRemoveUser(user.user_id);
-        } catch (error) {
-          console.log(error);
+    const handleLogout = useCallback(() => {
+        if (user) {
+            try {
+                sendRemoveUser(user.user_id);
+            } catch (error) {
+                console.error(error);
+            }
         }
         clearUser();
         clearToken();
         navigate("/auth", { replace: true });
-    };
+    }, [user, sendRemoveUser, clearUser, clearToken, navigate]);
 
     const { fetchUserDevices } = useDeviceData(handleLogout);
 
+    const setView = useCallback((view, settingsVisible) => {
+        setState(prevState => ({
+            ...prevState,
+            currentDashboardView: view,
+            isSettingsVisible: settingsVisible,
+        }));
+    }, []);
+
+    const handlePlantPalClick = useCallback(() => {
+        navigate('/', { replace: true });
+    }, [navigate]);
+
+    const renderView = useCallback(() => {
+        switch (state.currentDashboardView) {
+            case 'performanceView':
+                return <PerformanceView
+                    handleRefreshClick={fetchUserDevices}
+                    setConnectDeviceToggle={connectDeviceToggle => setState(prev => ({ ...prev, connectDeviceToggle }))}
+                    connectDeviceToggle={state.connectDeviceToggle}
+                    autoSwitch={state.autoSwitch}
+                    setAutoSwitch={autoSwitch => setState(prev => ({ ...prev, autoSwitch }))}
+                    setConfirmAuto={confirmAuto => setState(prev => ({ ...prev, confirmAuto }))}
+                />;
+            case 'accountView':
+                return <Account />;
+            case 'addDeviceView':
+                return <AddDevice
+                    setConnectDeviceToggle={connectDeviceToggle => setState(prev => ({ ...prev, connectDeviceToggle }))}
+                    showPerformanceView={() => setView('performanceView', false)}
+                />;
+            default:
+                return <PerformanceView
+                    handleRefreshClick={fetchUserDevices}
+                    setConnectDeviceToggle={connectDeviceToggle => setState(prev => ({ ...prev, connectDeviceToggle }))}
+                    connectDeviceToggle={state.connectDeviceToggle}
+                    autoSwitch={state.autoSwitch}
+                    setAutoSwitch={autoSwitch => setState(prev => ({ ...prev, autoSwitch }))}
+                    setConfirmAuto={confirmAuto => setState(prev => ({ ...prev, confirmAuto }))}
+                />;
+        }
+    }, [state, fetchUserDevices, setView]);
+
     useEffect(() => {
         if (!token || !user) {
-          navigate("/auth", { replace: true });
+            navigate("/auth", { replace: true });
         } else {
-          sendCheckSocket(user.user_id);
-          fetchUserDevices();
+            sendCheckSocket(user.user_id);
+            fetchUserDevices();
         }
     }, [token, user]);
 
     useEffect(() => {
-        if(errorReconnect){
+        if (errorReconnect) {
             setErrorReconnect(false);
             handleLogout();
         }
-    }, [errorReconnect])
+    }, [errorReconnect, setErrorReconnect]);
 
     useEffect(() => {
         if (isConnected && refresh) {
-          fetchUserDevices();
-          setRefresh(false);
+            fetchUserDevices();
+            setRefresh(false);
         }
     }, [isConnected, refresh]);
 
     return (
         <section className="dashboard">
-            
-            {connectDeviceToggle? 
-                <AddDeviceModal 
-                    setConnectDeviceToggle={setConnectDeviceToggle}
-                ></AddDeviceModal> 
-                : 
-                <></>
-            }
 
-            {confirmAuto?  
-                <ConfirmActionModal 
-                    autoSwitch={autoSwitch} 
-                    setConfirmAuto={setConfirmAuto} 
-                    setAutoSwitch={setAutoSwitch} 
-                    mainIcon={triangle} 
-                    children={autoSwitch? "Confirm setting PlantPal to automatic watering." : "Confirm setting PlantPal to manual watering"}
-                ></ConfirmActionModal>
-                : 
-                <></> 
-            }
+            {state.connectDeviceToggle && <AddDeviceModal setConnectDeviceToggle={() => setState(prev => ({ ...prev, connectDeviceToggle: false }))} />}
 
-            {settingsToggle? 
-                <Settings 
-                    setSettingsToggle={setSettingsToggle}
-                     addDeviceToggel={addDeviceToggel} 
-                     setAddDeviceToggle={setAddDeviceToggle} 
-                     setConnectDeviceToggle={setConnectDeviceToggle} 
-                     handlePlantPalClick={handlePlantPalClick} 
-                     handleRefreshClick={handleRefreshClick} 
-                     handleLogout={handleLogout} 
-                     settingsToggle={settingsToggle} 
-                     connectDeviceToggle={connectDeviceToggle}
-                ></Settings> 
-                : 
-                <PerformanceView 
-                    setSettingsToggle={setSettingsToggle}
-                     setAddDeviceToggle={setAddDeviceToggle} 
-                     handlePlantPalClick={handlePlantPalClick} 
-                     handleRefreshClick={handleRefreshClick} 
-                     handleLogout={handleLogout} 
-                     settingsToggle={settingsToggle} 
-                     setConnectDeviceToggle={setConnectDeviceToggle} 
-                     connectDeviceToggle={connectDeviceToggle} 
-                     autoSwitch={autoSwitch} 
-                     setAutoSwitch={setAutoSwitch} 
-                     setConfirmAuto={setConfirmAuto}
-                ></PerformanceView>
-            }
+            {state.confirmAuto && <ConfirmActionModal
+                autoSwitch={state.autoSwitch}
+                setConfirmAuto={() => setState(prev => ({ ...prev, confirmAuto: false }))}
+                setAutoSwitch={autoSwitch => setState(prev => ({ ...prev, autoSwitch }))}
+                mainIcon={triangle}
+                children={state.autoSwitch ? "Confirm setting PlantPal to automatic watering." : "Confirm setting PlantPal to manual watering"}
+            />}
+
+            <div className={state.isSettingsVisible ? 'dashboard-grid-settings' : 'dashboard-grid'}>
+                <DashboardHeader
+                    handlePlantPalClick={handlePlantPalClick}
+                    handleRefreshClick={fetchUserDevices}
+                    handleLogout={handleLogout}
+                    showAccountView={() => setView('accountView', true)}
+                    isSettingsVisible={state.isSettingsVisible}
+                />
+
+                <DeviceMenu
+                    connectDeviceToggle={state.connectDeviceToggle}
+                    showAddDeviceView={() => setView('addDeviceView', true)}
+                    isSettingsVisible={state.isSettingsVisible}
+                    showPerformanceView={() => setView('performanceView', false)}
+                />
+
+                {renderView()}
+
+            </div>
         </section>
     );
 }
