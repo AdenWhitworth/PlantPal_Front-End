@@ -1,10 +1,11 @@
+import React from 'react';
 import plantpal_logo from "../../Images/PlantPal Logo.svg";
 import shopping_cart from "../../Images/shopping-grey.svg";
 import user from "../../Images/user-grey.svg";
 import house_plant from "../../Images/house-plant.png";
 import calendar from "../../Images/calendar-green.svg";
 import shower from "../../Images/shower-green.svg";
-import React from 'react';
+import Button from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
@@ -39,8 +40,8 @@ export default function Landing() {
                         <p>Can’t remember when you last watered your plant? Going out of town and don’t want your plant to die? </p>
 
                         <div className="landing-body-1-btns">
-                            <button className="button-hollow grow">Shop</button>
-                            <button className="button-fill grow" onClick={HandleManageDevicesToggle}>Manage</button>
+                            <Button styleType='primary' >Shop</Button>
+                            <Button styleType='secondary' onClick={HandleManageDevicesToggle}>Manage</Button>
                         </div>
                     </div>
 

@@ -126,12 +126,12 @@ export default function Account() {
 
         <div className='account-section-2-btns'>
 
-          <button className='text-btn'><span>Change Password?</span></button>
+          <Button styleType='tertiary'>Change Password?</Button>
 
           {editToggle ? (
-            <Button children='Save' onClick={handleSaveClick} isPrimaryStyle={false} />
+            <Button onClick={handleSaveClick} styleType='secondary'>Save</Button>
           ) : (
-            <Button children='Edit' onClick={handleEditClick} isPrimaryStyle={false} />
+            <Button onClick={handleEditClick} styleType='secondary'>Edit</Button>
           )}
 
         </div>

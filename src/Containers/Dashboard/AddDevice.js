@@ -126,14 +126,9 @@ export default function AddDevice({
                 ></InputField>
                 
                 <div className='new-device-section-2-btns'>
-                    <button className='text-btn hidden'>
-                        <span>Change Password?</span>
-                    </button>
-                    <Button 
-                        children='Connect' 
-                        type='submit' 
-                        isPrimaryStyle={false}
-                    ></Button>
+                    <Button styleType='tertiary'>Change Password?</Button>
+                    
+                    <Button type='submit' styleType='secondary'>Connect</Button>
                 </div>
                 {errorVisible && <h4 className='error-message'>{error}</h4>}
             </form>

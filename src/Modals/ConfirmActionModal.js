@@ -57,7 +57,7 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
             addClose={true} 
             addButton={true}
             buttonLabel='Accept'
-            isButtonPrimary={true}
+            styleType='primary'
             children={
                 <div>
                     <img src={mainIcon} alt='Confirm Action Icon'></img>

@@ -42,7 +42,7 @@ export default function AddDeviceModal({setConnectDeviceToggle}) {
 
                 {device.presence_connection? 
                     <div className='modal-btns'>
-                        <Button children='Continue' isPrimaryStyle={true} onClick={handleContinueClick}></Button>
+                        <Button styleType='primary' onClick={handleContinueClick}>Continue</Button>
                     </div>
                     :
                     <></>

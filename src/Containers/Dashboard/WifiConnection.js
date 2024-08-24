@@ -4,6 +4,7 @@ import lock from '../../Images/lock-brown.svg';
 import wifi from "../../Images/wifi-green.svg";
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
+import Button from '../../Components/Button';
 import InputField from "../../Components/InputField";
 import useBluetooth from "../../Hooks/useBluetooth";
 import {useAuth} from '../../Provider/AuthProvider';
@@ -101,9 +102,8 @@ export default function WifiConnection({
                         setWidth={'60%'}
                     ></InputField>
 
-                    <button type='submit' className='text-btn padded'>
-                        <span>Connect Wifi?</span>
-                    </button>
+                    <Button className='padded' styleType='tertiary' type='submit'>Connect Wifi?</Button>
+
                     {errorVisible && <h4 className='error-message'>{error}</h4>}
                 </form>
                 :
@@ -112,9 +112,7 @@ export default function WifiConnection({
                     <img src={device.presence_connection? wifi : triangle} alt='Connection icon'></img>
                     <h4>{device.presence_connection? "Connected": "Disconnected"}</h4>
                     <h4>SSID: {device.wifi_ssid}</h4>
-                    <button className='text-btn' onClick={handleChangeWifiClick}>
-                        <span>Change Wifi?</span>
-                    </button>
+                    <Button styleType='tertiary' onClick={handleChangeWifiClick}>Change Wifi?</Button>
                 </div>
             }
         </div>
