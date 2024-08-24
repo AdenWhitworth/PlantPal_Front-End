@@ -1,12 +1,12 @@
-import Button from '../Components/Button';
-import InputField from '../Components/InputField';
-import mail from '../Images/email-brown.svg';
-import lock from '../Images/lock-brown.svg';
-import user_circle from '../Images/user-circle-brown.svg';
-import tag from '../Images/tag-brown.svg';
-import plantpal_logo from '../Images/PlantPal Logo.svg';
-import "../App.css";
 import React from 'react';
+import Button from '../../Components/Button';
+import InputField from '../../Components/InputField';
+import mail from '../../Images/email-brown.svg';
+import lock from '../../Images/lock-brown.svg';
+import user_circle from '../../Images/user-circle-brown.svg';
+import tag from '../../Images/tag-brown.svg';
+import plantpal_logo from '../../Images/PlantPal Logo.svg';
+import "../../App.css";
 
 export default function SignUp({handleCreateClick, HandleReturnHome, setEmail, setPassword, setFirstName, setLastName, error, errorCSS}) {
 

@@ -1,9 +1,9 @@
-import Button from '../Components/Button';
-import InputField from '../Components/InputField';
-import mail from '../Images/email-brown.svg';
-import lock from '../Images/lock-brown.svg';
-import plantpal_logo from '../Images/PlantPal Logo.svg';
-import "../App.css";
+import Button from '../../Components/Button';
+import InputField from '../../Components/InputField';
+import mail from '../../Images/email-brown.svg';
+import lock from '../../Images/lock-brown.svg';
+import plantpal_logo from '../../Images/PlantPal Logo.svg';
+import "../../App.css";
 import React from 'react';
 
 export default function Login({handleSignInClick, HandleReturnHome, error, errorCSS, setEmail, setPassword}) {

@@ -1,9 +1,9 @@
-import plantpal_logo from "../Images/PlantPal Logo.svg";
-import shopping_cart from "../Images/shopping-grey.svg";
-import user from "../Images/user-grey.svg";
-import house_plant from "../Images/house-plant.png";
-import calendar from "../Images/calendar-green.svg";
-import shower from "../Images/shower-green.svg";
+import plantpal_logo from "../../Images/PlantPal Logo.svg";
+import shopping_cart from "../../Images/shopping-grey.svg";
+import user from "../../Images/user-grey.svg";
+import house_plant from "../../Images/house-plant.png";
+import calendar from "../../Images/calendar-green.svg";
+import shower from "../../Images/shower-green.svg";
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 

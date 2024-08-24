@@ -1,10 +1,10 @@
 import SignUp from './SignUp';
 import Login from './Login';
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../Provider/AuthProvider';
+import { useAuth } from '../../Provider/AuthProvider';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useSocket } from '../Provider/SocketProvider';
+import { useSocket } from '../../Provider/SocketProvider';
 
 const client = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,

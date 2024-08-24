@@ -1,6 +1,6 @@
 import './App.css';
-import Landing from  './Containers/Landing';
-import UserAuthentication from  './Containers/UserAuthentication';
+import Landing from  './Containers/Landing/Landing';
+import UserAuthentication from  './Containers/Authentication/UserAuthentication';
 import Dashboard from './Containers/Dashboard/Dashboard';
 import React from 'react';
 import PrivateRoute from './Routes/PrivateRoute';
