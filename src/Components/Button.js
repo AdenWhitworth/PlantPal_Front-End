@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function Button({ children, styleType, onClick, type, className }) {
+export default function Button({ children, styleType, onClick, type, className, disabled }) {
 
     const classType = { 
         primary: "button-hollow grow", 
@@ -11,7 +11,7 @@ export default function Button({ children, styleType, onClick, type, className }
 
     return (
         
-        <button className={`${classType[styleType]} ${className}`} onClick={onClick} type={type}>
+        <button className={`${classType[styleType]} ${className}`} onClick={onClick} type={type} disabled={disabled}>
             {styleType === 'tertiary' ? (
                 <span>{children}</span>
             ) : (
@@ -27,4 +27,5 @@ Button.propTypes = {
     styleType: PropTypes.oneOf(['primary', 'secondary', 'tertiary']).isRequired,
     type: PropTypes.string,
     className: PropTypes.string,
+    disabled: PropTypes.bool,
 };

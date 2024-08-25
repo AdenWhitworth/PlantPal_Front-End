@@ -6,38 +6,41 @@ import plantpal_logo from '../../Images/PlantPal Logo.svg';
 import "../../App.css";
 import React from 'react';
 
-export default function Login({
-    handleSignInClick, 
-    HandleReturnHome, 
-    error, 
-    errorCSS, 
-    setEmail, 
-    setPassword
+export default function LoginForm({ 
+    handleReturnHome, 
+    handleInputChange,
+    error,
+    handleSubmit,
+    isLoading
 }) {
 
     return (
         
-        <form className="userAuth-section-2" onSubmit={handleSignInClick}>
+        <form className="userAuth-section-2" onSubmit={handleSubmit}>
             <div className='userAuth-logo'>
-                <img className="userAuth-logo-img grow" 
+                <img 
+                    className="userAuth-logo-img grow" 
                     src={plantpal_logo} 
                     alt="PlantPal auth logo" 
-                    onClick={HandleReturnHome}
+                    onClick={handleReturnHome}
                 ></img>
                 <h1 className="userAuth-logo-txt">PlantPal</h1>
             </div>
             
-            <InputField 
-                onChange={(e) => setEmail(e.target.value)} 
-                inputImg={mail} isRequired={true} 
+            <InputField
+                onChange={handleInputChange} 
+                name='email'
+                inputImg={mail} 
+                isRequired={true} 
                 type='email' 
                 placeholder='Email' 
                 isSpellCheck={false} 
                 setWidth={'60%'}
             ></InputField>
 
-            <InputField 
-                onChange={(e) => setPassword(e.target.value)} 
+            <InputField
+                onChange={handleInputChange} 
+                name='password'
                 inputImg={lock} 
                 isRequired={true} 
                 type='password' 
@@ -48,10 +51,12 @@ export default function Login({
             
             <div className='userAuth-section-2-btns'>
                 <Button styleType='tertiary' onClick={() => console.log("click")}>Forgot Password?</Button>
-                <Button type='submit' styleType='secondary' >Sign In</Button>
+                <Button type="submit" disabled={isLoading} styleType='secondary'>
+                    {isLoading ? 'Signing In...' : 'Sign In'}
+                </Button>
             </div>
 
-            <h4 className={errorCSS}>{error}</h4>
+            {error && <div className="error-message">{error}</div>}
         </form>  
         
     );

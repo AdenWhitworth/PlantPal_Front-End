@@ -35,7 +35,7 @@ export default function Account() {
   const resetError = useCallback(() => {
     setError('');
     setErrorVisible(false);
-}, []);
+  }, []);
 
   const handleSaveClick = useCallback(async () => {
     resetError();
