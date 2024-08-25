@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { loginUser, registerUser } from '../Services/ApiService';
+import { postLogin, postRegister } from '../Services/ApiService';
 
 export const useAuthHandlers = ({ setToken, setUser, isLoginSelected }) => {
     const [error, setError] = useState(null);
@@ -23,7 +23,7 @@ export const useAuthHandlers = ({ setToken, setUser, isLoginSelected }) => {
         if (!validateForm(userData)) return;
         setIsLoading(true);
         try {
-        const { data } = await loginUser(userData);
+        const { data } = await postLogin(userData);
         setToken(data.token);
         setUser(data.user);
         if (onSuccess) onSuccess(data.token);
@@ -40,7 +40,7 @@ export const useAuthHandlers = ({ setToken, setUser, isLoginSelected }) => {
         if (!validateForm(userData)) return;
         setIsLoading(true);
         try {
-        await registerUser(userData);
+        await postRegister(userData);
         await handleSignIn(e, userData, onSuccess);
         } catch (error) {
         setError(error.response?.data?.message || 'Registration failed. Please try again.');

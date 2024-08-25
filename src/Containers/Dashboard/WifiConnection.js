@@ -8,7 +8,7 @@ import Button from '../../Components/Button';
 import InputField from "../../Components/InputField";
 import useBluetooth from "../../Hooks/useBluetooth";
 import {useAuth} from '../../Provider/AuthProvider';
-import axios from "axios";
+import { postUpdateWifi } from '../../Services/ApiService';
 
 export default function WifiConnection({
     setConnectDeviceToggle,
@@ -25,15 +25,6 @@ export default function WifiConnection({
     const [wifiPassword, setWifiPassword] = useState('');
     const { token } = useAuth();
 
-    const client = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
-        
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-        
-    });
-
     const handleChangeWifiClick = () => {
         connectBluetooth();
     }
@@ -42,11 +33,11 @@ export default function WifiConnection({
         e.preventDefault();
 
         try {
-            await client.post("/dashboard/updateWifi", { 
+            await postUpdateWifi(token,{ 
                 device_id: device.device_id, 
                 wifi_ssid: wifiSSID, 
                 wifi_password: wifiPassword
-            });
+            })
             sendCredentials(wifiSSID,wifiPassword);
             resetError();
             document.getElementById("update-wifi").reset();

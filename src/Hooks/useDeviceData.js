@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService';
 import { useAuth } from "../Provider/AuthProvider";
 import { useDevice } from '../Provider/DeviceProvider';
 
@@ -8,14 +8,9 @@ export const useDeviceData = (handleLogout) => {
     const { token } = useAuth();
     const { devices, setDevices, device, setDevice, deviceShadow, setDeviceShadow, deviceLogs, setDeviceLogs, lastLog, setLastLog, refreshDate, setRefreshDate } = useDevice();
 
-    const client = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
-        headers: { "Authorization": "Bearer " + token }
-    });
-
     const fetchUserDevices = async () => {
         try {
-            const response = await client.get("/dashboard/userDevices");
+            const response = await getUserDevices(token);
             setDevices(response.data.devices);
         } catch (error) {
             handleLogout();
@@ -24,7 +19,7 @@ export const useDeviceData = (handleLogout) => {
 
     const fetchDeviceLogs = async () => {
         try {
-            const response = await client.get("/dashboard/deviceLogs", { params: { cat_num: device.cat_num } });
+            const response = await getDeviceLogs(token, { params: { cat_num: device.cat_num }});
             setDeviceLogs(response.data.deviceLogs);
             setLastLog(response.data.lastLog);
         } catch (error) {
@@ -34,7 +29,7 @@ export const useDeviceData = (handleLogout) => {
 
     const fetchDeviceShadow = async () => {
         try {
-            const response = await client.get("/dashboard/deviceShadow", { params: { thingName: device.thing_name } });
+            const response = await getDeviceShadow(token, { params: { thingName: device.thing_name } });
             setDeviceShadow(response.data.deviceShadow);
         } catch (error) {
             handleLogout();

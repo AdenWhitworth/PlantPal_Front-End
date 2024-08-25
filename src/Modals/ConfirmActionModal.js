@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Modal from '../Components/Modal';
 import PropTypes from 'prop-types';
 import { useAuth } from "../Provider/AuthProvider";
-import axios from "axios";
+import { postUpdateAuto } from '../Services/ApiService';
 import { useDevice } from '../Provider/DeviceProvider';
 
 export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, setConfirmAuto, autoSwitch}) {
@@ -11,16 +11,6 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
     const { token } = useAuth();
     const { device, deviceShadow } = useDevice();
-
-
-    const client = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
-        
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-        
-    });
 
     const handleCloseClick = () => {
         if (autoSwitch){
@@ -42,7 +32,11 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
                 return;
             }
 
-            await client.post("/dashboard/updateAuto", { device_id: device.device_id, automate: autoSwitch});
+            await postUpdateAuto(token,{ 
+                device_id: device.device_id, 
+                automate: autoSwitch
+            });
+
             setErrorCSS('error-message hidden');
             setConfirmAuto(false);
             

@@ -8,16 +8,7 @@ import tag from '../../Images/tag-brown.svg';
 import gear from '../../Images/gear-grey.svg';
 import "../../App.css";
 import { useAuth } from '../../Provider/AuthProvider';
-import axios from 'axios';
-
-const useClient = (token) => {
-  return axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-};
+import { postUpdateUser } from '../../Services/ApiService';
 
 export default function Account() {
   const [editToggle, setEditToggle] = useState(false);
@@ -30,7 +21,6 @@ export default function Account() {
   const [error, setError] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
   const { token, user, setUser } = useAuth();
-  const client = useClient(token);
 
   const resetError = useCallback(() => {
     setError('');
@@ -40,7 +30,7 @@ export default function Account() {
   const handleSaveClick = useCallback(async () => {
     resetError();
     try {
-      const { data } = await client.post('/users/updateUser', {
+      const { data } = await postUpdateUser(token, {
         email: userDetails.email,
         first_name: userDetails.firstName,
         last_name: userDetails.lastName,
@@ -57,7 +47,7 @@ export default function Account() {
       setError(error.response?.data?.message || 'Failed to update user');
       setErrorVisible(true);
     }
-  }, [userDetails, client, setUser, resetError]);
+  }, [userDetails, token, setUser, resetError]);
 
   const handleEditClick = () => {
     setInputDisabled(false);
