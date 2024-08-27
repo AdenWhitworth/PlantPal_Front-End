@@ -1,56 +1,20 @@
-import axios from 'axios';
+import {authClient, cookieClient, publicClient} from './ApiClient';
 
-const createClient = (token) => {
-  return axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-};
+// Public API requests require API Key
+export const postLogin = (userData) => publicClient.post('/users/login', userData);
+export const postRegister = (userData) => publicClient.post('/users/register', userData);
+export const postForgotPassword = (userData) => publicClient.post('/users/forgotPassword', userData);
+export const postResetPassword = (userData) => publicClient.post('/users/resetpassword', userData);
 
-const client = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-      "x-api-key": process.env.REACT_APP_API_CLIENT_KEY,
-    },
-});
+// Authenticated API requests require Refresh Token
+export const postRefreshAccessToken = (refreshToken) => cookieClient(refreshToken).post('/users/refreshAccessToken');
 
-const authClientFactory = (token) => {
-  const authClient = createClient(token);
-
-  return {
-    post: (url, data) => authClient.post(url, data),
-    get: (url, params) => authClient.get(url, params),
-  };
-};
-
-// Public API requests
-export const postLogin = (userData) => client.post('/users/login', userData);
-
-export const postRegister = (userData) => client.post('/users/register', userData);
-
-// Authenticated API requests
-export const postUpdateUser = (token, userDetails) => 
-  authClientFactory(token).post('/users/updateUser', userDetails);
-
-export const postAddDevice = (token, userDetails) => 
-  authClientFactory(token).post('/dashboard/addDevice', userDetails);
-
-export const postUpdatePumpWater = (token, userDetails) => 
-  authClientFactory(token).post('/dashboard/updatePumpWater', userDetails);
-
-export const postUpdateWifi = (token, userDetails) => 
-  authClientFactory(token).post('/dashboard/updateWifi', userDetails);
-
-export const getUserDevices = (token) => 
-  authClientFactory(token).get('/dashboard/userDevices');
-
-export const getDeviceLogs = (token, userDetails) => 
-  authClientFactory(token).get('/dashboard/deviceLogs', userDetails);
-
-export const getDeviceShadow = (token, userDetails) => 
-  authClientFactory(token).get('/dashboard/deviceShadow', userDetails);
-
-export const postUpdateAuto = (token, userDetails) => 
-  authClientFactory(token).post('/dashboard/updateAuto', userDetails);
+// Authenticated API requests with Access Token
+export const postUpdateUser = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/users/updateUser', deviceDetails);
+export const postAddDevice = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/dashboard/addDevice', deviceDetails);
+export const postUpdatePumpWater = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/dashboard/updatePumpWater', deviceDetails);
+export const postUpdateWifi = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/dashboard/updateWifi', deviceDetails);
+export const postUpdateAuto = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/dashboard/updateAuto', deviceDetails);
+export const getUserDevices = (accessToken, setAccessToken) => authClient(accessToken, setAccessToken).get('/dashboard/userDevices');
+export const getDeviceLogs = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).get('/dashboard/deviceLogs', deviceDetails);
+export const getDeviceShadow = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).get('/dashboard/deviceShadow', deviceDetails);

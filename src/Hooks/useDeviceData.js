@@ -5,12 +5,12 @@ import { useDevice } from '../Provider/DeviceProvider';
 
 export const useDeviceData = (handleLogout) => {
 
-    const { token } = useAuth();
-    const { devices, setDevices, device, setDevice, deviceShadow, setDeviceShadow, deviceLogs, setDeviceLogs, lastLog, setLastLog, refreshDate, setRefreshDate } = useDevice();
+    const { accessToken } = useAuth();
+    const { setDevices, device, setDeviceShadow, setDeviceLogs, lastLog, setLastLog, setRefreshDate } = useDevice();
 
     const fetchUserDevices = async () => {
         try {
-            const response = await getUserDevices(token);
+            const response = await getUserDevices(accessToken);
             setDevices(response.data.devices);
         } catch (error) {
             handleLogout();
@@ -19,7 +19,7 @@ export const useDeviceData = (handleLogout) => {
 
     const fetchDeviceLogs = async () => {
         try {
-            const response = await getDeviceLogs(token, { params: { cat_num: device.cat_num }});
+            const response = await getDeviceLogs(accessToken, { params: { cat_num: device.cat_num }});
             setDeviceLogs(response.data.deviceLogs);
             setLastLog(response.data.lastLog);
         } catch (error) {
@@ -29,7 +29,7 @@ export const useDeviceData = (handleLogout) => {
 
     const fetchDeviceShadow = async () => {
         try {
-            const response = await getDeviceShadow(token, { params: { thingName: device.thing_name } });
+            const response = await getDeviceShadow(accessToken, { params: { thingName: device.thing_name } });
             setDeviceShadow(response.data.deviceShadow);
         } catch (error) {
             handleLogout();

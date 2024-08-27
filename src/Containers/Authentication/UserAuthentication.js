@@ -10,10 +10,10 @@ import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 
 export default function UserAuthentication() {
   const navigate = useNavigate();
-  const { setToken, setUser } = useAuth();
+  const { setAccessToken, setUser } = useAuth();
   const { connectSocket } = useSocket();
   const [isLoginSelected, setIsLoginSelected] = useState(true);
-  const { handleSignIn, handleSignUp, error, isLoading, resetError } = useAuthHandlers({ setToken, setUser, isLoginSelected });
+  const { handleSignIn, handleSignUp, error, isLoading, resetError } = useAuthHandlers({ setAccessToken, setUser, isLoginSelected });
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',

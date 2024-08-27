@@ -9,7 +9,7 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
     
     const [error, setError] = useState('Error');
     const [errorCSS, setErrorCSS] = useState('error-message hidden');
-    const { token } = useAuth();
+    const { accessToken } = useAuth();
     const { device, deviceShadow } = useDevice();
 
     const handleCloseClick = () => {
@@ -32,7 +32,7 @@ export default function ConfirmActionModal({children, mainIcon, setAutoSwitch, s
                 return;
             }
 
-            await postUpdateAuto(token,{ 
+            await postUpdateAuto(accessToken,{ 
                 device_id: device.device_id, 
                 automate: autoSwitch
             });

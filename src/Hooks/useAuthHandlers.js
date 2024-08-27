@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { postLogin, postRegister } from '../Services/ApiService';
 
-export const useAuthHandlers = ({ setToken, setUser, isLoginSelected }) => {
+export const useAuthHandlers = ({ setAccessToken, setUser, isLoginSelected }) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -24,9 +24,9 @@ export const useAuthHandlers = ({ setToken, setUser, isLoginSelected }) => {
         setIsLoading(true);
         try {
         const { data } = await postLogin(userData);
-        setToken(data.token);
+        setAccessToken(data.accessToken);
         setUser(data.user);
-        if (onSuccess) onSuccess(data.token);
+        if (onSuccess) onSuccess(data.accessToken);
         } catch (error) {
         setError(error.response?.data?.message || 'Invalid email or password');
         } finally {

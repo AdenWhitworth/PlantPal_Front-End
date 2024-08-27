@@ -24,8 +24,8 @@ export default function Dashboard() {
     const navigate = useNavigate();
     
     const { 
-        clearToken,
-        token, 
+        clearAccessToken,
+        accesstoken, 
         user, 
         clearUser 
     } = useAuth();
@@ -49,9 +49,9 @@ export default function Dashboard() {
             }
         }
         clearUser();
-        clearToken();
+        clearAccessToken();
         navigate("/auth", { replace: true });
-    }, [user, sendRemoveUser, clearUser, clearToken, navigate]);
+    }, [user, sendRemoveUser, clearUser, clearAccessToken, navigate]);
 
     const { fetchUserDevices } = useDeviceData(handleLogout);
 
@@ -98,13 +98,13 @@ export default function Dashboard() {
     }, [state, fetchUserDevices, setView]);
 
     useEffect(() => {
-        if (!token || !user) {
+        if (!accesstoken || !user) {
             navigate("/auth", { replace: true });
         } else {
             sendCheckSocket(user.user_id);
             fetchUserDevices();
         }
-    }, [token, user]);
+    }, [accesstoken, user]);
 
     useEffect(() => {
         if (errorReconnect) {

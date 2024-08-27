@@ -17,7 +17,7 @@ export default function AutoManualWater({
     const [waterOccurance, setWaterOccurance] = useState([]);
     const [isAutoVisible, setIsAuotVisible] = useState(false);
     const { setRefresh } = useSocket();
-    const { token } = useAuth();
+    const { accesstoken } = useAuth();
     const { 
         devices, 
         lastLog, 
@@ -33,7 +33,7 @@ export default function AutoManualWater({
     const handleUpdatePumpWater = async (e) => {
         e.preventDefault();
         try {
-            await postUpdatePumpWater(token,{ device_id: device.device_id, pump_water: true})
+            await postUpdatePumpWater(accesstoken,{ device_id: device.device_id, pump_water: true})
             setRefresh(true);
         } catch (error) {
             console.error(error);

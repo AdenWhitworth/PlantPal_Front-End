@@ -12,7 +12,7 @@ export const SocketProvider = ({ url, children }) => {
   const [refresh, setRefresh] = useState(false);
   const [errorReconnect, setErrorReconnect] = useState(false);
   const socketRef = useRef(null);
-  const { token, user } = useAuth();
+  const { accessToken, user } = useAuth();
 
   const connectSocket = useCallback((passedToken) => {
     if (socketRef.current) return;
@@ -99,14 +99,14 @@ export const SocketProvider = ({ url, children }) => {
   }, []);
 
   useEffect(() => {
-    if (token) {
-      connectSocket(token);
+    if (accessToken) {
+      connectSocket(accessToken);
     }
 
     return () => {
       disconnectSocket();
     };
-  }, [connectSocket, disconnectSocket, token]);
+  }, [connectSocket, disconnectSocket, accessToken]);
 
   const sendAddUser = useCallback((user_id) => {
     if (socketRef.current) {

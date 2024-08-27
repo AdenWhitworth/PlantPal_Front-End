@@ -5,18 +5,18 @@ import { useAuth } from '../Provider/AuthProvider';
 const PrivateRoute = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { token } = useAuth();
+  const { accessToken } = useAuth();
 
   useEffect(() => {
-    if (!token) {
+    if (!accessToken) {
       navigate('/auth', {
         state: { from: location },
         replace: true,
       });
     }
-  }, [navigate, location, token]);
+  }, [navigate, location, accessToken]);
 
-  return token ? children : null;
+  return accessToken ? children : null;
 };
 
 export default PrivateRoute;
