@@ -4,7 +4,7 @@ import {authClient, cookieClient, publicClient} from './ApiClient';
 export const postLogin = (userData) => publicClient.post('/users/login', userData);
 export const postRegister = (userData) => publicClient.post('/users/register', userData);
 export const postForgotPassword = (userData) => publicClient.post('/users/forgotPassword', userData);
-export const postResetPassword = (userData) => publicClient.post('/users/resetpassword', userData);
+export const postResetPassword = (userData) => publicClient.post('/users/resetPassword', userData);
 
 // Authenticated API requests require Refresh Token
 export const postRefreshAccessToken = () => cookieClient().post('/users/refreshAccessToken');

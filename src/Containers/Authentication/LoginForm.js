@@ -8,6 +8,7 @@ import React from 'react';
 
 export default function LoginForm({ 
     handleReturnHome, 
+    handleReturnForgotPassword,
     handleInputChange,
     error,
     handleSubmit,
@@ -50,7 +51,7 @@ export default function LoginForm({
             ></InputField>
             
             <div className='userAuth-section-2-btns'>
-                <Button styleType='tertiary' onClick={() => console.log("click")}>Forgot Password?</Button>
+                <Button styleType='tertiary' onClick={handleReturnForgotPassword}>Forgot Password?</Button>
                 <Button type="submit" disabled={isLoading} styleType='secondary'>
                     {isLoading ? 'Signing In...' : 'Sign In'}
                 </Button>

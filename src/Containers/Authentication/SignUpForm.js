@@ -74,7 +74,7 @@ export default function SignUpForm({
             ></InputField>
             
             <div className='userAuth-section-2-btns'>
-                <Button styleType='tertiary' className='hidden' onClick={() => console.log("click")}>Forgot Password?</Button>
+                <div></div>
                 <Button type="submit" disabled={isLoading} styleType='secondary'>
                     {isLoading ? 'Creating...' : 'Create'}
                 </Button>

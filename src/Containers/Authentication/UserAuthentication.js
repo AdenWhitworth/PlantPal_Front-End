@@ -33,6 +33,10 @@ export default function UserAuthentication() {
     navigate('/', { replace: true });
   };
 
+  const handleReturnForgotPassword = () => {
+    navigate('/forgotPassword', { replace: true });
+  };
+
   const handleLoginSubmit = (e) => {
     handleSignIn(e, {
       email: formData.email,
@@ -73,6 +77,7 @@ export default function UserAuthentication() {
             handleInputChange={handleInputChange}
             handleSubmit={handleLoginSubmit}
             handleReturnHome={handleReturnHome}
+            handleReturnForgotPassword={handleReturnForgotPassword}
             error={error}
             isLoading={isLoading}
           />
