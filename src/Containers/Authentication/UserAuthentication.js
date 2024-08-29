@@ -37,9 +37,9 @@ export default function UserAuthentication() {
     handleSignIn(e, {
       email: formData.email,
       password: formData.password,
-    }, (token) => {
-      connectSocket(token);
-      navigate('/dashboard', { replace: true });
+    }, (accessToken) => {
+        connectSocket(accessToken);
+        navigate('/dashboard', { replace: true });
     });
   };
 
@@ -49,8 +49,8 @@ export default function UserAuthentication() {
       password: formData.password,
       first_name: formData.firstName,
       last_name: formData.lastName,
-    }, (token) => {
-      connectSocket(token);
+    }, (accessToken) => {
+      connectSocket(accessToken);
       navigate('/dashboard', { replace: true });
     });
   };

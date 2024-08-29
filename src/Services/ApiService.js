@@ -7,7 +7,7 @@ export const postForgotPassword = (userData) => publicClient.post('/users/forgot
 export const postResetPassword = (userData) => publicClient.post('/users/resetpassword', userData);
 
 // Authenticated API requests require Refresh Token
-export const postRefreshAccessToken = (refreshToken) => cookieClient(refreshToken).post('/users/refreshAccessToken');
+export const postRefreshAccessToken = () => cookieClient().post('/users/refreshAccessToken');
 
 // Authenticated API requests with Access Token
 export const postUpdateUser = (accessToken, setAccessToken, deviceDetails) => authClient(accessToken, setAccessToken).post('/users/updateUser', deviceDetails);

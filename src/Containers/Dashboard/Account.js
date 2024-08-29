@@ -20,7 +20,7 @@ export default function Account() {
   });
   const [error, setError] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
-  const { accesstoken, user, setUser } = useAuth();
+  const { accesstoken, user, setUser, setAccessToken } = useAuth();
 
   const resetError = useCallback(() => {
     setError('');
@@ -30,7 +30,7 @@ export default function Account() {
   const handleSaveClick = useCallback(async () => {
     resetError();
     try {
-      const { data } = await postUpdateUser(accesstoken, {
+      const { data } = await postUpdateUser(accesstoken, setAccessToken, {
         email: userDetails.email,
         first_name: userDetails.firstName,
         last_name: userDetails.lastName,

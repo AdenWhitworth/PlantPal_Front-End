@@ -1,28 +1,24 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { postRefreshAccessToken } from './ApiService';
 
 const createBaseClient = (baseURL, headers = {}) => {
   return axios.create({
     baseURL,
     headers,
+    withCredentials: true,
   });
 };
-
-const getRefreshTokenFromCookie = () => Cookies.get('refreshToken');
 
 const setupInterceptors = (client, setAccessToken) => {
   client.interceptors.response.use(
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-
       if (error.response.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
 
         try {
-          const refreshToken = getRefreshTokenFromCookie();
-          const response = await postRefreshAccessToken(refreshToken);
+          const response = await postRefreshAccessToken();
           const newAccessToken = response.data.accessToken;
 
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -35,7 +31,6 @@ const setupInterceptors = (client, setAccessToken) => {
           return Promise.reject(refreshError);
         }
       }
-
       return Promise.reject(error);
     }
   );
@@ -49,10 +44,10 @@ export const authClient = (accessToken, setAccessToken) => {
   return client;
 };
 
-export const cookieClient = (refreshToken) => {
+
+export const cookieClient = () => {
     return createBaseClient(process.env.REACT_APP_BASE_URL, {
         "x-api-key": process.env.REACT_APP_API_CLIENT_KEY,
-        'Cookie': `refreshToken=${refreshToken}`,
     });
 };
 

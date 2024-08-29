@@ -24,7 +24,7 @@ export default function AddDevice({
     const [error, setError] = useState('Error');
     const [errorVisible, setErrorVisible] = useState(false);
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
-    const { accesstoken } = useAuth();
+    const { accesstoken, setAccessToken } = useAuth();
     const { setDevice } = useDevice();
 
     const resetError = useCallback(() => {
@@ -45,7 +45,7 @@ export default function AddDevice({
 
     const handleNewConnection = useCallback(async () => {
         try {
-            const response = await postAddDevice(accesstoken,{
+            const response = await postAddDevice(accesstoken, setAccessToken,{
                 location: deviceLocation,
                 cat_num: assetNumber,
                 wifi_ssid: wifiSSID,

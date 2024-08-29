@@ -23,7 +23,7 @@ export default function WifiConnection({
     const { devices, device } = useDevice();
     const [wifiSSID, setWifiSSID] = useState('');
     const [wifiPassword, setWifiPassword] = useState('');
-    const { accessToken } = useAuth();
+    const { accessToken, setAccessToken } = useAuth();
 
     const handleChangeWifiClick = () => {
         connectBluetooth();
@@ -33,7 +33,7 @@ export default function WifiConnection({
         e.preventDefault();
 
         try {
-            await postUpdateWifi(accessToken,{ 
+            await postUpdateWifi(accessToken, setAccessToken,{ 
                 device_id: device.device_id, 
                 wifi_ssid: wifiSSID, 
                 wifi_password: wifiPassword

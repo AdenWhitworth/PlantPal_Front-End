@@ -25,7 +25,7 @@ export default function Dashboard() {
     
     const { 
         clearAccessToken,
-        accesstoken, 
+        accessToken, 
         user, 
         clearUser 
     } = useAuth();
@@ -98,13 +98,13 @@ export default function Dashboard() {
     }, [state, fetchUserDevices, setView]);
 
     useEffect(() => {
-        if (!accesstoken || !user) {
+        if (!accessToken || !user) {
             navigate("/auth", { replace: true });
         } else {
             sendCheckSocket(user.user_id);
             fetchUserDevices();
         }
-    }, [accesstoken, user]);
+    }, [accessToken, user]);
 
     useEffect(() => {
         if (errorReconnect) {
