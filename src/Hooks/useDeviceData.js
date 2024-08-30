@@ -47,6 +47,15 @@ export const useDeviceData = (handleLogout) => {
         setRefreshDate(localTimeString);
     }
 
+    const isObjectEmpty = (obj) => {
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
     useEffect(() => {
         if (device.cat_num) {
             fetchDeviceLogs();
@@ -60,7 +69,7 @@ export const useDeviceData = (handleLogout) => {
     }, [device]);
 
     useEffect(() => {
-        if (typeof lastLog !== "undefined") {
+        if (!isObjectEmpty(lastLog)) {
             formatRefreshDate();
         } else {
             setRefreshDate("");
