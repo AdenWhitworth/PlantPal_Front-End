@@ -7,13 +7,12 @@ const useBluetooth = () => {
   const [service, setService] = useState(null);
   const [characteristic, setCharacteristic] = useState(null);
   const [bleStatus, setBleStatus] = useState('');
-  const { device } = useDevice();
 
-  const connectBluetooth = async () => {
+  const connectBluetooth = async (cat_num) => {
     try {
         setBleStatus('Requesting Bluetooth device...');
         const connectDevice = await navigator.bluetooth.requestDevice({
-            filters: [{ name: device.cat_num }],
+            filters: [{ name: cat_num }],
             optionalServices: [process.env.REACT_APP_BLE_SERVICE_UUID]
         });
 
@@ -32,8 +31,7 @@ const useBluetooth = () => {
         setCharacteristic(characteristic);
         setBleStatus('Connected to Bluetooth device');
     } catch (error) {
-        console.error('Error connecting to Bluetooth device:', error);
-        setBleStatus('Failed to connect to Bluetooth device');
+      throw new Error(error.message || 'Failed to connect to Bluetooth device');
     }
   };
 

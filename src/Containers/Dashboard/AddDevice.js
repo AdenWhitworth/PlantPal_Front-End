@@ -36,12 +36,12 @@ export default function AddDevice({
         e.preventDefault();
         resetError();
         try {
-            connectBluetooth();
+            await connectBluetooth(assetNumber);
         } catch (error) {
-            setError(error.response?.data?.message || 'Bluetooth connection failed');
+            setError('Bluetooth connection failed. Please try again.');
             setErrorVisible(true);
         }
-    }, [connectBluetooth, resetError]);
+    }, [connectBluetooth, resetError, assetNumber]);
 
     const handleNewConnection = useCallback(async () => {
         try {
@@ -118,7 +118,7 @@ export default function AddDevice({
                 ></InputField>
                 
                 <div className='new-device-section-2-btns'>
-                    <Button styleType='tertiary'>Change Password?</Button>
+                    <div></div>
                     
                     <Button type='submit' styleType='secondary'>Connect</Button>
                 </div>

@@ -462,6 +462,7 @@ li {
 .error-message{
     color: red !important;
     margin: 0;
+    padding-top: 1%;
 }
 
 /* Dashboard */
