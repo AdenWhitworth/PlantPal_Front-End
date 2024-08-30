@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useDevice } from '../Provider/DeviceProvider';
 
 const useBluetooth = () => {
   const [bleDevice, setBleDevice] = useState(null);

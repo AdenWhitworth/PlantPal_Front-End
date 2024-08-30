@@ -18,7 +18,7 @@ export const useAuthHandlers = ({ setAccessToken, setUser, isLoginSelected }) =>
     };
 
     const handleSignIn = async (e, userData, onSuccess) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         resetError();
         if (!validateForm(userData)) return;
             setIsLoading(true);
@@ -41,7 +41,7 @@ export const useAuthHandlers = ({ setAccessToken, setUser, isLoginSelected }) =>
             setIsLoading(true);
         try {
             await postRegister(userData);
-            await handleSignIn(e, userData);
+            await handleSignIn(null, userData, onSuccess);
         } catch (error) {
             setError(error.response?.data?.message || 'Registration failed. Please try again.');
             setIsLoading(false);
