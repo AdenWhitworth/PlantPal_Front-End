@@ -53,7 +53,7 @@ export default function Dashboard() {
         navigate("/auth", { replace: true });
     }, [user, sendRemoveUser, clearUser, clearAccessToken, navigate]);
 
-    const { fetchUserDevices } = useDeviceData(handleLogout);
+    const { fetchUserDevices, isDevicesLoading } = useDeviceData(handleLogout);
 
     const setView = useCallback((view, settingsVisible) => {
         setState(prevState => ({
@@ -140,6 +140,7 @@ export default function Dashboard() {
                     handleLogout={handleLogout}
                     showAccountView={() => setView('accountView', true)}
                     isSettingsVisible={state.isSettingsVisible}
+                    isDevicesLoading={isDevicesLoading}
                 />
 
                 <DeviceMenu

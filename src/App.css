@@ -932,6 +932,38 @@ li {
     }
 }
 
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes growAndPop {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .loading{
+    animation: rotate 3s linear infinite;
+  }
+  
+  .loaded {
+    animation: growAndPop 0.7s ease-in-out;
+  }
+
 .password-form {
     text-align: center;
     justify-content: center;

@@ -1,40 +1,46 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService';
 import { useAuth } from "../Provider/AuthProvider";
 import { useDevice } from '../Provider/DeviceProvider';
 
 export const useDeviceData = (handleLogout) => {
 
+    const [isDevicesLoading, setIsDevicesLoading] = useState(false);
+    const [isDeviceLoading, setIsDeviceLoading] = useState(false);
+
     const { accessToken, setAccessToken } = useAuth();
     const { setDevices, device, setDeviceShadow, setDeviceLogs, lastLog, setLastLog, setRefreshDate } = useDevice();
 
     const fetchUserDevices = async () => {
+        setIsDevicesLoading(true);
         try {
             const response = await getUserDevices(accessToken, setAccessToken);
             setDevices(response.data.devices);
         } catch (error) {
             handleLogout();
+        } finally {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setIsDevicesLoading(false);
         }
     };
 
-    const fetchDeviceLogs = async () => {
+    const fetchUserDevice = async () => {
+        setIsDeviceLoading(true);
         try {
-            const response = await getDeviceLogs(accessToken, setAccessToken, { params: { cat_num: device.cat_num }});
-            setDeviceLogs(response.data.deviceLogs);
-            setLastLog(response.data.lastLog);
-        } catch (error) {
-            handleLogout();
-        }
-    };
+            const deviceLogsPromise = await getDeviceLogs(accessToken, setAccessToken, { params: { cat_num: device.cat_num }});
+            const shadowPromise = await getDeviceShadow(accessToken, setAccessToken, { params: { thingName: device.thing_name } });
 
-    const fetchDeviceShadow = async () => {
-        try {
-            const response = await getDeviceShadow(accessToken, setAccessToken, { params: { thingName: device.thing_name } });
-            setDeviceShadow(response.data.deviceShadow);
+            const [ deviceLogsResponse, shadowResponse] = await Promise.all([deviceLogsPromise, shadowPromise]);
+
+            setDeviceLogs(deviceLogsResponse.data.deviceLogs);
+            setLastLog(deviceLogsResponse.data.lastLog);
+            setDeviceShadow(shadowResponse.data.deviceShadow);
         } catch (error) {
             handleLogout();
+        } finally {
+            setIsDeviceLoading(false);
         }
-    };
+    }
 
     const formatRefreshDate = () => {
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -57,14 +63,8 @@ export const useDeviceData = (handleLogout) => {
     };
 
     useEffect(() => {
-        if (device.cat_num) {
-            fetchDeviceLogs();
-        }
-    }, [device]);
-
-    useEffect(() => {
-        if (device.thing_name) {
-            fetchDeviceShadow();
+        if (device.cat_num && device.thing_name) {
+            fetchUserDevice();
         }
     }, [device]);
 
@@ -77,6 +77,6 @@ export const useDeviceData = (handleLogout) => {
     }, [lastLog]);
 
     return {
-        fetchUserDevices, handleLogout
+        fetchUserDevices, handleLogout, isDevicesLoading, isDeviceLoading
     };
 };
