@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { postForgotPassword } from '../../Services/ApiService';
 import { useNavigate } from 'react-router-dom';
-import mail from '../../Images/email-brown.svg';
-import Button from '../../Components/Button';
-import InputField from '../../Components/InputField';
-import Modal from '../../Components/Modal';
+import ForgotPasswordModal from '../../Modals/ForgotPasswordModal';
 
 const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
+    const [formData, setFormData] = useState({
+        email: '',
+      });
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const resetError = () => setError(null);
     const resetMessage = () => setMessage(null);
 
-    const handleForgotPassword = async (e) => {
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+          ...prevData,
+          [name]: value,
+        }));
+      };
+
+    const handleForgotPasswordSubmit = async (e) => {
         e.preventDefault();
         resetError();
         resetMessage();
         try {
             await postForgotPassword({
-                email
+                email: formData.email,
             });
 
             setMessage('We have sent password recover instructions to your email.')
@@ -41,40 +48,14 @@ const ForgotPassword = () => {
 
     return (
 
-        <Modal 
-            addClose={true} 
-            addButton={false}
-            buttonLabel='Accept'
-            styleType='primary'
-            children={
-                <form className='password-form' onSubmit={handleForgotPassword}>
-                    <h1 className="password-form-logo-txt">Reset Password</h1>
-
-                    <p>Enter the email associated with your account and we'll send an email with instructions to reset your password.</p>
-                    
-                    <InputField 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        name='email'
-                        inputImg={mail} 
-                        isRequired={true} 
-                        type='email' 
-                        placeholder='Email' 
-                        isSpellCheck={false} 
-                        setWidth={'100%'}
-                    ></InputField>
-
-                    <div className='password-form-logo-btns'>
-                        <div></div>
-                        <Button type="submit" styleType='secondary'>Send Instructions</Button>
-                    </div>
-                    
-                    {message && <h4>{message}</h4>}
-                    
-                    {error && <div className="error-message">{error}</div>}
-                </form>
-            }
-            handleCloseClick={handleReturnHome}
-        ></Modal>
+        <ForgotPasswordModal 
+            handleReturnHome={handleReturnHome} 
+            message={message}
+            error={error}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleForgotPasswordSubmit}
+        ></ForgotPasswordModal>
+        
     );
 };
 
