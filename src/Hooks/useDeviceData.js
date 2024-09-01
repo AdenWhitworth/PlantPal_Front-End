@@ -7,7 +7,7 @@ export const useDeviceData = (handleLogout) => {
 
     const [isDevicesLoading, setIsDevicesLoading] = useState(false);
     const [isDeviceLoading, setIsDeviceLoading] = useState(false);
-
+    const [isDevicesLoaded, setIsDevicesLoaded] = useState(false);
     const { accessToken, setAccessToken } = useAuth();
     const { setDevices, device, setDeviceShadow, setDeviceLogs, lastLog, setLastLog, setRefreshDate } = useDevice();
 
@@ -19,7 +19,7 @@ export const useDeviceData = (handleLogout) => {
         } catch (error) {
             handleLogout();
         } finally {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             setIsDevicesLoading(false);
         }
     };
@@ -69,6 +69,17 @@ export const useDeviceData = (handleLogout) => {
     }, [device]);
 
     useEffect(() => {
+        if (isDevicesLoading){
+            setIsDevicesLoaded(true);
+        }
+
+        if (!isDevicesLoading && isDevicesLoaded){
+            setIsDevicesLoaded(false);
+        }
+
+    }, [isDevicesLoading, isDevicesLoaded]);
+
+    useEffect(() => {
         if (!isObjectEmpty(lastLog)) {
             formatRefreshDate();
         } else {
@@ -77,6 +88,6 @@ export const useDeviceData = (handleLogout) => {
     }, [lastLog]);
 
     return {
-        fetchUserDevices, handleLogout, isDevicesLoading, isDeviceLoading
+        fetchUserDevices, handleLogout, isDevicesLoading, isDeviceLoading, isDevicesLoaded
     };
 };

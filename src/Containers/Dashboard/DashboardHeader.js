@@ -11,10 +11,10 @@ export default function DashboardHeader({
     handleLogout,
     showAccountView,
     isSettingsVisible,
-    isDevicesLoading
+    isDevicesLoading,
+    isDevicesLoaded
 }) {
     const { refreshDate } = useDevice();
-    const [isDevicesLoaded, setIsDevicesLoaded] = useState(false);
     const [refreshCSS, setRefreshCSS] = useState('refresh grow');
     
 
@@ -25,15 +25,12 @@ export default function DashboardHeader({
 
     useEffect(() => {
         if (isDevicesLoading){
-            setIsDevicesLoaded(true);
             setRefreshCSS('refresh loading');
         }
 
         if (!isDevicesLoading && isDevicesLoaded){
-            setIsDevicesLoaded(false);
             setRefreshCSS('refresh loaded');
         }
-
     }, [isDevicesLoading, isDevicesLoaded]);
 
     return (
