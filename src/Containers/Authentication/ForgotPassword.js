@@ -6,7 +6,7 @@ import ForgotPasswordModal from '../../Modals/ForgotPasswordModal';
 const ForgotPassword = () => {
     const [formData, setFormData] = useState({
         email: '',
-      });
+    });
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -16,10 +16,10 @@ const ForgotPassword = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
+            ...prevData,
+            [name]: value,
         }));
-      };
+    };
 
     const handleForgotPasswordSubmit = async (e) => {
         e.preventDefault();
