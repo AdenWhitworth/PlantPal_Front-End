@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { postResetPassword } from '../../Services/ApiService';
 import ResetPasswordModal from '../../Modals/ResetPasswordModal';
+import { useChangePasswordHandlers } from '../../Hooks/useChangePasswordHandlers';
 
 const ResetPassword = () => {
     const [formData, setFormData] = useState({
         password: '',
         confirmPassword: '',
     });
-    const [error, setError] = useState(null);
-    const [message, setMessage] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const resetToken = searchParams.get('resetToken');
     const userId = searchParams.get('user_id');
-
-    const resetError = () => setError(null);
-    const resetMessage = () => setMessage(null);
+    const { 
+        handlePasswordReset, 
+        error, 
+        resetError, 
+        message, 
+        resetMessage 
+    } = useChangePasswordHandlers();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -28,26 +30,13 @@ const ResetPassword = () => {
     };
 
     const handleResetPasswordSubmit = async (e) => {
-        e.preventDefault();
-        resetError();
-        resetMessage();
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-        try {
-            await postResetPassword({
-                password: formData.password,
-                resetToken: encodeURIComponent(resetToken),
-                user_id: userId,
-            });
-
-            setMessage('Success resetting the password. Please log in with the new credentials.')
-
+        handlePasswordReset(e, {
+            password: formData.password,
+            resetToken: encodeURIComponent(resetToken),
+            user_id: userId,
+        }, formData.confirmPassword, () => {
             handleReturnAuth();
-        } catch (err) {
-            setError('Error resetting password. Please try again.');
-        }
+        });
     };
 
     const handleReturnHome = () => {
