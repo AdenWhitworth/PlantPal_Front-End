@@ -11,6 +11,7 @@ import { useAuth } from "../../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from '../../Provider/SocketProvider';
 import { useDeviceData } from '../../Hooks/useDeviceData';
+import LoadingDots from '../../Components/LoadingDots';
 
 export default function Dashboard() {
     const [state, setState] = useState({
@@ -24,8 +25,8 @@ export default function Dashboard() {
     const navigate = useNavigate();
     
     const { 
-        clearToken,
-        token, 
+        clearAccessToken,
+        accessToken, 
         user, 
         clearUser 
     } = useAuth();
@@ -49,11 +50,11 @@ export default function Dashboard() {
             }
         }
         clearUser();
-        clearToken();
+        clearAccessToken();
         navigate("/auth", { replace: true });
-    }, [user, sendRemoveUser, clearUser, clearToken, navigate]);
+    }, [user, sendRemoveUser, clearUser, clearAccessToken, navigate]);
 
-    const { fetchUserDevices } = useDeviceData(handleLogout);
+    const { fetchUserDevices, isDevicesLoading, isDevicesLoaded } = useDeviceData(handleLogout);
 
     const setView = useCallback((view, settingsVisible) => {
         setState(prevState => ({
@@ -77,6 +78,7 @@ export default function Dashboard() {
                     autoSwitch={state.autoSwitch}
                     setAutoSwitch={autoSwitch => setState(prev => ({ ...prev, autoSwitch }))}
                     setConfirmAuto={confirmAuto => setState(prev => ({ ...prev, confirmAuto }))}
+                    isDevicesLoading={isDevicesLoading}
                 />;
             case 'accountView':
                 return <Account />;
@@ -93,18 +95,19 @@ export default function Dashboard() {
                     autoSwitch={state.autoSwitch}
                     setAutoSwitch={autoSwitch => setState(prev => ({ ...prev, autoSwitch }))}
                     setConfirmAuto={confirmAuto => setState(prev => ({ ...prev, confirmAuto }))}
+                    isDevicesLoading={isDevicesLoading}
                 />;
         }
     }, [state, fetchUserDevices, setView]);
 
     useEffect(() => {
-        if (!token || !user) {
+        if (!accessToken || !user) {
             navigate("/auth", { replace: true });
         } else {
             sendCheckSocket(user.user_id);
             fetchUserDevices();
         }
-    }, [token, user]);
+    }, [accessToken, user]);
 
     useEffect(() => {
         if (errorReconnect) {
@@ -133,24 +136,31 @@ export default function Dashboard() {
                 children={state.autoSwitch ? "Confirm setting PlantPal to automatic watering." : "Confirm setting PlantPal to manual watering"}
             />}
 
-            <div className={state.isSettingsVisible ? 'dashboard-grid-settings' : 'dashboard-grid'}>
+            <div className={isDevicesLoading? 'dashboard-grid-loading' : state.isSettingsVisible ? 'dashboard-grid-settings' : 'dashboard-grid'}>
+            
                 <DashboardHeader
                     handlePlantPalClick={handlePlantPalClick}
                     handleRefreshClick={fetchUserDevices}
                     handleLogout={handleLogout}
                     showAccountView={() => setView('accountView', true)}
                     isSettingsVisible={state.isSettingsVisible}
+                    isDevicesLoading={isDevicesLoading}
+                    isDevicesLoaded={isDevicesLoaded}
                 />
 
-                <DeviceMenu
-                    connectDeviceToggle={state.connectDeviceToggle}
-                    showAddDeviceView={() => setView('addDeviceView', true)}
-                    isSettingsVisible={state.isSettingsVisible}
-                    showPerformanceView={() => setView('performanceView', false)}
-                />
+                {isDevicesLoading? (<LoadingDots></LoadingDots>) :
+                (
+                    <>
+                        <DeviceMenu
+                            connectDeviceToggle={state.connectDeviceToggle}
+                            showAddDeviceView={() => setView('addDeviceView', true)}
+                            isSettingsVisible={state.isSettingsVisible}
+                            showPerformanceView={() => setView('performanceView', false)}
+                        />
 
-                {renderView()}
-
+                        {renderView()}
+                    </>
+                )}
             </div>
         </section>
     );

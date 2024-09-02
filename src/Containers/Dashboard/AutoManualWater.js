@@ -6,7 +6,7 @@ import Manual from './Manual';
 import { useSocket } from '../../Provider/SocketProvider';
 import { useDevice } from '../../Provider/DeviceProvider';
 import {useAuth} from '../../Provider/AuthProvider';
-import axios from "axios";
+import { postUpdatePumpWater } from '../../Services/ApiService';
 
 export default function AutoManualWater({
     autoSwitch, 
@@ -17,21 +17,13 @@ export default function AutoManualWater({
     const [waterOccurance, setWaterOccurance] = useState([]);
     const [isAutoVisible, setIsAuotVisible] = useState(false);
     const { setRefresh } = useSocket();
-    const { token } = useAuth();
+    const { accesstoken, setAccessToken } = useAuth();
     const { 
         devices, 
         lastLog, 
         device, 
         deviceLogs
     } = useDevice();
-
-    const client = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
-        
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-    });
 
     const handleAutoSwitch = (e) => {
         setAutoSwitch(e.target.checked);
@@ -41,7 +33,7 @@ export default function AutoManualWater({
     const handleUpdatePumpWater = async (e) => {
         e.preventDefault();
         try {
-            await client.post("/dashboard/updatePumpWater", { device_id: device.device_id, pump_water: true});
+            await postUpdatePumpWater(accesstoken, setAccessToken,{ device_id: device.device_id, pump_water: true})
             setRefresh(true);
         } catch (error) {
             console.error(error);

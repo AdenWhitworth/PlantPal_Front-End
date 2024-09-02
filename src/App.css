@@ -56,7 +56,7 @@ p{
 
 .nav-img{
     display: flex;
-    cursor: pointer;
+    cursor: unset;
     gap: 1em;
 }
 
@@ -462,6 +462,7 @@ li {
 .error-message{
     color: red !important;
     margin: 0;
+    padding-top: 1%;
 }
 
 /* Dashboard */
@@ -495,6 +496,20 @@ li {
     grid-template-areas: 'header header header'
     'menu setting setting'
     'menu setting setting';
+    gap: 2%;
+    padding-left: 2%;
+    padding-top: 2%;
+    grid-template-rows: minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.dashboard-grid-loading{
+    width: 96%;
+    height: 94%;
+    display: grid;
+    grid-template-areas: 'header header header'
+    'loading loading loading'
+    'loading loading loading';
     gap: 2%;
     padding-left: 2%;
     padding-top: 2%;
@@ -930,6 +945,108 @@ li {
         transform: rotateX(360deg);
     }
 }
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+@keyframes growAndPop {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.loading{
+    animation: rotate 3s linear infinite;
+}
+
+.loaded {
+    animation: growAndPop 0.7s ease-in-out;
+}
+
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-area: loading;
+    height: 100%;
+    width: 100%;
+}
+
+.loading-dots div {
+    display: inline-block;
+    width: 5vw;
+    height: 5vw;
+    margin: 0 2px;
+    background-color: #C0C0C0;
+    border-radius: 50%;
+    animation: loadingDots 1.2s infinite ease-in-out both;
+}
+
+.loading-dots div:nth-child(1) {
+    animation-delay: -0.24s;
+}
+
+.loading-dots div:nth-child(2) {
+    animation-delay: -0.12s;
+}
+
+.loading-dots div:nth-child(3) {
+    animation-delay: 0;
+}
+
+@keyframes loadingDots {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+.password-form {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 90%; 
+    margin-left: 5%;
+    gap: 5%;
+}
+
+.password-form h1{
+    margin: 2%;
+}
+
+.password-form p{
+    width: 100%;
+    margin: 2%;
+    padding: 0;
+}
+
+.password-form-logo-btns{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 2%;
+}
+
+
+
+
 
 
 

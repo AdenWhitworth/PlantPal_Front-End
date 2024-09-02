@@ -8,16 +8,8 @@ import tag from '../../Images/tag-brown.svg';
 import gear from '../../Images/gear-grey.svg';
 import "../../App.css";
 import { useAuth } from '../../Provider/AuthProvider';
-import axios from 'axios';
-
-const useClient = (token) => {
-  return axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-      "Authorization": `Bearer ${token}`,
-    },
-  });
-};
+import { postUpdateUser } from '../../Services/ApiService';
+import { useNavigate } from 'react-router-dom';
 
 export default function Account() {
   const [editToggle, setEditToggle] = useState(false);
@@ -29,18 +21,18 @@ export default function Account() {
   });
   const [error, setError] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
-  const { token, user, setUser } = useAuth();
-  const client = useClient(token);
+  const { accesstoken, user, setUser, setAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   const resetError = useCallback(() => {
     setError('');
     setErrorVisible(false);
-}, []);
+  }, []);
 
   const handleSaveClick = useCallback(async () => {
     resetError();
     try {
-      const { data } = await client.post('/users/updateUser', {
+      const { data } = await postUpdateUser(accesstoken, setAccessToken, {
         email: userDetails.email,
         first_name: userDetails.firstName,
         last_name: userDetails.lastName,
@@ -57,7 +49,7 @@ export default function Account() {
       setError(error.response?.data?.message || 'Failed to update user');
       setErrorVisible(true);
     }
-  }, [userDetails, client, setUser, resetError]);
+  }, [userDetails, accesstoken, setUser, resetError]);
 
   const handleEditClick = () => {
     setInputDisabled(false);
@@ -71,6 +63,10 @@ export default function Account() {
 
   const handleInputChange = (field) => (e) => {
     setUserDetails((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleReturnForgotPassword = () => {
+    navigate('/forgotPassword', { replace: true });
   };
 
   return (
@@ -126,12 +122,12 @@ export default function Account() {
 
         <div className='account-section-2-btns'>
 
-          <button className='text-btn'><span>Change Password?</span></button>
+          <Button styleType='tertiary' onClick={handleReturnForgotPassword}>Change Password?</Button>
 
           {editToggle ? (
-            <Button children='Save' onClick={handleSaveClick} isPrimaryStyle={false} />
+            <Button onClick={handleSaveClick} styleType='secondary'>Save</Button>
           ) : (
-            <Button children='Edit' onClick={handleEditClick} isPrimaryStyle={false} />
+            <Button onClick={handleEditClick} styleType='secondary'>Edit</Button>
           )}
 
         </div>

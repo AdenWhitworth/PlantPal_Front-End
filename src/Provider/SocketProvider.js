@@ -9,10 +9,13 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [errorReconnect, setErrorReconnect] = useState(false);
   const socketRef = useRef(null);
-  const { token, user } = useAuth();
+  const { accessToken, user } = useAuth();
+
+  const MAX_RETRIES = 5;
 
   const connectSocket = useCallback((passedToken) => {
     if (socketRef.current) return;
@@ -30,6 +33,7 @@ export const SocketProvider = ({ url, children }) => {
     socketInstance.on('connect', () => {
       setIsConnected(true);
       setErrorSocket(null);
+      setRetryCount(0);
       console.log('Socket connected', socketInstance.id);
       if (user) sendAddUser(user.user_id);
     });
@@ -42,8 +46,19 @@ export const SocketProvider = ({ url, children }) => {
 
     socketInstance.on('connect_error', (err) => {
       setErrorSocket('Connection error');
-      setErrorReconnect(true);
       console.error('Connection error:', err);
+
+      if (retryCount < MAX_RETRIES) {
+        const retryDelay = Math.pow(2, retryCount) * 1000;
+        setTimeout(() => {
+          console.log(`Retrying connection... attempt ${retryCount + 1}`);
+          setRetryCount(retryCount + 1);
+          connectSocket(passedToken);
+        }, retryDelay);
+      } else {
+        console.error('Max retries reached. Giving up on connection.');
+        setErrorReconnect(true);
+      }
     });
 
     socketInstance.on('error', (err) => {
@@ -94,19 +109,20 @@ export const SocketProvider = ({ url, children }) => {
       socketRef.current = null;
       setIsConnected(false);
       setErrorSocket(null);
+      setRetryCount(0);
       console.log('Socket disconnected manually');
     }
   }, []);
 
   useEffect(() => {
-    if (token) {
-      connectSocket(token);
+    if (accessToken) {
+      connectSocket(accessToken);
     }
 
     return () => {
       disconnectSocket();
     };
-  }, [connectSocket, disconnectSocket, token]);
+  }, [connectSocket, disconnectSocket, accessToken]);
 
   const sendAddUser = useCallback((user_id) => {
     if (socketRef.current) {

@@ -2,8 +2,6 @@ import React from 'react';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 
 export default function WedgeGauge ({className,value}) {
-    
-    
     return (
         <Gauge
             className={className}

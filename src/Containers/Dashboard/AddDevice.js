@@ -8,9 +8,9 @@ import tag from '../../Images/tag-brown.svg';
 import plus_circle from '../../Images/plus-circle-gray.svg';
 import "../../App.css";
 import {useAuth} from '../../Provider/AuthProvider';
-import axios from "axios";
 import useBluetooth from '../../Hooks/useBluetooth';
 import { useDevice } from '../../Provider/DeviceProvider';
+import { postAddDevice } from '../../Services/ApiService';
 
 export default function AddDevice({
     setConnectDeviceToggle, 
@@ -24,17 +24,8 @@ export default function AddDevice({
     const [error, setError] = useState('Error');
     const [errorVisible, setErrorVisible] = useState(false);
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
-    const { token } = useAuth();
+    const { accesstoken, setAccessToken } = useAuth();
     const { setDevice } = useDevice();
-
-    const client = axios.create({
-        baseURL: process.env.REACT_APP_BASE_URL,
-
-        headers: {
-            "Authorization": "Bearer " + token
-        }
-        
-    });
 
     const resetError = useCallback(() => {
         setError('');
@@ -45,21 +36,22 @@ export default function AddDevice({
         e.preventDefault();
         resetError();
         try {
-            connectBluetooth();
+            await connectBluetooth(assetNumber);
         } catch (error) {
-            setError(error.response?.data?.message || 'Bluetooth connection failed');
+            setError('Bluetooth connection failed. Please try again.');
             setErrorVisible(true);
         }
-    }, [connectBluetooth, resetError]);
+    }, [connectBluetooth, resetError, assetNumber]);
 
     const handleNewConnection = useCallback(async () => {
         try {
-            const response = await client.post("/dashboard/addDevice", {
+            const response = await postAddDevice(accesstoken, setAccessToken,{
                 location: deviceLocation,
                 cat_num: assetNumber,
                 wifi_ssid: wifiSSID,
                 wifi_password: wifiPassword
             });
+
             sendCredentials();
             setDevice(response.data.newDevice);
             resetError();
@@ -69,7 +61,7 @@ export default function AddDevice({
             setError(error.response?.data?.msg || 'Failed to add device');
             setErrorVisible(true);
         }
-    }, [deviceLocation, assetNumber, wifiSSID, wifiPassword, client, sendCredentials, setDevice, setConnectDeviceToggle, showPerformanceView, resetError]);
+    }, [deviceLocation, assetNumber, wifiSSID, wifiPassword, accesstoken, sendCredentials, setDevice, setConnectDeviceToggle, showPerformanceView, resetError]);
     
     useEffect(() => {
         if (bleDevice){
@@ -126,14 +118,9 @@ export default function AddDevice({
                 ></InputField>
                 
                 <div className='new-device-section-2-btns'>
-                    <button className='text-btn hidden'>
-                        <span>Change Password?</span>
-                    </button>
-                    <Button 
-                        children='Connect' 
-                        type='submit' 
-                        isPrimaryStyle={false}
-                    ></Button>
+                    <div></div>
+                    
+                    <Button type='submit' styleType='secondary'>Connect</Button>
                 </div>
                 {errorVisible && <h4 className='error-message'>{error}</h4>}
             </form>

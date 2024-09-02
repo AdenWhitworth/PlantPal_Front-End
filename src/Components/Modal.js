@@ -3,7 +3,7 @@ import x_circle from '../Images/x-circle-black.svg';
 import Button from './Button';
 import PropTypes from 'prop-types';
 
-export default function Modal({handleCloseClick, handleButtonClick, children, addClose, addButton, buttonLabel, isButtonPrimary}) {
+export default function Modal({handleCloseClick, handleButtonClick, children, addClose, addButton, buttonLabel, styleType}) {
 
     return (
         <div className="modal">
@@ -22,7 +22,7 @@ export default function Modal({handleCloseClick, handleButtonClick, children, ad
                 {addButton?
 
                     <div className='modal-btns'>
-                        <Button children={buttonLabel} isPrimaryStyle={isButtonPrimary} onClick={handleButtonClick}></Button>
+                        <Button styleType={styleType} onClick={handleButtonClick}>{buttonLabel}</Button>
                     </div>
                     :
                     <></>
@@ -40,6 +40,6 @@ Modal.propTypes = {
     addClose: PropTypes.bool.isRequired,
     addButton: PropTypes.bool.isRequired,
     buttonLabel: PropTypes.string,
-    isButtonPrimary: PropTypes.bool,
+    styleType: PropTypes.string,
 
 };

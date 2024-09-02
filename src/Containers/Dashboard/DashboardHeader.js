@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import plantpal_logo from "../../Images/PlantPal Logo.svg";
 import gear from "../../Images/gear-grey.svg";
 import exit from "../../Images/exit-grey.svg";
@@ -10,14 +10,28 @@ export default function DashboardHeader({
     handleRefreshClick, 
     handleLogout,
     showAccountView,
-    isSettingsVisible
+    isSettingsVisible,
+    isDevicesLoading,
+    isDevicesLoaded
 }) {
     const { refreshDate } = useDevice();
+    const [refreshCSS, setRefreshCSS] = useState('refresh grow');
+    
 
     const links = [
         { alt: "Settings logo", imgSrc: gear, onClick: showAccountView, className: "gear" },
         { alt: "Logout logo", imgSrc: exit, onClick: handleLogout, className: "exit" },
     ];
+
+    useEffect(() => {
+        if (isDevicesLoading){
+            setRefreshCSS('refresh loading');
+        }
+
+        if (!isDevicesLoading && isDevicesLoaded){
+            setRefreshCSS('refresh loaded');
+        }
+    }, [isDevicesLoading, isDevicesLoaded]);
 
     return (
         <header className='dashboard-header'>
@@ -31,7 +45,7 @@ export default function DashboardHeader({
                         <li><h4 className="last-refresh">{refreshDate}</h4></li>
                         <li>
                             <img 
-                                className="refresh grow" 
+                                className={refreshCSS} 
                                 src={refresh} 
                                 alt="Refresh logo" 
                                 onClick={handleRefreshClick} 
