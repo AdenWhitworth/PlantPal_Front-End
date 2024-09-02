@@ -19,7 +19,7 @@ export const useDeviceData = (handleLogout) => {
         } catch (error) {
             handleLogout();
         } finally {
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             setIsDevicesLoading(false);
         }
     };
