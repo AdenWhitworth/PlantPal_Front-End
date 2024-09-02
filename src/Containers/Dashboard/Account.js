@@ -9,6 +9,7 @@ import gear from '../../Images/gear-grey.svg';
 import "../../App.css";
 import { useAuth } from '../../Provider/AuthProvider';
 import { postUpdateUser } from '../../Services/ApiService';
+import { useNavigate } from 'react-router-dom';
 
 export default function Account() {
   const [editToggle, setEditToggle] = useState(false);
@@ -21,6 +22,7 @@ export default function Account() {
   const [error, setError] = useState('');
   const [errorVisible, setErrorVisible] = useState(false);
   const { accesstoken, user, setUser, setAccessToken } = useAuth();
+  const navigate = useNavigate();
 
   const resetError = useCallback(() => {
     setError('');
@@ -61,6 +63,10 @@ export default function Account() {
 
   const handleInputChange = (field) => (e) => {
     setUserDetails((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleReturnForgotPassword = () => {
+    navigate('/forgotPassword', { replace: true });
   };
 
   return (
@@ -116,7 +122,7 @@ export default function Account() {
 
         <div className='account-section-2-btns'>
 
-          <Button styleType='tertiary'>Change Password?</Button>
+          <Button styleType='tertiary' onClick={handleReturnForgotPassword}>Change Password?</Button>
 
           {editToggle ? (
             <Button onClick={handleSaveClick} styleType='secondary'>Save</Button>
