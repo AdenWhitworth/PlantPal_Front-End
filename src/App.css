@@ -56,7 +56,7 @@ p{
 
 .nav-img{
     display: flex;
-    cursor: pointer;
+    cursor: unset;
     gap: 1em;
 }
 
