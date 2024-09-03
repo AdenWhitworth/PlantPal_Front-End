@@ -1,7 +1,15 @@
 import React from 'react';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 
-export default function WedgeGauge ({className,value}) {
+interface WedgeGaugeProps {
+    className?: string;
+    value: number;
+}
+
+export default function WedgeGauge ({
+    className,
+    value
+}: WedgeGaugeProps) {
     return (
         <Gauge
             className={className}
