@@ -3,8 +3,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ResetPasswordModal from '../../Modals/ResetPasswordModal';
 import { useChangePasswordHandlers } from '../../Hooks/useChangePasswordHandlers';
 
+interface FormData  {
+    password: string;
+    confirmPassword: string;
+}
+
 const ResetPassword = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         password: '',
         confirmPassword: '',
     });
@@ -21,7 +26,7 @@ const ResetPassword = () => {
         resetMessage 
     } = useChangePasswordHandlers();
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -29,10 +34,16 @@ const ResetPassword = () => {
         }));
     };
 
-    const handleResetPasswordSubmit = async (e) => {
+    const handleResetPasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        
+        if(!resetToken && !userId){
+            handleReturnHome();
+            return;
+        }
+        
         handlePasswordReset(e, {
             password: formData.password,
-            resetToken: encodeURIComponent(resetToken),
+            resetToken: encodeURIComponent(resetToken || ''),
             user_id: userId,
         }, formData.confirmPassword, () => {
             handleReturnAuth();
@@ -50,7 +61,7 @@ const ResetPassword = () => {
     useEffect(() => {
         resetError();
         resetMessage();
-    },[]);
+    },[resetError, resetMessage]);
 
     return (
 

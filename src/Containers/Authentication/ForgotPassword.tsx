@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import ForgotPasswordModal from '../../Modals/ForgotPasswordModal';
 import { useChangePasswordHandlers } from '../../Hooks/useChangePasswordHandlers';
 
+interface FormData  {
+    email: string;
+}
+
 const ForgotPassword = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         email: '',
     });
     const navigate = useNavigate();
@@ -16,7 +20,7 @@ const ForgotPassword = () => {
         resetMessage 
     } = useChangePasswordHandlers();
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -24,7 +28,7 @@ const ForgotPassword = () => {
         }));
     };
 
-    const handleForgotPasswordSubmit = (e) => {
+    const handleForgotPasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         handleForgotPassword(e, {
             email: formData.email,
         })
@@ -37,7 +41,7 @@ const ForgotPassword = () => {
     useEffect(() => {
         resetError();
         resetMessage();
-    },[]);
+    },[resetError, resetMessage]);
 
     return (
 

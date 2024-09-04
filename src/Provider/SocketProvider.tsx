@@ -1,23 +1,48 @@
-import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import io from 'socket.io-client';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
+import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthProvider';
 
-const SocketContext = createContext();
+interface SocketContextType {
+  isConnected: boolean;
+  errorSocket: string | null;
+  refresh: boolean;
+  errorReconnect: boolean;
+  setErrorReconnect: React.Dispatch<React.SetStateAction<boolean>>;
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+  sendAddUser: (user_id: string) => void;
+  sendRemoveUser: (user_id: string) => void;
+  sendCheckSocket: (user_id: string) => void;
+  connectSocket: (passedToken: string) => void;
+  disconnectSocket: () => void;
+}
 
-export const useSocket = () => useContext(SocketContext);
+const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
-export const SocketProvider = ({ url, children }) => {
+export const useSocket = (): SocketContextType => {
+  const context = useContext(SocketContext);
+  if (!context) {
+    throw new Error('useSocket must be used within a SocketProvider');
+  }
+  return context;
+};
+
+interface SocketProviderProps {
+  url: string;
+  children: ReactNode;
+}
+
+export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
-  const [errorSocket, setErrorSocket] = useState(null);
+  const [errorSocket, setErrorSocket] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [errorReconnect, setErrorReconnect] = useState(false);
-  const socketRef = useRef(null);
+  const socketRef = useRef<Socket | null>(null);
   const { accessToken, user } = useAuth();
 
   const MAX_RETRIES = 5;
 
-  const connectSocket = useCallback((passedToken) => {
+  const connectSocket = useCallback((passedToken: string) => {
     if (socketRef.current) return;
 
     const socketInstance = io(url, {
@@ -101,7 +126,7 @@ export const SocketProvider = ({ url, children }) => {
       setRefresh(true);
     });
 
-  }, [url, user]);
+  }, [url, user, retryCount]);
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -124,9 +149,9 @@ export const SocketProvider = ({ url, children }) => {
     };
   }, [connectSocket, disconnectSocket, accessToken]);
 
-  const sendAddUser = useCallback((user_id) => {
+  const sendAddUser = useCallback((user_id: string) => {
     if (socketRef.current) {
-      socketRef.current.emit('addUser', user_id, (response) => {
+      socketRef.current.emit('addUser', user_id, (response: any) => {
         if (response.error) {
           setErrorSocket('Add user error');
           console.error('Add user error:', response.message);
@@ -141,9 +166,9 @@ export const SocketProvider = ({ url, children }) => {
     }
   }, [isConnected]);
 
-  const sendRemoveUser = useCallback((user_id) => {
+  const sendRemoveUser = useCallback((user_id: string) => {
     if (socketRef.current && isConnected) {
-      socketRef.current.emit('removeUser', user_id, (response) => {
+      socketRef.current.emit('removeUser', user_id, (response: any) => {
         if (response.error) {
           setErrorSocket('Remove user error');
           console.error('Remove user error:', response.message);
@@ -159,9 +184,9 @@ export const SocketProvider = ({ url, children }) => {
     }
   }, [isConnected, disconnectSocket]);
 
-  const sendCheckSocket = useCallback((user_id) => {
+  const sendCheckSocket = useCallback((user_id: string) => {
     if (socketRef.current && isConnected) {
-      socketRef.current.emit('checkSocket', user_id, (response) => {
+      socketRef.current.emit('checkSocket', user_id, (response: any) => {
         if (response.error) {
           setErrorSocket(response.message);
           console.error('Check Socket Error:', response.message);

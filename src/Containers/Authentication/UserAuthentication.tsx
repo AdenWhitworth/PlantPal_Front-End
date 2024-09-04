@@ -8,20 +8,27 @@ import SignUpForm from './SignUpForm';
 import '../../App.css';
 import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 export default function UserAuthentication() {
   const navigate = useNavigate();
   const { setAccessToken, setUser } = useAuth();
   const { connectSocket } = useSocket();
   const [isLoginSelected, setIsLoginSelected] = useState(true);
   const { handleSignIn, handleSignUp, error, isLoading, resetError } = useAuthHandlers({ setAccessToken, setUser, isLoginSelected });
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -37,23 +44,23 @@ export default function UserAuthentication() {
     navigate('/forgotPassword', { replace: true });
   };
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     handleSignIn(e, {
       email: formData.email,
       password: formData.password,
-    }, (accessToken) => {
+    }, (accessToken: string) => {
         connectSocket(accessToken);
         navigate('/dashboard', { replace: true });
     });
   };
 
-  const handleSignUpSubmit = (e) => {
+  const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     handleSignUp(e, {
       email: formData.email,
       password: formData.password,
       first_name: formData.firstName,
       last_name: formData.lastName,
-    }, (accessToken) => {
+    }, (accessToken: string) => {
       connectSocket(accessToken);
       navigate('/dashboard', { replace: true });
     });
@@ -61,7 +68,7 @@ export default function UserAuthentication() {
 
   useEffect(() => {
     resetError();
-  }, [isLoginSelected]);
+  }, [isLoginSelected, resetError]);
 
   return (
     <section className="userAuthentication">

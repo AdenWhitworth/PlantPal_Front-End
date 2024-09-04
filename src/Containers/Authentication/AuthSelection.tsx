@@ -1,9 +1,14 @@
 import React from 'react';
 
+interface AuthSelectionProps {
+    isLoginSelected: boolean;
+    setIsLoginSelected: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export default function AuthSelection({ 
+    isLoginSelected,
     setIsLoginSelected,
-    isLoginSelected 
-}) { 
+}: AuthSelectionProps) { 
 
     return (
         <div className="userAuth-section-1">
