@@ -8,16 +8,27 @@ import { useDevice } from '../../Provider/DeviceProvider';
 import {useAuth} from '../../Provider/AuthProvider';
 import { postUpdatePumpWater } from '../../Services/ApiService';
 
+interface AutoManualWaterProps {
+    autoSwitch: boolean;
+    setAutoSwitch: (value: boolean) => void;
+    setConfirmAuto: (value: boolean) => void;
+}
+  
+interface WaterOccurrence {
+    date: string;
+    times: number;
+}
+
 export default function AutoManualWater({
     autoSwitch, 
     setAutoSwitch, 
     setConfirmAuto
-}) {
+}: AutoManualWaterProps) {
 
-    const [waterOccurance, setWaterOccurance] = useState([]);
-    const [isAutoVisible, setIsAuotVisible] = useState(false);
+    const [waterOccurance, setWaterOccurance] = useState<WaterOccurrence[]>([]);
+    const [isAutoVisible, setIsAuotVisible] = useState<boolean>(false);
     const { setRefresh } = useSocket();
-    const { accesstoken, setAccessToken } = useAuth();
+    const { accessToken, setAccessToken } = useAuth();
     const { 
         devices, 
         lastLog, 
@@ -25,27 +36,35 @@ export default function AutoManualWater({
         deviceLogs
     } = useDevice();
 
-    const handleAutoSwitch = (e) => {
+    const handleAutoSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAutoSwitch(e.target.checked);
         setConfirmAuto(true);
     };
 
-    const handleUpdatePumpWater = async (e) => {
-        e.preventDefault();
+    const handleUpdatePumpWater = async () => {
+        
+        if (!device || !device.device_id) {
+          console.error('Device is not available');
+          return;
+        }
+      
         try {
-            await postUpdatePumpWater(accesstoken, setAccessToken,{ device_id: device.device_id, pump_water: true})
-            setRefresh(true);
+          await postUpdatePumpWater(accessToken, setAccessToken, {
+            device_id: device.device_id, 
+            pump_water: true
+          });
+          setRefresh(true);
         } catch (error) {
-            console.error(error);
-        }  
-    }
+          console.error(error);
+        }
+    };
 
     const countWaterOccurances = () => {
         const now = new Date();
         const sevenDaysAgo = new Date(now);
         sevenDaysAgo.setDate(now.getDate() - 7);
 
-        const dateCount = deviceLogs.reduce((acc, log) => {
+        const dateCount = deviceLogs.reduce<Record<string,number>>((acc, log) => {
             const logDate = new Date(log.log_date);
             if (logDate >= sevenDaysAgo && logDate <= now && log.water === 1) {
                 const dayDate = logDate.toISOString().split('T')[0];
@@ -54,7 +73,7 @@ export default function AutoManualWater({
             return acc;
         }, {});
 
-        const occuranceArray = Object.entries(dateCount).map(([date, times]) => ({ date, times })).sort((a, b) => new Date(b.date) - new Date(a.date));
+        const occuranceArray = Object.entries(dateCount).map(([date, times]) => ({ date, times })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setWaterOccurance(occuranceArray);
     };
 

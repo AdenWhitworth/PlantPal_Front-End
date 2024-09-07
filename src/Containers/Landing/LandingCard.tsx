@@ -1,10 +1,16 @@
 import React from 'react';
 
+interface LandingCardProps {
+    cardImg: string;
+    cardTitle: string;
+    cardText: string;
+}
+
 export default function LandingCard ({
     cardImg,
     cardTitle,
     cardText,
-}) {
+}: LandingCardProps) {
     return(
         <div className="landing-card">
             <div className="landing-card-img">

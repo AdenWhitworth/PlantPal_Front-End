@@ -16,8 +16,8 @@ const ResetPassword = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const resetToken = searchParams.get('resetToken');
-    const userId = searchParams.get('user_id');
+    const resetToken = searchParams.get('resetToken') || '';
+    const userId = searchParams.get('user_id') || '';
     const { 
         handlePasswordReset, 
         error, 
@@ -35,13 +35,14 @@ const ResetPassword = () => {
     };
 
     const handleResetPasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         
         if(!resetToken && !userId){
             handleReturnHome();
             return;
         }
         
-        handlePasswordReset(e, {
+        handlePasswordReset({
             password: formData.password,
             resetToken: encodeURIComponent(resetToken || ''),
             user_id: userId,

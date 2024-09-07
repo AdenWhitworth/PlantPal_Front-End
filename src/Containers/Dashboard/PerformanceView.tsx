@@ -4,13 +4,21 @@ import WifiConnection from './WifiConnection';
 import WaterStatus from './WaterStatus';
 import AutoManualWater from './AutoManualWater';
 
+interface PerformanceViewProps {
+    setConnectDeviceToggle: (value: boolean) => void;
+    handleRefreshClick: () => void; 
+    autoSwitch: boolean; 
+    setAutoSwitch: (value: boolean) => void;
+    setConfirmAuto: (value: boolean) => void;
+}
+
 export default function PerformanceView({
     handleRefreshClick,  
     setConnectDeviceToggle, 
     autoSwitch, 
     setAutoSwitch, 
     setConfirmAuto, 
-}) {
+}: PerformanceViewProps) {
 
     return (
         <>

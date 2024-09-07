@@ -1,16 +1,24 @@
 import React from "react";
-import lock from '../Images/lock-brown.svg';
+import mail from '../Images/email-brown.svg';
 import Button from '../Components/Button';
 import InputField from '../Components/InputField';
 import Modal from '../Components/Modal';
 
-export default function ResetPasswordModal ({ 
+interface ForgotPasswordModalProps {
+    handleReturnHome: () => void;
+    message: string | null;
+    error: string | null;
+    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export default function ForgotPasswordModal ({ 
     handleReturnHome, 
     message,
     error,
     handleInputChange,
     handleSubmit,
-}) {
+}: ForgotPasswordModalProps) {
     return(
         <Modal 
             addClose={true} 
@@ -19,34 +27,24 @@ export default function ResetPasswordModal ({
             styleType='primary'
             children={
                 <form className='password-form' onSubmit={handleSubmit}>
-
                     <h1 className="password-form-logo-txt">Reset Password</h1>
 
-                    <InputField
+                    <p>Enter the email associated with your account and we'll send an email with instructions to reset your password.</p>
+                    
+                    <InputField 
                         onChange={handleInputChange} 
-                        name='password'
-                        inputImg={lock} 
+                        name='email'
+                        inputImg={mail} 
                         isRequired={true} 
-                        type='password' 
-                        placeholder='New Password' 
-                        isSpellCheck={false} 
-                        setWidth={'100%'}
-                    ></InputField>
-
-                    <InputField
-                        onChange={handleInputChange} 
-                        name='confirmPassword'
-                        inputImg={lock} 
-                        isRequired={true} 
-                        type='password' 
-                        placeholder='Confirm Password' 
+                        type='email' 
+                        placeholder='Email' 
                         isSpellCheck={false} 
                         setWidth={'100%'}
                     ></InputField>
 
                     <div className='password-form-logo-btns'>
                         <div></div>
-                        <Button type="submit" styleType='secondary'>Reset Password</Button>
+                        <Button type="submit" styleType='secondary'>Send Instructions</Button>
                     </div>
                     
                     {message && <h4>{message}</h4>}

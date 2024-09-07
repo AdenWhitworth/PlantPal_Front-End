@@ -4,7 +4,6 @@ import mail from '../../Images/email-brown.svg';
 import lock from '../../Images/lock-brown.svg';
 import plantpal_logo from '../../Images/PlantPal Logo.svg';
 import "../../App.css";
-import React from 'react';
 
 interface LoginFormProps {
     handleReturnHome: () => void;

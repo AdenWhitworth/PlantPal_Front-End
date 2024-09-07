@@ -4,9 +4,13 @@ import tap_locked from "../../Images/tap-gray.svg";
 import time from '../../Images/time-green.svg';
 import { useDevice } from '../../Provider/DeviceProvider';
 
+interface ManualProps {
+    handleUpdatePumpWater: () => void;
+}
+
 export default function Manual({
     handleUpdatePumpWater
-}) {
+}: ManualProps) {
 
     const { device, deviceShadow } = useDevice();
 
@@ -14,7 +18,7 @@ export default function Manual({
         <div className='manual'>
             <div className='manual-tap'>
                 {deviceShadow?.state?.desired?.pump === false && deviceShadow?.state?.reported?.pump === false ?  (
-                    device.presence_connection ? (
+                    device?.presence_connection ? (
                         <img onClick={handleUpdatePumpWater} className='grow curser' src={tap} alt='Tap Icon'></img>
                         ) : (
                         <img src={tap_locked} alt='Tap Gray Icon'></img>

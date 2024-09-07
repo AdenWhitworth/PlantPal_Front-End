@@ -68,7 +68,7 @@ export default function UserAuthentication() {
 
   useEffect(() => {
     resetError();
-  }, [isLoginSelected, resetError]);
+  }, [isLoginSelected]);
 
   return (
     <section className="userAuthentication">

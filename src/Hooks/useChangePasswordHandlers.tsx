@@ -1,12 +1,21 @@
 import { useState } from 'react';
 import { postResetPassword, postForgotPassword } from '../Services/ApiService';
 
-export const useChangePasswordHandlers = () => {
-    const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState(null);
+interface UserData {
+    email?: string;
+    password?: string;
+    first_name?: string;
+    last_name?: string;
+    resetToken?: string;
+    user_id?: string;
+}
 
-    const validateForgotForm = (userData) => {
+export const useChangePasswordHandlers = () => {
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string | null>(null);
+
+    const validateForgotForm = (userData: UserData) => {
         if (!userData.email) {
             setError('Email is required.');
             return false;
@@ -14,7 +23,7 @@ export const useChangePasswordHandlers = () => {
         return true;
     };
 
-    const validateResetForm = (userData, confirmPassword) => {
+    const validateResetForm = (userData: UserData, confirmPassword: string) => {
         if (!userData.password || !userData.resetToken || !userData.user_id) {
             setError('Password, resetToken, and user id are required.');
             return false;
@@ -27,9 +36,9 @@ export const useChangePasswordHandlers = () => {
         return true;
     };
 
-    const handleForgotPassword = async (e, userData) => {
+    const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>, userData: UserData) => {
         
-        if (e) e.preventDefault();
+        e.preventDefault();
         resetError();
         resetMessage();
         if (!validateForgotForm(userData)) return;
@@ -46,9 +55,7 @@ export const useChangePasswordHandlers = () => {
         }
     };
 
-    const handlePasswordReset = async (e, userData, confirmPassword, onSuccess) => {
-        
-        if (e) e.preventDefault();
+    const handlePasswordReset = async (userData: UserData, confirmPassword: string, onSuccess?: () => void) => {
         resetError();
         resetMessage();
         if (!validateResetForm(userData, confirmPassword)) return;

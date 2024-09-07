@@ -5,6 +5,17 @@ import exit from "../../Images/exit-grey.svg";
 import refresh from "../../Images/refresh-gray.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
 
+interface DashboardHeaderProps {
+    handlePlantPalClick: () => void; 
+    handleRefreshClick: () => void;
+    handleLogout: () => void;
+    showAccountView: () => void;
+    isSettingsVisible: boolean;
+    isDevicesLoading: boolean;
+    isDevicesLoaded: boolean;
+}
+
+
 export default function DashboardHeader({
     handlePlantPalClick, 
     handleRefreshClick, 
@@ -13,14 +24,14 @@ export default function DashboardHeader({
     isSettingsVisible,
     isDevicesLoading,
     isDevicesLoaded
-}) {
+}: DashboardHeaderProps) {
     const { refreshDate } = useDevice();
     const [refreshCSS, setRefreshCSS] = useState('refresh grow');
     
 
     const links = [
-        { alt: "Settings logo", imgSrc: gear, onClick: showAccountView, className: "gear" },
-        { alt: "Logout logo", imgSrc: exit, onClick: handleLogout, className: "exit" },
+        { key: 1, alt: "Settings logo", imgSrc: gear, onClick: showAccountView, className: "gear" },
+        { key: 2, alt: "Logout logo", imgSrc: exit, onClick: handleLogout, className: "exit" },
     ];
 
     useEffect(() => {
@@ -53,8 +64,8 @@ export default function DashboardHeader({
                         </li>
                     </>
                 )}
-                {links.map(({ alt, imgSrc, onClick, className }) => (
-                    <li key={alt}>
+                {links.map(({ key, alt, imgSrc, onClick, className }) => (
+                    <li key={key}>
                         <img className={`${className} grow`} src={imgSrc} alt={alt} onClick={onClick} />
                     </li>
                 ))}

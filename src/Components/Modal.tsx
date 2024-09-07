@@ -2,40 +2,15 @@ import React from 'react';
 import x_circle from '../Images/x-circle-black.svg';
 import Button from './Button';
 
-interface BaseModalProps { 
+interface ModalProps { 
     children?: React.ReactNode;
-    
-}
-
-interface ModalWithButtonProps extends BaseModalProps {
-    addButton: true;
-    handleButtonClick: () => void;
+    addButton: boolean;
+    handleButtonClick?: () => void;
     buttonLabel: string;
     styleType: 'primary' | 'secondary' | 'tertiary';
+    addClose: boolean;
+    handleCloseClick?: () => void;
 }
-
-interface ModalWithoutButtonProps extends BaseModalProps {
-    addButton?: false;
-    handleButtonClick?: never;
-    buttonLabel: never;
-    styleType: never;
-}
-
-interface ModalWithCloseProps extends BaseModalProps {
-    addClose: true;
-    handleCloseClick: () => void;
-}
-
-interface ModalWithoutCloseProps extends BaseModalProps {
-    addClose?: false;
-    handleCloseClick?: never;
-}
-
-type ModalProps =
-    | (ModalWithButtonProps & ModalWithCloseProps) // Both button and close
-    | (ModalWithButtonProps & ModalWithoutCloseProps) // Button but no close
-    | (ModalWithoutButtonProps & ModalWithCloseProps) // Close but no button
-    | (ModalWithoutButtonProps & ModalWithoutCloseProps); // Neither
 
 export default function Modal({
     handleCloseClick, 

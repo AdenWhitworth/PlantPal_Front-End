@@ -2,9 +2,13 @@ import React from 'react';
 import Button from "../../Components/Button";
 import house_plant from "../../Images/house-plant.png";
 
+interface LandingCallToActionProps{
+    HandleManageDevicesClick: () => void;
+}
+
 export default function LandingCallToAction({
     HandleManageDevicesClick
-}) {
+}:LandingCallToActionProps) {
     
     return (
         <section className="landing-body-1">

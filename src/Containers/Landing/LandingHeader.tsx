@@ -3,13 +3,25 @@ import plantpal_logo from "../../Images/PlantPal Logo.svg";
 import shopping_cart from "../../Images/shopping-grey.svg";
 import user from "../../Images/user-grey.svg";
 
+interface Link {
+    key: number;
+    alt: string;
+    imgSrc: string;
+    onClick: () => void;
+    className: string;
+}
+
+interface DashboardHeaderProps {
+    HandleManageDevicesClick: () => void;
+}
+
 export default function DashboardHeader({
     HandleManageDevicesClick
-}) {
+}: DashboardHeaderProps) {
     
-    const links = [
-        { alt: "Shopping cart logo", imgSrc: shopping_cart, onclick: () => console.log("clicked"), className: "shopping_cart" },
-        { alt: "User logo", imgSrc: user, onClick: HandleManageDevicesClick, className: "user" },
+    const links: Link[] = [
+        { key: 1, alt: "Shopping cart logo", imgSrc: shopping_cart, onClick: () => console.log("clicked"), className: "shopping_cart" },
+        { key: 2, alt: "User logo", imgSrc: user, onClick: HandleManageDevicesClick, className: "user" },
     ];
 
     return (
@@ -19,8 +31,8 @@ export default function DashboardHeader({
                 <h1 className="PlantPal-logo-txt">PlantPal</h1>
             </div>
             <nav className="nav-links">
-                {links.map(({ alt, imgSrc, onClick, className }) => (
-                    <li key={alt}>
+                {links.map(({ key, alt, imgSrc, onClick, className }) => (
+                    <li key={key}>
                         <img className={`${className} grow`} src={imgSrc} alt={alt} onClick={onClick} />
                     </li>
                 ))}

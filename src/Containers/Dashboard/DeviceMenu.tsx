@@ -5,17 +5,24 @@ import glass from "../../Images/glass-brown.svg";
 import plus from "../../Images/plus-circle-green.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
 
+interface DeviceMenuProps {
+    connectDeviceToggle: boolean;
+    showAddDeviceView: () => void;
+    isSettingsVisible: boolean;
+    showPerformanceView: () => void;
+}
+
 export default function DeviceMenu({
     connectDeviceToggle, 
     showAddDeviceView,
     isSettingsVisible,
     showPerformanceView
-}) {
+}: DeviceMenuProps) {
 
     const { device, devices } = useDevice();
     const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearchChange = useCallback((e) => {
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     }, []);
 

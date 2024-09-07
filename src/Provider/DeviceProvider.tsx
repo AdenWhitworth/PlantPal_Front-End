@@ -36,7 +36,7 @@ interface DeviceLog {
     soil_temp: number;
     soil_cap: number;
     log_date: string;
-    water: boolean;
+    water: number;
 }
 
 interface DeviceContextType {

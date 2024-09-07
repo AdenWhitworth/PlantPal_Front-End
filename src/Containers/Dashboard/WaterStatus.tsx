@@ -4,9 +4,15 @@ import check_circle from "../../Images/check-circle-green.svg";
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
 
+interface WaterStatus {
+    text: string;
+    cssClass: string;
+    imgSrc: string;
+}
+
 export default function WaterStatus() {
 
-    const [waterStatus, setWaterStatus] = useState({
+    const [waterStatus, setWaterStatus] = useState<WaterStatus>({
         text: "",
         cssClass: "good-water",
         imgSrc: triangle,

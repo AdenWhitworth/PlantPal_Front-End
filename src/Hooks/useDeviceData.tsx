@@ -3,11 +3,17 @@ import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiS
 import { useAuth } from "../Provider/AuthProvider";
 import { useDevice } from '../Provider/DeviceProvider';
 
-export const useDeviceData = (handleLogout) => {
+interface UseDeviceDataProps {
+    handleLogout: () => void;
+}
 
-    const [isDevicesLoading, setIsDevicesLoading] = useState(false);
-    const [isDeviceLoading, setIsDeviceLoading] = useState(false);
-    const [isDevicesLoaded, setIsDevicesLoaded] = useState(false);
+export const useDeviceData = ({
+    handleLogout
+}: UseDeviceDataProps) => {
+
+    const [isDevicesLoading, setIsDevicesLoading] = useState<boolean>(false);
+    const [isDeviceLoading, setIsDeviceLoading] = useState<boolean>(false);
+    const [isDevicesLoaded, setIsDevicesLoaded] = useState<boolean>(false);
     const { accessToken, setAccessToken } = useAuth();
     const { setDevices, device, setDeviceShadow, setDeviceLogs, lastLog, setLastLog, setRefreshDate } = useDevice();
 
@@ -25,7 +31,13 @@ export const useDeviceData = (handleLogout) => {
     };
 
     const fetchUserDevice = async () => {
+
+        if (!device?.cat_num && !device?.thing_name) {
+            return;
+        }
+
         setIsDeviceLoading(true);
+        
         try {
             const deviceLogsPromise = await getDeviceLogs(accessToken, setAccessToken, { params: { cat_num: device.cat_num }});
             const shadowPromise = await getDeviceShadow(accessToken, setAccessToken, { params: { thingName: device.thing_name } });
@@ -43,6 +55,12 @@ export const useDeviceData = (handleLogout) => {
     }
 
     const formatRefreshDate = () => {
+        if (!lastLog || isObjectEmpty(lastLog)) {
+            setRefreshDate("");
+            return
+        }
+
+
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const dateObject = new Date(lastLog.log_date);
 
@@ -53,7 +71,7 @@ export const useDeviceData = (handleLogout) => {
         setRefreshDate(localTimeString);
     }
 
-    const isObjectEmpty = (obj) => {
+    const isObjectEmpty = (obj: object): boolean => {
         for (let key in obj) {
             if (obj.hasOwnProperty(key)) {
                 return false;
@@ -63,9 +81,7 @@ export const useDeviceData = (handleLogout) => {
     };
 
     useEffect(() => {
-        if (device.cat_num && device.thing_name) {
-            fetchUserDevice();
-        }
+        fetchUserDevice();
     }, [device]);
 
     useEffect(() => {
@@ -80,11 +96,7 @@ export const useDeviceData = (handleLogout) => {
     }, [isDevicesLoading, isDevicesLoaded]);
 
     useEffect(() => {
-        if (!isObjectEmpty(lastLog)) {
-            formatRefreshDate();
-        } else {
-            setRefreshDate("");
-        }
+        formatRefreshDate();
     }, [lastLog]);
 
     return {

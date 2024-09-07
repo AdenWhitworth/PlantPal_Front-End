@@ -1,13 +1,33 @@
 import {useState , useEffect, useCallback} from "react";
 import { useDevice } from '../../Provider/DeviceProvider';
 
+interface Device {
+    device_id: number;
+    cat_num: string;
+    user_id: number;
+    wifi_ssid: string;
+    wifi_password: string;
+    init_vec: string;
+    presence_connection: boolean;
+    location: string;
+    thing_name: string;
+}
+
+interface DeviceItemProps {
+    devices: Device;
+    index: number;
+    connectDeviceToggle: boolean;
+    isSettingsVisible: boolean
+    showPerformanceView: () => void;
+}
+
 export default function DeviceItem({
     devices, 
     index,  
     connectDeviceToggle,
     isSettingsVisible,
     showPerformanceView
-}) {
+}: DeviceItemProps) {
 
     const [colorStyle, setColorStyle] = useState("device-line");
     const { device, setDevice } = useDevice();
