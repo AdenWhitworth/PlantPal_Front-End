@@ -18,7 +18,7 @@ function App() {
     <div className="App">
       <DeviceProvider>
         <AuthProvider>
-          <SocketProvider url={process.env.REACT_APP_BASE_URL}>
+          <SocketProvider url={process.env.REACT_APP_BASE_URL as string}>
             <Routes>
               <Route path='/' element={<Landing></Landing>}></Route>
               <Route path='/auth' element={<UserAuthentication></UserAuthentication>}></Route>
