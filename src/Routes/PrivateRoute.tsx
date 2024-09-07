@@ -1,8 +1,14 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../Provider/AuthProvider';
 
-const PrivateRoute = ({ children }) => {
+interface PrivateRouteProps {
+  children: React.ReactNode
+}
+
+const PrivateRoute = ({ 
+  children
+}: PrivateRouteProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { accessToken } = useAuth();

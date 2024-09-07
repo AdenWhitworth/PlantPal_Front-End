@@ -6,7 +6,7 @@ import Manual from './Manual';
 import { useSocket } from '../../Provider/SocketProvider';
 import { useDevice } from '../../Provider/DeviceProvider';
 import {useAuth} from '../../Provider/AuthProvider';
-import { postUpdatePumpWater } from '../../Services/ApiService';
+import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 
 interface AutoManualWaterProps {
     autoSwitch: boolean;
@@ -29,6 +29,7 @@ export default function AutoManualWater({
     const [isAutoVisible, setIsAuotVisible] = useState<boolean>(false);
     const { setRefresh } = useSocket();
     const { accessToken, setAccessToken } = useAuth();
+    const { handleUpdatePumpWater, error, resetError} = useSettingsHandlers();
     const { 
         devices, 
         lastLog, 
@@ -41,22 +42,18 @@ export default function AutoManualWater({
         setConfirmAuto(true);
     };
 
-    const handleUpdatePumpWater = async () => {
-        
+    const handleUpdatePumpWaterClick = async () => {
         if (!device || !device.device_id) {
           console.error('Device is not available');
           return;
         }
-      
-        try {
-          await postUpdatePumpWater(accessToken, setAccessToken, {
+
+        handleUpdatePumpWater(accessToken, setAccessToken, {
             device_id: device.device_id, 
             pump_water: true
-          });
-          setRefresh(true);
-        } catch (error) {
-          console.error(error);
-        }
+        }, () => {
+            setRefresh(true);
+        });
     };
 
     const countWaterOccurances = () => {
@@ -105,7 +102,7 @@ export default function AutoManualWater({
                     {autoSwitch?
                         <Auto waterOccurance={waterOccurance}></Auto>
                         :
-                        <Manual handleUpdatePumpWater={handleUpdatePumpWater}></Manual>
+                        <Manual handleUpdatePumpWaterClick={handleUpdatePumpWaterClick}></Manual>
                     }
                     
                 </div>

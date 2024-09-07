@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto } from '../Services/ApiService';
+import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService';
 
 interface UserData {
     email: string;
@@ -23,6 +23,11 @@ interface WifiData {
 interface AuotData {
     device_id: number;
     automate: boolean;
+}
+
+interface PumpData {
+    device_id: number;
+    pump_water: boolean;
 }
 
 interface DeviceShadow {
@@ -75,6 +80,14 @@ export const useSettingsHandlers = () => {
     const validateUpdateAuto = (autoData: AuotData) => {
         if (!autoData.device_id || autoData.automate) {
             setError('Device id, and Automate required');
+            return false;
+        }
+        return true;
+    }
+
+    const validateUpdatePump = (pumpData: PumpData) => {
+        if (!pumpData.device_id || pumpData.pump_water) {
+            setError('Device id, and Pump Water required');
             return false;
         }
         return true;
@@ -178,7 +191,30 @@ export const useSettingsHandlers = () => {
         }
     }
 
+    const handleUpdatePumpWater = async (accessToken: string | null, setAccessToken: (value: string) => void, pumpData: PumpData, onSuccess: () => void) => {
+        resetError();
+
+        if (!validateUpdatePump(pumpData)) return;
+            setIsLoading(true);
+        try {
+            await postUpdatePumpWater(accessToken, setAccessToken, pumpData);
+            if (onSuccess) onSuccess();
+        } catch (error) {
+            let errorMessage = 'An unexpected error occurred. Please try again later.';
+
+            if (error instanceof Error && error.hasOwnProperty('response')) {
+                const axiosError = error as any;
+
+                errorMessage = axiosError.response?.data?.message || 'Failed to update pump water';
+            }
+
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     const resetError = () => setError(null);
     
-    return { handleUpdateUser, handleAddDevice, handleUpdateWifi, handleUpdateAuto, error, isLoading, resetError };
+    return { handleUpdateUser, handleAddDevice, handleUpdateWifi, handleUpdateAuto, handleUpdatePumpWater, error, isLoading, resetError };
 }

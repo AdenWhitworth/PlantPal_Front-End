@@ -5,11 +5,11 @@ import time from '../../Images/time-green.svg';
 import { useDevice } from '../../Provider/DeviceProvider';
 
 interface ManualProps {
-    handleUpdatePumpWater: () => void;
+    handleUpdatePumpWaterClick: () => void;
 }
 
 export default function Manual({
-    handleUpdatePumpWater
+    handleUpdatePumpWaterClick
 }: ManualProps) {
 
     const { device, deviceShadow } = useDevice();
@@ -19,7 +19,7 @@ export default function Manual({
             <div className='manual-tap'>
                 {deviceShadow?.state?.desired?.pump === false && deviceShadow?.state?.reported?.pump === false ?  (
                     device?.presence_connection ? (
-                        <img onClick={handleUpdatePumpWater} className='grow curser' src={tap} alt='Tap Icon'></img>
+                        <img onClick={handleUpdatePumpWaterClick} className='grow curser' src={tap} alt='Tap Icon'></img>
                         ) : (
                         <img src={tap_locked} alt='Tap Gray Icon'></img>
                     ))

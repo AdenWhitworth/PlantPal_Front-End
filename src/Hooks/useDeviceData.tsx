@@ -39,8 +39,8 @@ export const useDeviceData = ({
         setIsDeviceLoading(true);
         
         try {
-            const deviceLogsPromise = await getDeviceLogs(accessToken, setAccessToken, { params: { cat_num: device.cat_num }});
-            const shadowPromise = await getDeviceShadow(accessToken, setAccessToken, { params: { thingName: device.thing_name } });
+            const deviceLogsPromise = await getDeviceLogs(accessToken, setAccessToken, { cat_num: device.cat_num });
+            const shadowPromise = await getDeviceShadow(accessToken, setAccessToken, { thingName: device.thing_name });
 
             const [ deviceLogsResponse, shadowResponse] = await Promise.all([deviceLogsPromise, shadowPromise]);
 
