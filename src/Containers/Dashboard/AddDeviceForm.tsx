@@ -1,5 +1,5 @@
-import Button from '../../Components/Button';
-import InputField from '../../Components/InputField';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/InputField/InputField';
 import wifi from '../../Images/wifi-brown.svg';
 import lock from '../../Images/lock-brown.svg';
 import location from '../../Images/location-brown.svg';

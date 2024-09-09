@@ -1,5 +1,4 @@
 import React, { useState, useEffect  } from 'react';
-import "../../App.css";
 import { useAuth } from '../../Provider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
@@ -67,15 +66,17 @@ export default function Account() {
   }, [resetError]);
 
   return (
-    <AccountForm
-      handleSaveClick={handleSaveClick} 
-      handleReturnForgotPassword={handleReturnForgotPassword}
-      handleInputChange={handleInputChange}
-      error={error}
-      handleEditClick={handleEditClick}
-      editToggle={editToggle}
-      inputDisabled={inputDisabled}
-      handleCloseClick={handleCloseClick}
-    ></AccountForm>
+    <div className='dashboard-setting'>
+      <AccountForm
+        handleSaveClick={handleSaveClick} 
+        handleReturnForgotPassword={handleReturnForgotPassword}
+        handleInputChange={handleInputChange}
+        error={error}
+        handleEditClick={handleEditClick}
+        editToggle={editToggle}
+        inputDisabled={inputDisabled}
+        handleCloseClick={handleCloseClick}
+      ></AccountForm>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import DeviceItem from "./DeviceItem";
-import InputField from "../../Components/InputField";
+import InputField from "../../Components/InputField/InputField";
 import glass from "../../Images/glass-brown.svg";
 import plus from "../../Images/plus-circle-green.svg";
 import { useDevice } from '../../Provider/DeviceProvider';

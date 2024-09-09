@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import wifi from "../../Images/wifi-green.svg";
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
-import Button from '../../Components/Button';
+import Button from '../../Components/Button/Button';
 import useBluetooth from "../../Hooks/useBluetooth";
 import {useAuth} from '../../Provider/AuthProvider';
 import EditWifiForm from './EditWifiForm';

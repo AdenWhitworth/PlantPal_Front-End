@@ -1,6 +1,7 @@
 import React from 'react';
-import x_circle from '../Images/x-circle-black.svg';
-import Button from './Button';
+import x_circle from '../../Images/x-circle-black.svg';
+import Button from '../Button/Button';
+import './Modal.css';
 
 interface ModalProps { 
     children?: React.ReactNode;

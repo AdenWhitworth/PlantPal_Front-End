@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import Modal from '../Components/Modal';
+import Modal from '../Components/Modal/Modal';
 import time from '../Images/time-green.svg';
 import plus from "../Images/plus-circle-green.svg";
 import { useDevice } from '../Provider/DeviceProvider';

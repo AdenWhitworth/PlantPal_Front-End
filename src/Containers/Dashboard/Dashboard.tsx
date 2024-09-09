@@ -11,7 +11,8 @@ import { useAuth } from "../../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from '../../Provider/SocketProvider';
 import { useDeviceData } from '../../Hooks/useDeviceData';
-import LoadingDots from '../../Components/LoadingDots';
+import LoadingDots from '../../Components/LoadingDots/LoadingDots';
+import './Dashboard.css';
 
 interface State {
     connectDeviceToggle: boolean;

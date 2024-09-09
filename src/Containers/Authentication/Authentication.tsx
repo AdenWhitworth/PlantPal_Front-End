@@ -5,7 +5,7 @@ import { useSocket } from '../../Provider/SocketProvider';
 import AuthSelection from './AuthSelection';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
-import '../../App.css';
+import './Athentication.css';
 import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 
 interface FormData {
