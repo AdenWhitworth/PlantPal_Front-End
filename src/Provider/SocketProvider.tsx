@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthProvider';
+import { postRefreshAccessToken } from '../Services/ApiService';
 
 interface SocketContextType {
   isConnected: boolean;
@@ -34,13 +35,10 @@ interface SocketProviderProps {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [errorReconnect, setErrorReconnect] = useState(false);
   const socketRef = useRef<Socket | null>(null);
-  const { accessToken, user } = useAuth();
-
-  const MAX_RETRIES = 5;
+  const { accessToken, setAccessToken, user } = useAuth();
 
   const connectSocket = useCallback((passedToken: string) => {
     if (socketRef.current) return;
@@ -58,7 +56,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     socketInstance.on('connect', () => {
       setIsConnected(true);
       setErrorSocket(null);
-      setRetryCount(0);
       console.log('Socket connected', socketInstance.id);
       if (user) sendAddUser(user.user_id);
     });
@@ -73,16 +70,8 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       setErrorSocket('Connection error');
       console.error('Connection error:', err);
 
-      if (retryCount < MAX_RETRIES) {
-        const retryDelay = Math.pow(2, retryCount) * 1000;
-        setTimeout(() => {
-          console.log(`Retrying connection... attempt ${retryCount + 1}`);
-          setRetryCount(retryCount + 1);
-          connectSocket(passedToken);
-        }, retryDelay);
-      } else {
-        console.error('Max retries reached. Giving up on connection.');
-        setErrorReconnect(true);
+      if (err.message === "Please provide the access token."){
+        handleRefreshAccessToken();
       }
     });
 
@@ -126,7 +115,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       setRefresh(true);
     });
 
-  }, [url, user, retryCount]);
+  }, [url, user]);
+
+  const handleRefreshAccessToken = async () => {
+    try {
+      const response = await postRefreshAccessToken();
+      const newAccessToken = response.data.accessToken;
+      setAccessToken(newAccessToken);
+    } catch (error: any) {
+      console.error('Failed to refresh token', error);
+    }
+  };
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -134,13 +133,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       socketRef.current = null;
       setIsConnected(false);
       setErrorSocket(null);
-      setRetryCount(0);
       console.log('Socket disconnected manually');
     }
   }, []);
 
   useEffect(() => {
     if (accessToken) {
+      disconnectSocket();
       connectSocket(accessToken);
     }
 

@@ -70,7 +70,10 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 const initialData: AuthState = {
   accessToken: localStorage.getItem("accessToken"),
-  user: JSON.parse(localStorage.getItem("user") || "null"),
+  user: (() => {
+    const user = localStorage.getItem("user");
+    return user && user !== 'undefined' ? JSON.parse(user) : null;
+  })(),
 };
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

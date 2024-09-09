@@ -61,7 +61,7 @@ export default function AddDevice({
             wifi_password: wifiDetails.wifiPassword
         }, (newDeviceData: any) => {
             sendCredentials(wifiDetails.wifiSSID,wifiDetails.wifiPassword);
-            setDevice(newDeviceData.data.newDevice);
+            setDevice(newDeviceData.data.device);
             resetError();
             setConnectDeviceToggle(true);
             showPerformanceView();
