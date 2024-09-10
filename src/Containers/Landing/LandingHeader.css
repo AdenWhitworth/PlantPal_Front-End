@@ -1,0 +1,63 @@
+
+.header{
+    height: 12%;
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-img{
+    display: flex;
+    cursor: unset;
+    gap: 1em;
+}
+
+.PlantPal-logo-txt{
+    font-weight: normal;
+    font-size: 48px;
+    color: #55883B;
+}
+
+li {
+    list-style: none;
+}
+
+.nav-links{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 2em;
+}
+
+.shopping_cart{
+    height: 40px;
+    cursor: pointer;
+}
+
+.user{
+    height: 40px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .PlantPal-logo-txt{
+        font-size: 32px;
+    }
+
+    .shopping_cart{
+        height: 30px;
+    }
+    
+    .user{
+        height: 30px;
+    }
+}
+
+@media (max-width: 350px) {
+    .PlantPal-logo-txt{
+        display: none;
+    }
+}
+

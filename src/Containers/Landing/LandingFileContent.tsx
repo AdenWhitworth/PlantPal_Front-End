@@ -3,6 +3,7 @@ import calendar from "../../Images/calendar-green.svg";
 import shower from "../../Images/shower-green.svg";
 import LandingFileTab from './LandingFileTab';
 import LandingCard from './LandingCard';
+import './LandingFileContent.css';
 
 interface Card {
     key: number;

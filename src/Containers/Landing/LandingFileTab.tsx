@@ -1,4 +1,5 @@
 import React from 'react';
+import './LandingFileTab.css';
 
 export default function LandingFileTab(){
     return(

@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from "../../Components/Button/Button";
 import house_plant from "../../Images/house-plant.png";
+import './LandingCallToAction.css';
 
 interface LandingCallToActionProps{
     HandleManageDevicesClick: () => void;

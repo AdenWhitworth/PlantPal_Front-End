@@ -1,4 +1,5 @@
 import React from 'react';
+import './LandingCard.css';
 
 interface LandingCardProps {
     cardImg: string;
