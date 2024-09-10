@@ -61,3 +61,17 @@
     margin-bottom: 5%;
     margin-left: 5%;
 }
+
+@media (max-width: 768px) {
+    .modal-content{
+        width: 60%;
+        height: 50%;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal-content{
+        width: 80%;
+        height: 50%;
+    }
+}

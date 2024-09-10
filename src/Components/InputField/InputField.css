@@ -71,3 +71,9 @@
 .inputField-locked input:focus {
     outline: none;
 }
+
+@media (max-width: 450px) {
+    .inputField{
+        height: 5vh;
+    }
+}

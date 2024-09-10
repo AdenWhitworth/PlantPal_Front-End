@@ -3,6 +3,7 @@ import lock from '../Images/lock-brown.svg';
 import Button from '../Components/Button/Button';
 import InputField from '../Components/InputField/InputField';
 import Modal from '../Components/Modal/Modal';
+import './ResetPasswordModal.css';
 
 interface ResetPasswordModalProps {
     handleReturnHome: () => void;

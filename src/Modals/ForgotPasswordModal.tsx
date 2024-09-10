@@ -3,6 +3,7 @@ import mail from '../Images/email-brown.svg';
 import Button from '../Components/Button/Button';
 import InputField from '../Components/InputField/InputField';
 import Modal from '../Components/Modal/Modal';
+import './ForgotPasswordModal.css';
 
 interface ForgotPasswordModalProps {
     handleReturnHome: () => void;

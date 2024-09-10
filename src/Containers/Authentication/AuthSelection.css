@@ -1,0 +1,99 @@
+.userAuth-section-1{
+    width: 40%;
+    height: 100%;
+    
+    background-image: url("../../Images/plant-background-3.png");
+    
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.userAuth-selection{
+    display: flex;
+    flex-direction: column;
+}
+
+.userAuth-toggle-btn{
+    border: none;
+    background: transparent;
+    cursor: default;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+    font-family: inherit;
+    padding: 20px;
+    padding-left: 60px;
+    
+}
+
+.userAuth-toggle-btn-selected{
+    border: none;
+    background: #E6F0DC;
+    cursor: default;
+    color: #9A6735;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+    font-family: inherit;
+    padding: 20px;
+    border-top-left-radius: 70px;
+    border-bottom-left-radius: 70px;
+    padding-left: 60px;
+}
+
+.userAuth-toggle-btn span{
+    cursor: pointer;
+}
+
+.userAuth-toggle-btn-selected span{
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .userAuth-section-1{
+        width: 100%;
+        height: 20%;
+        justify-content: center;
+    }
+
+    .userAuth-selection{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .userAuth-toggle-btn{
+        padding: 20px;
+        padding-left: 60px;
+        padding-right: 60px;
+        
+    }
+    
+    .userAuth-toggle-btn-selected{
+        padding: 20px;
+        border-top-left-radius: 70px;
+        border-bottom-left-radius: 70px;
+        border-top-right-radius: 70px;
+        border-bottom-right-radius: 70px;
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+}
+
+@media (max-width: 450px) {
+
+    .userAuth-section-1{
+        width: 100%;
+        height: 30%;
+        justify-content: center;
+    }
+    
+    .userAuth-selection{
+        display: flex;
+        flex-direction: column;
+    }
+}

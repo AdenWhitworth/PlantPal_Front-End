@@ -6,7 +6,6 @@ import lock from '../../Images/lock-brown.svg';
 import user_circle from '../../Images/user-circle-brown.svg';
 import tag from '../../Images/tag-brown.svg';
 import plantpal_logo from '../../Images/PlantPal Logo.svg';
-import "../../App.css";
 
 interface SignUpFormProps {
     handleReturnHome: () => void;
