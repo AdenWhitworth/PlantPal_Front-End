@@ -125,7 +125,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!accessToken || !user) {
-      navigate("/auth", { replace: true });
+      handleLogout();
     } else {
       sendCheckSocket(user.user_id);
       fetchUserDevices();

@@ -56,14 +56,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     socketInstance.on('connect', () => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Socket connected', socketInstance.id);
       if (user) sendAddUser(user.user_id);
     });
 
     socketInstance.on('disconnect', () => {
       setIsConnected(false);
       setErrorSocket(null);
-      console.log('Socket disconnected');
     });
 
     socketInstance.on('connect_error', (err) => {
@@ -82,7 +80,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     });
 
     socketInstance.on('reconnect_attempt', () => {
-      console.log('Attempting to reconnect...');
     });
 
     socketInstance.on('reconnect_error', (err) => {
@@ -97,21 +94,18 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     socketInstance.on('presenceUpdateConnection', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Presence Update - Thing Connected:', data.presence_connection);
       setRefresh(true);
     });
 
     socketInstance.on('shadowUpdatePumpWater', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Shadow Update - Water Pumped:', data.shadow_pump);
       setRefresh(true);
     });
 
     socketInstance.on('shadowUpdateAuto', (data) => {
       setIsConnected(true);
       setErrorSocket(null);
-      console.log('Shadow Update - Auto Toggled:', data.shadow_auto);
       setRefresh(true);
     });
 
@@ -133,7 +127,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       socketRef.current = null;
       setIsConnected(false);
       setErrorSocket(null);
-      console.log('Socket disconnected manually');
     }
   }, []);
 
@@ -156,7 +149,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
           console.error('Add user error:', response.message);
         } else {
           setErrorSocket(null);
-          console.log('User added:', user_id);
         }
       });
     } else {
@@ -173,7 +165,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
           console.error('Remove user error:', response.message);
         } else {
           setErrorSocket(null);
-          console.log('User removed:', user_id);
           disconnectSocket();
         }
       });
@@ -192,7 +183,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
           setIsConnected(false);
         } else {
           setErrorSocket(null);
-          console.log('Socket check returned current socket up to date for user:', user_id);
         }
       });
     } else {

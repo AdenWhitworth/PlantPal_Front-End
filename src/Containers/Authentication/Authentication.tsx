@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Provider/AuthProvider';
 import { useSocket } from '../../Provider/SocketProvider';
@@ -17,8 +17,8 @@ interface FormData {
 
 export default function UserAuthentication() {
   const navigate = useNavigate();
-  const { setAccessToken, setUser } = useAuth();
-  const { connectSocket } = useSocket();
+  const { setAccessToken, setUser, accessToken } = useAuth();
+  const { connectSocket, isConnected } = useSocket();
   const [isLoginSelected, setIsLoginSelected] = useState(true);
   const { handleSignIn, handleSignUp, error, isLoading, resetError } = useAuthHandlers({ setAccessToken, setUser, isLoginSelected });
   const [formData, setFormData] = useState<FormData>({
@@ -27,6 +27,7 @@ export default function UserAuthentication() {
     email: '',
     password: '',
   });
+  const hasNavigated = useRef(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -48,9 +49,8 @@ export default function UserAuthentication() {
     handleSignIn(e, {
       email: formData.email,
       password: formData.password,
-    }, (accessToken: string) => {
-        connectSocket(accessToken);
-        navigate('/dashboard', { replace: true });
+    }, (passedToken: string) => {
+      connectSocket(passedToken);  
     });
   };
 
@@ -60,15 +60,21 @@ export default function UserAuthentication() {
       password: formData.password,
       first_name: formData.firstName,
       last_name: formData.lastName,
-    }, (accessToken: string) => {
-      connectSocket(accessToken);
-      navigate('/dashboard', { replace: true });
+    }, (passedToken: string) => {
+      connectSocket(passedToken); 
     });
   };
 
   useEffect(() => {
     resetError();
   }, [isLoginSelected]);
+
+  useEffect(() => {
+    if(accessToken && isConnected && !hasNavigated.current) {
+      navigate('/dashboard', { replace: true });
+      hasNavigated.current = true;
+    }
+  }, [accessToken, isConnected])
 
   return (
     <section className="userAuthentication">
