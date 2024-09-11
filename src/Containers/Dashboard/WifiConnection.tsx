@@ -7,6 +7,7 @@ import useBluetooth from "../../Hooks/useBluetooth";
 import {useAuth} from '../../Provider/AuthProvider';
 import EditWifiForm from './EditWifiForm';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import './WifiConnection.css';
 
 interface WifiDetails {
     wifiSSID: string;

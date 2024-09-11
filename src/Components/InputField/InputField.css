@@ -74,6 +74,10 @@
 
 @media (max-width: 450px) {
     .inputField{
-        height: 5vh;
+        height: 6vh;
+    }
+
+    .inputField-locked{
+        height: 6vh;
     }
 }

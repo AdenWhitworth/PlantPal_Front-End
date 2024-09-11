@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
 import WedgeGauge from '../../Components/WedgeGauge';
+import './MoistureLevel.css';
 
 
 export default function MoistureLevel() {

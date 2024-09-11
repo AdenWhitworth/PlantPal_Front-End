@@ -5,7 +5,7 @@ import lock from '../../Images/lock-brown.svg';
 import location from '../../Images/location-brown.svg';
 import tag from '../../Images/tag-brown.svg';
 import plus_circle from '../../Images/plus-circle-gray.svg';
-
+import './AddDeviceForm.css';
 
 interface AddDeviceFormProps {
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

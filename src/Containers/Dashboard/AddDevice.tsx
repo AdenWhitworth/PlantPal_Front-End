@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import "../../App.css";
+import React, {useState, useEffect} from 'react';
 import {useAuth} from '../../Provider/AuthProvider';
 import useBluetooth from '../../Hooks/useBluetooth';
 import { useDevice } from '../../Provider/DeviceProvider';
 import AddDeviceForm from './AddDeviceForm';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import './AddDevice.css';
 
 interface AddDeviceProps {
     setConnectDeviceToggle: (value: boolean) => void;
@@ -79,7 +79,7 @@ export default function AddDevice({
     }, [resetError]);
 
     return (
-        <div className='dashboard-setting'>
+        <div className='dashboard-add-device'>
             <AddDeviceForm
                 handleInputChange={handleInputChange}
                 error={error}

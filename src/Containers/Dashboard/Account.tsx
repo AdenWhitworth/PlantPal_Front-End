@@ -3,6 +3,7 @@ import { useAuth } from '../../Provider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 import AccountForm from './AccountForm';
+import "./Account.css";
 
 interface UserDetails  {
   firstName: string;
@@ -66,7 +67,7 @@ export default function Account() {
   }, [resetError]);
 
   return (
-    <div className='dashboard-setting'>
+    <div className='dashboard-account'>
       <AccountForm
         handleSaveClick={handleSaveClick} 
         handleReturnForgotPassword={handleReturnForgotPassword}

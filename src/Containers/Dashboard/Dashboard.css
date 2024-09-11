@@ -49,351 +49,68 @@
     grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 
-.dashboard-header{
-    background-color: #FFFFFF;
-    grid-area: header;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding-left: 2%;
-    padding-right: 2%;
-}
-
-.dashboard-header-logo{
-    display: flex;
-    flex-direction: row;
-    cursor: pointer;
-    gap: 1em;
-}
-
-.dashboard-header-logo h1{
-    font-weight: normal;
-    font-size: 48px;
-    color: #55883B;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-}
-
-.dashboard-header-links{
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    gap: 2em;
-}
-.dashboard-header-links li {
-    list-style: none;
-}
-
-.gear{
-    height: 40px;
-    cursor: pointer;
-}
-
-.exit{
-    height: 40px;
-    cursor: pointer;
-}
-
-.refresh{
-    height: 40px;
-    cursor: pointer;
-}
-
-.last-refresh{
-    color: #C0C0C0;
-    font-weight: bold;
-}
-
-.dashboard-menu{
-    background-color: #FFFFFF;
-    grid-area: menu;
-    display: flex;
-    flex-direction: column;
-}
-
-.menu-txt{
-    font-weight: bold;
-    color: #55883B;
-    text-align: center;
-}
-
-.devices{
-    margin-top: 5%;
-    margin-bottom: 5%;
-    flex-grow: 1;
-    overflow-y: auto;
-    -ms-overflow-style: none; 
-    scrollbar-width: none;
-}
-
-.devices::-webkit-scrollbar {
-    display: none;
-}
-
-.device-list{
-    text-align: center;
-    padding: 0;
-    margin: 0;
-}
-
-.device-list li{
-    list-style: none;
-    text-decoration: none;
-    list-style-type: none;
+@media (max-width: 768px) {
     
-}
-
-.device-line{
-    display: flex;
-    align-items: center;
-    text-align: right;
-    justify-content: right;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-right: 15%;
-}
-
-.device-identifier{
-    cursor: pointer;
-}
-
-.selected{
-    background-color: #E6F0DC;
-    margin-left: 10%;
-    border-top-left-radius: 60px;
-    border-bottom-left-radius: 60px;
-}
-
-.device-line h4{
-    margin: 0;
-    padding: 0;
-}
-
-.menu-options{
-    display: flex;
-    flex-direction: row;
-    gap: 5%;
-    width: 90%;
-    margin-left: 5%;
-    align-items: center;
-}
-
-.add-device{
-    cursor: pointer;
-    height: 70%;
-}
-
-.dashboard-moisture{
-    background-color: #FFFFFF;
-    grid-area: moisture;
-    display: flex;
-    flex-direction: column;
-}
-
-.show-moisture{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.start-moisture{
-    text-align: center;
-}
-
-.dashboard-moisture h3{
-    text-align: center;
-}
-
-.moisture-gauge{
-    flex-grow: 1;
-    width: 80%;
-    margin-left: 10%;
-}
-
-.moisture-labels{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 60%;
-    margin-left: 20%;
-}
-
-.moisture-labels h4{
-    margin-top: 0;
-}
-
-.dashboard-connection{
-    background-color: #FFFFFF;
-    grid-area: connection;
-    text-align: center;
+    .dashboard{
+        height: auto;
+    }
     
+    .dashboard-grid{
+        grid-template-areas: 'header'
+        'menu'
+        'moisture'
+        'connection'
+        'status'
+        'automate';
+        grid-template-rows: minmax(0, 200px) minmax(0, 700px) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .dashboard-grid-settings{
+        grid-template-areas: 'header'
+        'menu'
+        'setting';
+        grid-template-rows: minmax(0, 200px) minmax(0, 700px) minmax(0, auto);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .dashboard-grid-loading{
+        grid-template-areas: 'header'
+        'loading';
+        grid-template-rows: minmax(0, 200px) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        height: 100vh;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
 }
 
-.dashboard-connection h4{
-    margin-top: 0;
-    margin-bottom: 2%;
-}
+@media (max-width: 530px) {
+    .dashboard-grid{
+        grid-template-rows: minmax(0, 300px) minmax(0, 700px) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+    }
 
-.update-wifi{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+    .dashboard-grid-settings{
+        grid-template-rows: minmax(0, 300px) minmax(0, 700px) minmax(0, auto);
+    }
 
-.dashboard-status{
-    background-color: #FFFFFF;
-    grid-area: status;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.status-indicator{
-    flex-grow: 1;
-    background-image: url("../../Images/water.svg");
-    
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
-    margin-bottom: 10%;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-.good-water{
-    font-weight: bold;
-    color: #0C9B05;
-}
-
-.bad-water{
-    font-weight: bold;
-    color: #E81B00;
-}
-
-.dashboard-automate{
-    background-color: #FFFFFF;
-    grid-area: automate;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-}
-
-.auto-status{
-    flex: 1;
-    width: 100%;
-}
-
-.manual{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.manual h4{
-    padding: 0;
-    margin: 0;
-}
-
-.manual-tap{
-    height: 100px;
-    margin-top: 3%;
-    margin-bottom: 3%;
-}
-.manual img{
-    height: 100%;
-}
-
-.curser{
-    cursor: pointer;
-}
-
-.auto{
-    flex-grow: 1;
-    display: flex;
-    width: 90%;
-    height: 80%;
-    overflow-x: auto;
-    margin-left: 5%;
-}
-
-.dashboard-setting{
-    background-color: #FFFFFF;
-    grid-area: setting;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.account-section-2{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.account-close{
-    position: absolute;
-    right: 5%;
-    top: 5%;
-    cursor: pointer;
-}
-
-.account-close img{
-    width: 40px;
-    height: 40px;
-}
-
-.account-section-2-btns{
-    display: flex;
-    justify-content: space-between;
-    width: 60%;
-    margin-top: 2%;
-}
-
-.account-logo-txt{
-    font-weight: normal;
-    font-size: 30px;
-    color: #C0C0C0;
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.new-device-section-2{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
-
-.new-device-section-2-btns{
-    display: flex;
-    justify-content: space-between;
-    width: 60%;
-    margin-top: 2%;
-}
-
-.new-device-logo-txt{
-    font-weight: normal;
-    font-size: 30px;
-    color: #C0C0C0;
-    text-align: center;
-    margin-bottom: 0;
-    margin-top: 0;
+    .dashboard-grid-loading{
+        grid-template-rows: minmax(0, 300px) minmax(0, 1fr);
+    }
 }

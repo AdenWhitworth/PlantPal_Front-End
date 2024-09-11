@@ -3,6 +3,7 @@ import x_circle from "../../Images/x-circle-red.svg";
 import check_circle from "../../Images/check-circle-green.svg";
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
+import './WaterStatus.css';
 
 interface WaterStatus {
     text: string;

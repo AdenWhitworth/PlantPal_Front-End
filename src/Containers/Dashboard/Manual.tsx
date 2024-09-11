@@ -3,6 +3,7 @@ import tap from "../../Images/tap-green.svg";
 import tap_locked from "../../Images/tap-gray.svg";
 import time from '../../Images/time-green.svg';
 import { useDevice } from '../../Provider/DeviceProvider';
+import './Manual.css';
 
 interface ManualProps {
     handleUpdatePumpWaterClick: () => void;

@@ -7,6 +7,7 @@ import tag from '../../Images/tag-brown.svg';
 import gear from '../../Images/gear-grey.svg';
 import React from 'react';
 import { useAuth } from '../../Provider/AuthProvider';
+import './AccountForm.css';
 
 interface AccountFormProps {
     handleReturnForgotPassword: () => void;

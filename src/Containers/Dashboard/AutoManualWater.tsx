@@ -7,6 +7,7 @@ import { useSocket } from '../../Provider/SocketProvider';
 import { useDevice } from '../../Provider/DeviceProvider';
 import {useAuth} from '../../Provider/AuthProvider';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import './AutoManualWater.css';
 
 interface AutoManualWaterProps {
     autoSwitch: boolean;
@@ -88,7 +89,7 @@ export default function AutoManualWater({
 
             {!lastLog?
 
-                <img src={ traingle} alt='Auto Error icon'></img>
+                <img className='auto-triangle' src={ traingle} alt='Auto Error icon'></img>
                 :
             
                 <div className='auto-status'>

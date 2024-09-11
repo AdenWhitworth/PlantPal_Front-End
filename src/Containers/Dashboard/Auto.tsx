@@ -1,6 +1,7 @@
 import React from 'react';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 import { BarChart } from '@mui/x-charts/BarChart';
+import './Auto.css';
 
 const chartSetting = {
     yAxis: [

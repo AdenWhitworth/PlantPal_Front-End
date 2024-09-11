@@ -1,5 +1,6 @@
 import {useState , useEffect, useCallback} from "react";
 import { useDevice } from '../../Provider/DeviceProvider';
+import './DeviceItem.css';
 
 interface Device {
     device_id: number;
