@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useAuth} from '../../Provider/AuthProvider';
 import useBluetooth from '../../Hooks/useBluetooth';
 import { useDevice } from '../../Provider/DeviceProvider';
@@ -48,11 +48,11 @@ export default function AddDevice({
         try {
             await connectBluetooth(wifiDetails.assetNumber);
         } catch (error) {
-            console.error('Bluetooth connection failed. Please try again.');
+            console.error(error);
         }
     };
 
-    const handleNewConnection = () => {
+    const handleNewConnection = useCallback(() => {
         
         handleAddDevice(accessToken, setAccessToken,{
             location: wifiDetails.deviceLocation,
@@ -66,7 +66,7 @@ export default function AddDevice({
             setConnectDeviceToggle(true);
             showPerformanceView();
         });
-    };
+    }, [accessToken, wifiDetails, handleAddDevice, resetError, sendCredentials, setAccessToken, setConnectDeviceToggle, setDevice, showPerformanceView]);
     
     useEffect(() => {
         if (bleDevice){

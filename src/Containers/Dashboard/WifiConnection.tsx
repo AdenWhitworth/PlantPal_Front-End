@@ -43,12 +43,18 @@ export default function WifiConnection({
         }));
     };
 
-    const handleChangeWifiClick = () => {
+    const handleChangeWifiClick = async () => {
         if(!device || !device.cat_num){
             console.error("Device cat_num required")
             return
         }
-        connectBluetooth(device.cat_num);
+        
+        try {
+            await connectBluetooth(device.cat_num);
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
     const handleUpdateWifiSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
