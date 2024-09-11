@@ -22,17 +22,19 @@ export default function Button({
     const classType = { 
         primary: "button-hollow grow", 
         secondary: "button-fill grow",
-        tertiary: "text-btn"
+        tertiary: "text-btn",
     };
+
+    const combinedClassName = `${classType[styleType]}${className ? ` ${className}` : ''}`;
 
     return (
         <button 
-            className={`${classType[styleType]} ${className}`} 
+            className={combinedClassName} 
             onClick={onClick} 
             type={type} 
             disabled={disabled}>
             {styleType === 'tertiary' ? (
-                <span>{children}</span>
+                <span className="tertiary-button-text">{children}</span>
             ) : (
                 children
             )}
