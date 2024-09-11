@@ -1,0 +1,8 @@
+.auto{
+    flex-grow: 1;
+    display: flex;
+    width: 90%;
+    height: 80%;
+    overflow-x: auto;
+    margin-left: 5%;
+}

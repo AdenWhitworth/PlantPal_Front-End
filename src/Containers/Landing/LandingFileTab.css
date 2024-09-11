@@ -1,0 +1,37 @@
+.file-tab-container{
+    margin-left: 5%;
+    width: 90%;
+    height: 12%;
+    display: flex;
+}
+
+.file-tab{
+    width: 30%;
+    height: 100%;
+    background-color: #55883B;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 30px;
+}
+
+.file-tab-adjust{
+    width: 30%;
+    height: 100%;
+    background-color: #55883B;
+    
+}
+
+.file-tab-adjust-2{
+    background-color: #FFFFFF;
+    border-bottom-left-radius: 15px;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .file-tab-container{
+        margin-left: 5%;
+        width: 90%;
+        height: 50px;
+        display: flex;
+    }
+}

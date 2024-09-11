@@ -3,6 +3,7 @@ import LandingHeader from "./LandingHeader";
 import LandingCallToAction from './LandingCallToAction';
 import LandingFileContent from './LandingFileContent';
 import { useNavigate } from "react-router-dom";
+import './Landing.css';
 
 export default function Landing() {
 

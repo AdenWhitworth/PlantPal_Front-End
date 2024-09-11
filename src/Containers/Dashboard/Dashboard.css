@@ -1,0 +1,116 @@
+
+.dashboard{
+    background-color: #E6F0DC;
+    width: 100%;
+    height: 100%;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.dashboard-grid{
+    width: 96%;
+    height: 94%;
+    display: grid;
+    grid-template-areas: 'header header header'
+    'menu moisture connection'
+    'menu status automate';
+    gap: 2%;
+    padding-left: 2%;
+    padding-top: 2%;
+    grid-template-rows: minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.dashboard-grid-settings{
+    width: 96%;
+    height: 94%;
+    display: grid;
+    grid-template-areas: 'header header header'
+    'menu setting setting'
+    'menu setting setting';
+    gap: 2%;
+    padding-left: 2%;
+    padding-top: 2%;
+    grid-template-rows: minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.dashboard-grid-loading{
+    width: 96%;
+    height: 94%;
+    display: grid;
+    grid-template-areas: 'header header header'
+    'loading loading loading'
+    'loading loading loading';
+    gap: 2%;
+    padding-left: 2%;
+    padding-top: 2%;
+    grid-template-rows: minmax(0, 0.4fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 768px) {
+    
+    .dashboard{
+        height: auto;
+    }
+    
+    .dashboard-grid{
+        grid-template-areas: 'header'
+        'menu'
+        'moisture'
+        'connection'
+        'status'
+        'automate';
+        grid-template-rows: minmax(0, 200px) minmax(0, 700px) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .dashboard-grid-settings{
+        grid-template-areas: 'header'
+        'menu'
+        'setting';
+        grid-template-rows: minmax(0, 200px) minmax(0, 700px) minmax(0, auto);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+
+    .dashboard-grid-loading{
+        grid-template-areas: 'header'
+        'loading';
+        grid-template-rows: minmax(0, 200px) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+        padding-bottom: 4%;
+        padding-top: 4%;
+        width: 92%;
+        height: 100vh;
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+}
+
+@media (max-width: 530px) {
+    .dashboard-grid{
+        grid-template-rows: minmax(0, 300px) minmax(0, 700px) minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto);
+    }
+
+    .dashboard-grid-settings{
+        grid-template-rows: minmax(0, 300px) minmax(0, 700px) minmax(0, auto);
+    }
+
+    .dashboard-grid-loading{
+        grid-template-rows: minmax(0, 300px) minmax(0, 1fr);
+    }
+}

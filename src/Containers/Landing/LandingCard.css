@@ -1,0 +1,38 @@
+
+.landing-card{
+    height: 100%;
+    width: 45%;
+    background-image: linear-gradient(to bottom, #FFFFFF, rgba(255, 255, 255,0.15));
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    display: flex;
+}
+
+.landing-card-img{
+    width: 25%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.landing-card img{
+    width: 80%;
+}
+
+.landing-card-txt{
+    width: 60%;
+    margin-left: 5%;
+    margin-top: 10%;
+}
+
+.landing-card-txt h3{
+    color: #55883B;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .landing-card{
+        height: auto;
+        width: 100%;
+    }
+}

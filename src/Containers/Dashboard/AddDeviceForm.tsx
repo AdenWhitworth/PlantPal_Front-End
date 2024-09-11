@@ -1,11 +1,11 @@
-import Button from '../../Components/Button';
-import InputField from '../../Components/InputField';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/InputField/InputField';
 import wifi from '../../Images/wifi-brown.svg';
 import lock from '../../Images/lock-brown.svg';
 import location from '../../Images/location-brown.svg';
 import tag from '../../Images/tag-brown.svg';
 import plus_circle from '../../Images/plus-circle-gray.svg';
-
+import './AddDeviceForm.css';
 
 interface AddDeviceFormProps {
     handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

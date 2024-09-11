@@ -1,6 +1,6 @@
 import './App.css';
 import Landing from  './Containers/Landing/Landing';
-import UserAuthentication from  './Containers/Authentication/UserAuthentication';
+import UserAuthentication from  './Containers/Authentication/Authentication';
 import Dashboard from './Containers/Dashboard/Dashboard';
 import ForgotPassword from './Containers/Authentication/ForgotPassword';
 import ResetPassword from './Containers/Authentication/ResetPassword';

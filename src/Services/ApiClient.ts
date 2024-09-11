@@ -9,12 +9,20 @@ const createBaseClient = (baseURL: string, headers: Record<string,string> = {}):
   });
 };
 
+interface ErrorResponse {
+  message?: string;
+}
+
 const setupInterceptors = (client: AxiosInstance, setAccessToken: (value: string) => void) => {
   client.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
       const originalRequest: AxiosRequestConfig & { _retry?: boolean } = error.config || {};
-      if (error.response?.status === 401 && !originalRequest._retry) {
+      if (
+        (error.response?.status === 401 && !originalRequest._retry) ||
+        (error.response?.status === 500 && (error.response.data as ErrorResponse).message === "Invalid or expired token: jwt expired" && !originalRequest._retry)
+      ) {
+        
         originalRequest._retry = true;
 
         try {

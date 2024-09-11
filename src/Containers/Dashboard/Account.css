@@ -1,0 +1,9 @@
+.dashboard-account{
+    background-color: #FFFFFF;
+    grid-area: setting;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

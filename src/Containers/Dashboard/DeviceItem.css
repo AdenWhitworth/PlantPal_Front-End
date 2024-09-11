@@ -1,0 +1,20 @@
+.device-line{
+    display: flex;
+    align-items: center;
+    text-align: right;
+    justify-content: right;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 15%;
+}
+
+.device-identifier{
+    cursor: pointer;
+}
+
+.selected{
+    background-color: #E6F0DC;
+    margin-left: 10%;
+    border-top-left-radius: 60px;
+    border-bottom-left-radius: 60px;
+}

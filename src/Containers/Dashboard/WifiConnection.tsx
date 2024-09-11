@@ -2,11 +2,12 @@ import React, {useState, useEffect} from 'react';
 import wifi from "../../Images/wifi-green.svg";
 import triangle from "../../Images/triangle-orange.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
-import Button from '../../Components/Button';
+import Button from '../../Components/Button/Button';
 import useBluetooth from "../../Hooks/useBluetooth";
 import {useAuth} from '../../Provider/AuthProvider';
 import EditWifiForm from './EditWifiForm';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import './WifiConnection.css';
 
 interface WifiDetails {
     wifiSSID: string;
@@ -42,12 +43,18 @@ export default function WifiConnection({
         }));
     };
 
-    const handleChangeWifiClick = () => {
+    const handleChangeWifiClick = async () => {
         if(!device || !device.cat_num){
             console.error("Device cat_num required")
             return
         }
-        connectBluetooth(device.cat_num);
+        
+        try {
+            await connectBluetooth(device.cat_num);
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
     const handleUpdateWifiSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

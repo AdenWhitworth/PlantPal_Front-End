@@ -1,13 +1,13 @@
-import Button from '../../Components/Button';
-import InputField from '../../Components/InputField';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/InputField/InputField';
 import mail from '../../Images/email-brown.svg';
 import x_circle from '../../Images/x-circle-black.svg';
 import user_circle from '../../Images/user-circle-brown.svg';
 import tag from '../../Images/tag-brown.svg';
 import gear from '../../Images/gear-grey.svg';
-import "../../App.css";
 import React from 'react';
 import { useAuth } from '../../Provider/AuthProvider';
+import './AccountForm.css';
 
 interface AccountFormProps {
     handleReturnForgotPassword: () => void;

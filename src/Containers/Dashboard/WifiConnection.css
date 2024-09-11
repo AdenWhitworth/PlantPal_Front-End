@@ -1,0 +1,10 @@
+.dashboard-connection{
+    background-color: #FFFFFF;
+    grid-area: connection;
+    text-align: center;
+}
+
+.dashboard-connection h4{
+    margin-top: 0;
+    margin-bottom: 2%;
+}

@@ -1,0 +1,43 @@
+.button-hollow{
+    border: 2px solid #9A6735;
+    border-radius: 15px;
+    background: transparent;
+    cursor: pointer;
+    color: #9A6735;
+    height: 60px;
+    width: 150px;
+    text-align: center;
+    font-size: 18px;
+    font-family: inherit;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.button-fill{
+    border: 2px solid #9A6735;
+    border-radius: 15px;
+    background: #9A6735;
+    cursor: pointer;
+    color: #E6F0DC;
+    height: 60px;
+    width: 150px;
+    text-align: center;
+    font-size: 18px;
+    font-family: inherit;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.text-btn{
+    border: none;
+    background: transparent;
+    cursor: default;
+    color: #9A6735;
+    font-weight: bold;
+    text-align: left;
+    font-size: 18px;
+    font-family: inherit;
+}
+
+.text-btn span{
+    cursor: pointer;
+}
+

@@ -4,6 +4,7 @@ import gear from "../../Images/gear-grey.svg";
 import exit from "../../Images/exit-grey.svg";
 import refresh from "../../Images/refresh-gray.svg";
 import { useDevice } from '../../Provider/DeviceProvider';
+import './DashboardHeader.css';
 
 interface DashboardHeaderProps {
     handlePlantPalClick: () => void; 
