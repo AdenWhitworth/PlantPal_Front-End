@@ -6,7 +6,7 @@ interface InputFieldProps {
     isRequired: boolean, 
     type: string, 
     placeholder: string,
-    inputImg?: string, 
+    inputImg: string, 
     isSpellCheck: boolean, 
     setWidth?: string, 
     setMarginTop?: string, 
@@ -17,7 +17,7 @@ interface InputFieldProps {
 }
 
 export default function InputField ({
-    onChange, 
+    onChange = () => {}, 
     isRequired, 
     type, 
     placeholder,

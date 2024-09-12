@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import traingle from "../../Images/triangle-orange.svg";
-import ToggleSwitch from '../../Components/ToggleSwitch';
+import ToggleSwitch from '../../Components/ToggleSwitch/ToggleSwitch';
 import Auto from './Auto';
 import Manual from './Manual';
 import { useSocket } from '../../Provider/SocketProvider';

@@ -2,7 +2,7 @@ import { render, screen, fireEvent  } from '@testing-library/react';
 import React from 'react';
 import Button from './Button';
 
-describe('Button component style tests', () => {
+describe('Button component tests', () => {
   test('renders with primary style', () => {
     render(<Button styleType="primary">Primary Button</Button>);
     const button = screen.getByText('Primary Button');
@@ -20,8 +20,7 @@ describe('Button component style tests', () => {
   });
 
   test('renders with tertiary style and text wrapped in span', () => {
-    const { container } = render(<Button styleType="tertiary">Tertiary Button</Button>);
-    console.log(container.innerHTML, "*****",container.className);
+    render(<Button styleType="tertiary">Tertiary Button</Button>);
     const button = screen.getByText('Tertiary Button');
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('tertiary-button-text');
@@ -32,27 +31,23 @@ describe('Button component style tests', () => {
     const button = screen.getByText('Custom Class Button');
     expect(button).toHaveClass('custom-class');
   });
-});
 
-describe('Button component onClick tests', () => {
-    test('calls onClick handler when clicked', () => {
-      const handleClick = jest.fn();
-      render(<Button styleType="primary" onClick={handleClick}>Click Me</Button>);
-      const button = screen.getByText('Click Me');
-      fireEvent.click(button);
-      expect(handleClick).toHaveBeenCalledTimes(1);
-    });
+  test('calls onClick handler when clicked', () => {
+    const handleClick = jest.fn();
+    render(<Button styleType="primary" onClick={handleClick}>Click Me</Button>);
+    const button = screen.getByText('Click Me');
+    fireEvent.click(button);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
   
-    test('does not call onClick handler when button is disabled', () => {
-      const handleClick = jest.fn();
-      render(<Button styleType="primary" onClick={handleClick} disabled>Disabled Button</Button>);
-      const button = screen.getByText('Disabled Button');
-      fireEvent.click(button);
-      expect(handleClick).not.toHaveBeenCalled();
-    });
-});
+  test('does not call onClick handler when button is disabled', () => {
+    const handleClick = jest.fn();
+    render(<Button styleType="primary" onClick={handleClick} disabled>Disabled Button</Button>);
+    const button = screen.getByText('Disabled Button');
+    fireEvent.click(button);
+    expect(handleClick).not.toHaveBeenCalled();
+  });
 
-describe('Disabled Button component tests', () => {
   test('button is disabled when the disabled prop is true', () => {
     render(<Button styleType="primary" disabled>Disabled Button</Button>);
     const button = screen.getByText('Disabled Button');
@@ -64,9 +59,7 @@ describe('Disabled Button component tests', () => {
     const button = screen.getByText('Enabled Button');
     expect(button).not.toBeDisabled();
   });
-});
 
-describe('Button component type tests', () => {
   test('renders with default type "button"', () => {
     render(<Button styleType="primary">Default Type Button</Button>);
     const button = screen.getByText('Default Type Button');
