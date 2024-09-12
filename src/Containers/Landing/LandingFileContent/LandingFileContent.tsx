@@ -1,8 +1,8 @@
 import React from 'react';
 import calendar from "../../Images/calendar-green.svg";
 import shower from "../../Images/shower-green.svg";
-import LandingFileTab from './LandingFileTab';
-import LandingCard from './LandingCard';
+import LandingFileTab from '../LandingFileTab/LandingFileTab';
+import LandingCard from '../LandingCard/LandingCard';
 import './LandingFileContent.css';
 
 interface Card {

@@ -1,7 +1,7 @@
 import React from 'react';
-import LandingHeader from "./LandingHeader";
-import LandingCallToAction from './LandingCallToAction';
-import LandingFileContent from './LandingFileContent';
+import LandingHeader from "./LandingHeader/LandingHeader";
+import LandingCallToAction from './LandingCallToAction/LandingCallToAction';
+import LandingFileContent from './LandingFileContent/LandingFileContent';
 import { useNavigate } from "react-router-dom";
 import './Landing.css';
 
