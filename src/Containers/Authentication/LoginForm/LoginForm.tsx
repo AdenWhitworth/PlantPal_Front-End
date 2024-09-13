@@ -1,5 +1,6 @@
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/InputField/InputField';
+import React from 'react';
+import Button from '../../../Components/Button/Button';
+import InputField from '../../../Components/InputField/InputField';
 import mail from '../../Images/email-brown.svg';
 import lock from '../../Images/lock-brown.svg';
 import plantpal_logo from '../../Images/PlantPal Logo.svg';
@@ -24,7 +25,7 @@ export default function LoginForm({
 
     return (
         
-        <form className="userAuth-section-2" onSubmit={handleSubmit}>
+        <form className="userAuth-section-2" onSubmit={handleSubmit} data-testid="login-form">
             <div className='userAuth-logo'>
                 <img 
                     className="userAuth-logo-img grow" 

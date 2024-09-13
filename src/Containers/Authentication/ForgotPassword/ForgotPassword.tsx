@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ForgotPasswordModal from '../../Modals/ForgotPasswordModal';
-import { useChangePasswordHandlers } from '../../Hooks/useChangePasswordHandlers';
+import ForgotPasswordModal from '../../../Modals/ForgotPasswordModal/ForgotPasswordModal';
+import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers';
 
 interface FormData  {
     email: string;
@@ -29,7 +29,9 @@ const ForgotPassword = () => {
     };
 
     const handleForgotPasswordSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        handleForgotPassword(e, {
+        e.preventDefault();
+
+        handleForgotPassword({
             email: formData.email,
         })
     };

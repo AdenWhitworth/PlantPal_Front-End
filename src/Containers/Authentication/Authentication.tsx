@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Provider/AuthProvider';
 import { useSocket } from '../../Provider/SocketProvider';
-import AuthSelection from './AuthSelection';
-import LoginForm from './LoginForm';
-import SignUpForm from './SignUpForm';
+import AuthSelection from './AuthSelection/AuthSelection';
+import LoginForm from './LoginForm/LoginForm';
+import SignUpForm from './SignUpForm/SignUpForm';
 import './Athentication.css';
 import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 
@@ -15,7 +15,7 @@ interface FormData {
   password: string;
 }
 
-export default function UserAuthentication() {
+export default function Authentication() {
   const navigate = useNavigate();
   const { setAccessToken, setUser, accessToken } = useAuth();
   const { connectSocket, isConnected } = useSocket();

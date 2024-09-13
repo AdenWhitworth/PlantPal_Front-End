@@ -8,6 +8,7 @@ interface ButtonProps {
     type?: 'button' | 'submit' | 'reset'; 
     className?: string;
     disabled?: boolean;
+    testId?: string;
 }
 
 export default function Button({ 
@@ -17,6 +18,7 @@ export default function Button({
     type = 'button', 
     className = '', 
     disabled = false,
+    testId,
 }: ButtonProps) {
 
     const classType = { 
@@ -31,7 +33,8 @@ export default function Button({
         <button 
             className={combinedClassName} 
             onClick={onClick} 
-            type={type} 
+            type={type}
+            data-testid={testId} 
             disabled={disabled}>
             {styleType === 'tertiary' ? (
                 <span className="tertiary-button-text">{children}</span>

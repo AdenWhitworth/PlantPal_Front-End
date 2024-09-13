@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ResetPasswordModal from '../../Modals/ResetPasswordModal';
-import { useChangePasswordHandlers } from '../../Hooks/useChangePasswordHandlers';
+import ResetPasswordModal from '../../../Modals/ResetPasswordModal/ResetPasswordModal';
+import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers';
 
 interface FormData  {
     password: string;

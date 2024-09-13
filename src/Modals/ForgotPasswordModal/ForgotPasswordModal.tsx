@@ -1,8 +1,8 @@
 import React from "react";
 import mail from '../Images/email-brown.svg';
-import Button from '../Components/Button/Button';
-import InputField from '../Components/InputField/InputField';
-import Modal from '../Components/Modal/Modal';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/InputField/InputField';
+import Modal from '../../Components/Modal/Modal';
 import './ForgotPasswordModal.css';
 
 interface ForgotPasswordModalProps {
@@ -27,8 +27,8 @@ export default function ForgotPasswordModal ({
             buttonLabel='Accept'
             styleType='primary'
             children={
-                <form className='password-form' onSubmit={handleSubmit}>
-                    <h1 className="password-form-logo-txt">Reset Password</h1>
+                <form className='password-form' onSubmit={handleSubmit} data-testid="forgot-form">
+                    <h1 className="password-form-logo-txt" data-testid="reset-password-title">Reset Password</h1>
 
                     <p>Enter the email associated with your account and we'll send an email with instructions to reset your password.</p>
                     

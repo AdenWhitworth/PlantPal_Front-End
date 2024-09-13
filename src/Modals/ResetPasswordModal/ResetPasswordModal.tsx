@@ -1,8 +1,8 @@
 import React from "react";
 import lock from '../Images/lock-brown.svg';
-import Button from '../Components/Button/Button';
-import InputField from '../Components/InputField/InputField';
-import Modal from '../Components/Modal/Modal';
+import Button from '../../Components/Button/Button';
+import InputField from '../../Components/InputField/InputField';
+import Modal from '../../Components/Modal/Modal';
 import './ResetPasswordModal.css';
 
 interface ResetPasswordModalProps {
@@ -27,9 +27,9 @@ export default function ResetPasswordModal ({
             buttonLabel='Accept'
             styleType='primary'
             children={
-                <form className='password-form' onSubmit={handleSubmit}>
+                <form className='password-form' onSubmit={handleSubmit} data-testid="reset-form">
 
-                    <h1 className="password-form-logo-txt">Reset Password</h1>
+                    <h1 className="password-form-logo-txt" data-testid="reset-password-title">Reset Password</h1>
 
                     <InputField
                         onChange={handleInputChange} 
@@ -55,7 +55,7 @@ export default function ResetPasswordModal ({
 
                     <div className='password-form-logo-btns'>
                         <div></div>
-                        <Button type="submit" styleType='secondary'>Reset Password</Button>
+                        <Button type="submit" styleType='secondary' testId="reset-password-btn">Reset Password</Button>
                     </div>
                     
                     {message && <h4>{message}</h4>}

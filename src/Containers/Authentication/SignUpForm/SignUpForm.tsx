@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/InputField/InputField';
+import Button from '../../../Components/Button/Button';
+import InputField from '../../../Components/InputField/InputField';
 import mail from '../../Images/email-brown.svg';
 import lock from '../../Images/lock-brown.svg';
 import user_circle from '../../Images/user-circle-brown.svg';
@@ -24,7 +24,7 @@ export default function SignUpForm({
 }: SignUpFormProps) {
 
     return (
-        <form className="userAuth-section-2" onSubmit={handleSubmit}>
+        <form className="userAuth-section-2" onSubmit={handleSubmit} data-testid="signup-form">
                     
             <div className='userAuth-logo'>
                 <img 

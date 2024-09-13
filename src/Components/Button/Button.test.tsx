@@ -77,6 +77,13 @@ describe('Button component tests', () => {
     const button = screen.getByText('Reset Button');
     expect(button).toHaveAttribute('type', 'reset');
   });
+
+  test('renders a button with correct text and test ID', () => {
+    render(<Button styleType='primary' testId='primary-button'>Click Me</Button>);
+    const buttonElement = screen.getByTestId('primary-button');
+    expect(buttonElement).toBeInTheDocument();
+    expect(buttonElement).toHaveTextContent('Click Me');
+  });
 });
 
 
