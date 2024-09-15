@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import plantpal_logo from "../../Images/PlantPal Logo.svg";
-import gear from "../../Images/gear-grey.svg";
-import exit from "../../Images/exit-grey.svg";
-import refresh from "../../Images/refresh-gray.svg";
-import { useDevice } from '../../Provider/DeviceProvider';
+import plantpal_logo from "../../../Images/PlantPal Logo.svg";
+import gear from "../../../Images/gear-grey.svg";
+import exit from "../../../Images/exit-grey.svg";
+import refresh from "../../../Images/refresh-gray.svg";
+import { useDevice } from '../../../Provider/DeviceProvider';
 import './DashboardHeader.css';
 
 interface DashboardHeaderProps {

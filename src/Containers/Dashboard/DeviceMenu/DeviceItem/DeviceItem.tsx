@@ -1,5 +1,5 @@
-import {useState , useEffect, useCallback} from "react";
-import { useDevice } from '../../Provider/DeviceProvider';
+import React, {useState , useEffect, useCallback} from "react";
+import { useDevice } from '../../../../Provider/DeviceProvider';
 import './DeviceItem.css';
 
 interface Device {
@@ -62,7 +62,7 @@ export default function DeviceItem({
     
     return (
         <li>
-            <div className={colorStyle} onClick={handleDeviceClick}>
+            <div className={colorStyle} onClick={handleDeviceClick} data-testid="device-btn">
                 <h4 className="device-identifier">{devices.location} - {devices.cat_num}</h4>
             </div>
         </li>

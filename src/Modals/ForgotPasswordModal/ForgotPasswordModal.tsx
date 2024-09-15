@@ -1,5 +1,5 @@
 import React from "react";
-import mail from '../Images/email-brown.svg';
+import mail from '../../Images/email-brown.svg';
 import Button from '../../Components/Button/Button';
 import InputField from '../../Components/InputField/InputField';
 import Modal from '../../Components/Modal/Modal';

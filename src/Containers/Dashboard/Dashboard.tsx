@@ -1,12 +1,12 @@
 import React, { useReducer, useEffect, useCallback } from 'react';
 import triangle from '../../Images/triangle-orange.svg';
-import PerformanceView from './PerformanceView';
-import Account from './Account';
+import PerformanceView from './PerformanceView/PerformanceView';
+import Account from './Account/Account';
 import AddDeviceModal from '../../Modals/AddDeviceModal';
 import ConfirmActionModal from '../../Modals/ConfirmActionModal';
-import DashboardHeader from './DashboardHeader';
-import DeviceMenu from './DeviceMenu';
-import AddDevice from './AddDevice';
+import DashboardHeader from './DashboardHeader/DashboardHeader';
+import DeviceMenu from './DeviceMenu/DeviceMenu';
+import AddDevice from './AddDevice/AddDevice';
 import { useAuth } from "../../Provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from '../../Provider/SocketProvider';
@@ -22,7 +22,6 @@ interface State {
     isSettingsVisible: boolean;
 }
 
-// Define state actions
 type StateAction =
   | { type: 'SET_VIEW'; payload: { view: string; settingsVisible: boolean } }
   | { type: 'SET_CONNECT_DEVICE_TOGGLE'; payload: boolean }
@@ -30,7 +29,6 @@ type StateAction =
   | { type: 'SET_CONFIRM_AUTO'; payload: boolean }
   | { type: 'RESET_STATE' };
 
-// Define initial state
 const initialState: State = {
   connectDeviceToggle: false,
   autoSwitch: false,
@@ -39,7 +37,6 @@ const initialState: State = {
   isSettingsVisible: false,
 };
 
-// Reducer function to manage state changes
 function reducer(state: State, action: StateAction): State {
   switch (action.type) {
     case 'SET_VIEW':

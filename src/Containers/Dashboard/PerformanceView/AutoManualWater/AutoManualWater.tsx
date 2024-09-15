@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import traingle from "../../Images/triangle-orange.svg";
-import ToggleSwitch from '../../Components/ToggleSwitch/ToggleSwitch';
-import Auto from './Auto';
-import Manual from './Manual';
-import { useSocket } from '../../Provider/SocketProvider';
-import { useDevice } from '../../Provider/DeviceProvider';
-import {useAuth} from '../../Provider/AuthProvider';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import traingle from "../../../../Images/triangle-orange.svg";
+import ToggleSwitch from '../../../../Components/ToggleSwitch/ToggleSwitch';
+import Auto from './Auto/Auto';
+import Manual from './Manual/Manual';
+import { useSocket } from '../../../../Provider/SocketProvider';
+import { useDevice } from '../../../../Provider/DeviceProvider';
+import {useAuth} from '../../../../Provider/AuthProvider';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
 import './AutoManualWater.css';
 
 interface AutoManualWaterProps {
@@ -30,7 +30,7 @@ export default function AutoManualWater({
     const [isAutoVisible, setIsAuotVisible] = useState<boolean>(false);
     const { setRefresh } = useSocket();
     const { accessToken, setAccessToken } = useAuth();
-    const { handleUpdatePumpWater, error, resetError} = useSettingsHandlers();
+    const { handleUpdatePumpWater } = useSettingsHandlers();
     const { 
         devices, 
         lastLog, 

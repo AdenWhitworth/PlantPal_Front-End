@@ -1,10 +1,11 @@
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/InputField/InputField';
-import wifi from '../../Images/wifi-brown.svg';
-import lock from '../../Images/lock-brown.svg';
-import location from '../../Images/location-brown.svg';
-import tag from '../../Images/tag-brown.svg';
-import plus_circle from '../../Images/plus-circle-gray.svg';
+import React from 'react';
+import Button from '../../../../Components/Button/Button';
+import InputField from '../../../../Components/InputField/InputField';
+import wifi from '../../../../Images/wifi-brown.svg';
+import lock from '../../../../Images/lock-brown.svg';
+import location from '../../../../Images/location-brown.svg';
+import tag from '../../../../Images/tag-brown.svg';
+import plus_circle from '../../../../Images/plus-circle-gray.svg';
 import './AddDeviceForm.css';
 
 interface AddDeviceFormProps {
@@ -19,7 +20,7 @@ export default function AddDeviceForm({
     handleConnectClick,
 }: AddDeviceFormProps) {
     return (
-        <form id="new-device" className="new-device-section-2" onSubmit={handleConnectClick}>
+        <form id="new-device" className="new-device-section-2" onSubmit={handleConnectClick} data-testid="add-form">
                         
             <div className='new-device-logo'>
                 <img className="new-device-logo-img" src={plus_circle} alt="New device logo"></img>

@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import wifi from "../../Images/wifi-green.svg";
-import triangle from "../../Images/triangle-orange.svg";
-import { useDevice } from '../../Provider/DeviceProvider';
-import Button from '../../Components/Button/Button';
-import useBluetooth from "../../Hooks/useBluetooth";
-import {useAuth} from '../../Provider/AuthProvider';
-import EditWifiForm from './EditWifiForm';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import wifi from "../../../../Images/wifi-green.svg";
+import triangle from "../../../../Images/triangle-orange.svg";
+import { useDevice } from '../../../../Provider/DeviceProvider';
+import Button from '../../../../Components/Button/Button';
+import useBluetooth from "../../../../Hooks/useBluetooth";
+import {useAuth} from '../../../../Provider/AuthProvider';
+import EditWifiForm from './EditWifiForm/EditWifiForm';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
 import './WifiConnection.css';
 
 interface WifiDetails {
@@ -90,7 +90,7 @@ export default function WifiConnection({
     },[bleDevice]);
 
     return (
-        <div className={`dashboard-connection ${isConnectionVisible ? '' : 'hidden'}`}>
+        <div data-testid="dashboard-connection" className={`dashboard-connection ${isConnectionVisible ? '' : 'hidden'}`}>
                 
             {updateWifiToggle?
             
@@ -105,7 +105,7 @@ export default function WifiConnection({
                     <img src={device?.presence_connection? wifi : triangle} alt='Connection icon'></img>
                     <h4>{device?.presence_connection? "Connected": "Disconnected"}</h4>
                     <h4>SSID: {device?.wifi_ssid}</h4>
-                    <Button styleType='tertiary' onClick={handleChangeWifiClick}>Change Wifi?</Button>
+                    <Button styleType='tertiary' onClick={handleChangeWifiClick} testId="change-wifi-btn">Change Wifi?</Button>
                 </div>
             }
         </div>

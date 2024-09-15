@@ -1,7 +1,7 @@
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/InputField/InputField';
-import wifi_logo from '../../Images/wifi-brown.svg';
-import lock from '../../Images/lock-brown.svg';
+import Button from '../../../../../Components/Button/Button';
+import InputField from '../../../../../Components/InputField/InputField';
+import wifi_logo from '../../../../../Images/wifi-brown.svg';
+import lock from '../../../../../Images/lock-brown.svg';
 import "./EditWifiForm.css";
 import React from 'react';
 
@@ -18,10 +18,11 @@ export default function EditWifiForm({
 }: EditWifiFormProps) {
 
     return (
-        <form id='update-wifi' className='update-wifi' onSubmit={handleUpdateWifiSubmit}>
+        <form id='update-wifi' className='update-wifi' onSubmit={handleUpdateWifiSubmit} data-testid="wifi-form">
             <h3>Connection</h3>
             <InputField 
                 onChange={handleInputChange} 
+                name='wifiSSID'
                 inputImg={wifi_logo} 
                 isRequired={true} 
                 type='text' 
@@ -32,6 +33,7 @@ export default function EditWifiForm({
 
             <InputField 
                 onChange={handleInputChange} 
+                name='wifiPassword'
                 inputImg={lock} 
                 isRequired={true} 
                 type='password' 

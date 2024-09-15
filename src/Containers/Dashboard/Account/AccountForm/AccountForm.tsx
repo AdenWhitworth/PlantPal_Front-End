@@ -1,12 +1,12 @@
-import Button from '../../Components/Button/Button';
-import InputField from '../../Components/InputField/InputField';
-import mail from '../../Images/email-brown.svg';
-import x_circle from '../../Images/x-circle-black.svg';
-import user_circle from '../../Images/user-circle-brown.svg';
-import tag from '../../Images/tag-brown.svg';
-import gear from '../../Images/gear-grey.svg';
+import Button from '../../../../Components/Button/Button';
+import InputField from '../../../../Components/InputField/InputField';
+import mail from '../../../../Images/email-brown.svg';
+import x_circle from '../../../../Images/x-circle-black.svg';
+import user_circle from '../../../../Images/user-circle-brown.svg';
+import tag from '../../../../Images/tag-brown.svg';
+import gear from '../../../../Images/gear-grey.svg';
 import React from 'react';
-import { useAuth } from '../../Provider/AuthProvider';
+import { useAuth } from '../../../../Provider/AuthProvider';
 import './AccountForm.css';
 
 interface AccountFormProps {
@@ -34,7 +34,7 @@ export default function AccountForm({
     const { user } = useAuth();
 
     return (
-        <form className="account-section-2" onSubmit={handleSaveClick}>
+        <form className="account-section-2" onSubmit={handleSaveClick} data-testid="account-form">
         
             {editToggle && (
                 <div className='account-close'>
@@ -88,7 +88,7 @@ export default function AccountForm({
     
             <div className='account-section-2-btns'>
     
-                <Button styleType='tertiary' onClick={handleReturnForgotPassword}>Change Password?</Button>
+                <Button styleType='tertiary' onClick={handleReturnForgotPassword} testId='change-password-btn'>Change Password?</Button>
     
                 {editToggle ? (
                     <Button type="submit" styleType='secondary'>Save</Button>

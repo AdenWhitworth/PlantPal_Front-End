@@ -1,8 +1,8 @@
 import React from 'react';
-import MoistureLevel from './MoistureLevel';
-import WifiConnection from './WifiConnection';
-import WaterStatus from './WaterStatus';
-import AutoManualWater from './AutoManualWater';
+import MoistureLevel from './MoistureLevel/MoistureLevel';
+import WifiConnection from './WifiConnection/WifiConnection';
+import WaterStatus from './WaterStatus/WaterStatus';
+import AutoManualWater from './AutoManualWater/AutoManualWater';
 
 interface PerformanceViewProps {
     setConnectDeviceToggle: (value: boolean) => void;

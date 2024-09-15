@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
-import x_circle from "../../Images/x-circle-red.svg";
-import check_circle from "../../Images/check-circle-green.svg";
-import triangle from "../../Images/triangle-orange.svg";
-import { useDevice } from '../../Provider/DeviceProvider';
+import x_circle from "../../../../Images/x-circle-red.svg";
+import check_circle from "../../../../Images/check-circle-green.svg";
+import triangle from "../../../../Images/triangle-orange.svg";
+import { useDevice } from '../../../../Provider/DeviceProvider';
 import './WaterStatus.css';
 
 interface WaterStatus {
     text: string;
     cssClass: string;
     imgSrc: string;
+    imgAlt: string;
 }
 
 export default function WaterStatus() {
@@ -17,6 +18,7 @@ export default function WaterStatus() {
         text: "",
         cssClass: "good-water",
         imgSrc: triangle,
+        imgAlt: "Status icon triangle"
     });
     const [isStatusVisible, setIsStatusVisible] = useState(false);
     const { devices, lastLog } = useDevice();
@@ -29,18 +31,21 @@ export default function WaterStatus() {
                 text: "",
                 cssClass: "good-water",
                 imgSrc: triangle,
+                imgAlt: "Status icon triangle"
             });
         } else if (lastLog.soil_cap > cap_target) {
             setWaterStatus({
                 text: "Sufficient Water",
                 cssClass: "good-water",
                 imgSrc: check_circle ,
+                imgAlt: "Status icon check"
             });
         } else {
             setWaterStatus({
                 text: "Needs Water",
                 cssClass: "bad-water",
                 imgSrc: x_circle  ,
+                imgAlt: "Status icon cross"
             });
         }
     }
@@ -58,7 +63,7 @@ export default function WaterStatus() {
             <h3>Water Status</h3>
 
             <div className='status-indicator'>
-                <img src={waterStatus.imgSrc} alt='Status icon'></img>
+                <img src={waterStatus.imgSrc} alt={waterStatus.imgAlt}></img>
                 <h3 className={waterStatus.cssClass}>{waterStatus.text}</h3>
             </div>
         </div>

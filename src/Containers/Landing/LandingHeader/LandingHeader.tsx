@@ -1,7 +1,7 @@
 import React from 'react';
-import plantpal_logo from "../../Images/PlantPal Logo.svg";
-import shopping_cart from "../../Images/shopping-grey.svg";
-import user from "../../Images/user-grey.svg";
+import plantpal_logo from "../../../Images/PlantPal Logo.svg";
+import shopping_cart from "../../../Images/shopping-grey.svg";
+import user from "../../../Images/user-grey.svg";
 import './LandingHeader.css';
 
 interface Link {

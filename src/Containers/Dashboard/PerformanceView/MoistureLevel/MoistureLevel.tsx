@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import triangle from "../../Images/triangle-orange.svg";
-import { useDevice } from '../../Provider/DeviceProvider';
-import WedgeGauge from '../../Components/WedgeGauge/WedgeGauge';
+import triangle from "../../../../Images/triangle-orange.svg";
+import { useDevice } from '../../../../Provider/DeviceProvider';
+import WedgeGauge from '../../../../Components/WedgeGauge/WedgeGauge';
 import './MoistureLevel.css';
 
 
@@ -34,7 +34,7 @@ export default function MoistureLevel() {
 
             {!lastLog ? (
                 <div className='start-moisture'>
-                    <img src={triangle} alt='Connection icon' />
+                    <img src={triangle} alt='Connection icon triangle' />
                     <h4>Connect PlantPal to get first moisture level reading.</h4>
                 </div>
             ) : (

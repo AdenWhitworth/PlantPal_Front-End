@@ -1,8 +1,8 @@
 import React, { useState, useEffect  } from 'react';
-import { useAuth } from '../../Provider/AuthProvider';
+import { useAuth } from '../../../Provider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
-import AccountForm from './AccountForm';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import AccountForm from './AccountForm/AccountForm';
 import "./Account.css";
 
 interface UserDetails  {

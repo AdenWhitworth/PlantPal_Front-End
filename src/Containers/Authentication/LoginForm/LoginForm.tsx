@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from '../../../Components/Button/Button';
 import InputField from '../../../Components/InputField/InputField';
-import mail from '../../Images/email-brown.svg';
-import lock from '../../Images/lock-brown.svg';
-import plantpal_logo from '../../Images/PlantPal Logo.svg';
+import mail from '../../../Images/email-brown.svg';
+import lock from '../../../Images/lock-brown.svg';
+import plantpal_logo from '../../../Images/PlantPal Logo.svg';
 
 interface LoginFormProps {
     handleReturnHome: () => void;
