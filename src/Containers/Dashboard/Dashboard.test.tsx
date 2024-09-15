@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Dashboard from './Dashboard';
 import { useAuth } from '../../Provider/AuthProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
