@@ -54,10 +54,13 @@
     "@types/react-dom": "^18.3.0",
     "@types/web-bluetooth": "^0.0.20",
     "jest": "^27.5.1",
+    "jest-localstorage-mock": "^2.4.26",
     "typescript": "^4.9.5"
   },
   "jest": {
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
     },
@@ -67,9 +70,17 @@
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/__mocks__/fileMock.js",
-      "^d3-scale$": "<rootDir>/__mocks__/chartMock.js"
+      "^d3-scale$": "<rootDir>/__mocks__/chartMock.js",
+      "^axios$": "<rootDir>/__mocks__/axiosMock.js"
     },
     "testEnvironment": "jsdom",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

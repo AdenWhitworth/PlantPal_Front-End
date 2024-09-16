@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useMemo, useReducer, useEffect, ReactNode } from "react";
+import React, { createContext, useContext, useMemo, useReducer, useEffect, ReactNode } from "react";
 
 interface User {
   first_name: string;
@@ -69,7 +69,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 };
 
 const initialData: AuthState = {
-  accessToken: localStorage.getItem("accessToken"),
+  accessToken: localStorage.getItem("accessToken") || null,
   user: (() => {
     const user = localStorage.getItem("user");
     return user && user !== 'undefined' ? JSON.parse(user) : null;
