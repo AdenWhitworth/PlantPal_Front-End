@@ -38,6 +38,7 @@ const useBluetooth = () => {
         setServer(server);
         setService(service);
         setCharacteristic(characteristic);
+        console.log(characteristic);
         setBleStatus('Connected to Bluetooth device');
     } catch (error: unknown) {
       let errorMessage = 'An unexpected error occurred. Please try again later.';
@@ -47,7 +48,6 @@ const useBluetooth = () => {
 
         errorMessage = axiosError.message || 'Failed to connect to Bluetooth device';
       }
-
       throw new Error(errorMessage);
     }
   };
@@ -66,6 +66,7 @@ const useBluetooth = () => {
 
   const sendCredentials = async (wifi_ssid: string, wifi_password: string) => {
     try {
+      console.log(characteristic);
       if (!characteristic) throw new Error('No characteristic found');
 
       const encoder = new TextEncoder();
@@ -90,7 +91,14 @@ const useBluetooth = () => {
       }
       
       setBleStatus(errorMessage);
+      console.error(errorMessage, error);
       throw new Error(errorMessage);
+    }
+  };
+
+  const triggerDisconnection = () => {
+    if (bleDevice) {
+      bleDevice.dispatchEvent(new Event('gattserverdisconnected'));
     }
   };
 
@@ -103,7 +111,7 @@ const useBluetooth = () => {
     };
   }, [bleDevice]);
 
-  return { connectBluetooth, sendCredentials, bleStatus, bleDevice, server, service };
+  return { connectBluetooth, sendCredentials, triggerDisconnection, onDisconnected, bleStatus, bleDevice, server, service };
 };
 
 export default useBluetooth;

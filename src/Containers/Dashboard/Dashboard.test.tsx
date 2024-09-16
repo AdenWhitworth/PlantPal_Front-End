@@ -23,13 +23,13 @@ jest.mock('./AddDevice/AddDevice', () => (props: any) => (
         <button onClick={props.showPerformanceView}>Show Performance</button>
     </div>
 ));
-jest.mock('../../Modals/AddDeviceModal', () => (props: any) => (
+jest.mock('../../Modals/AddDeviceModal/AddDeviceModal', () => (props: any) => (
     <div>
         Add Device Modal
         <button onClick={props.setConnectDeviceToggle}>Connect Device</button>
     </div>
 ));
-jest.mock('../../Modals/ConfirmActionModal', () => (props: any) => (
+jest.mock('../../Modals/ConfirmActionModal/ConfirmActionModal', () => (props: any) => (
     <div>
         Confirm Action Modal
         <button onClick={props.setAutoSwitch}>Set Auto Switch</button>

@@ -62,7 +62,8 @@ export const useSettingsHandlers = () => {
     };
 
     const validateAddDeviceform = (deviceData: DeviceData) => {
-        if (!deviceData.location || !deviceData.cat_num || !deviceData.wifi_ssid || deviceData.wifi_password) {
+
+        if (!deviceData.location || !deviceData.cat_num || !deviceData.wifi_ssid || !deviceData.wifi_password) {
             setError('Location, asset number, Wifi SSID, and Wifi Password required');
             return false;
         }
@@ -70,7 +71,7 @@ export const useSettingsHandlers = () => {
     };
 
     const validateUpdateWifiform = (wifiData: WifiData) => {
-        if (!wifiData.wifi_ssid || wifiData.wifi_password || !wifiData.device_id) {
+        if (!wifiData.wifi_ssid || !wifiData.wifi_password || !wifiData.device_id) {
             setError('Device id, Wifi SSID, and Wifi Password required');
             return false;
         }
@@ -78,7 +79,7 @@ export const useSettingsHandlers = () => {
     };
 
     const validateUpdateAuto = (autoData: AuotData) => {
-        if (!autoData.device_id || autoData.automate) {
+        if (!autoData.device_id || !autoData.automate) {
             setError('Device id, and Automate required');
             return false;
         }
@@ -86,7 +87,7 @@ export const useSettingsHandlers = () => {
     }
 
     const validateUpdatePump = (pumpData: PumpData) => {
-        if (!pumpData.device_id || pumpData.pump_water) {
+        if (!pumpData.device_id || !pumpData.pump_water) {
             setError('Device id, and Pump Water required');
             return false;
         }
