@@ -79,13 +79,13 @@ export const useAuthHandlers = ({
             await postRegister(userData);
             await handleSignIn(null, userData, onSuccess);
         } catch (error: any) {
-            setError(error.response?.data?.message?.msg || 'Registration failed. Please try again.');
+            setError(error.response?.data?.message || 'Registration failed. Please try again.');
             setIsLoading(false);
         }
     };
 
     const resetError = () => setError(null);
 
-    return { handleSignIn, handleSignUp, error, resetError, isLoading };
+    return { handleSignIn, handleSignUp, validateForm, error, resetError, isLoading };
 };
   

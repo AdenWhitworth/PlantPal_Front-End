@@ -29,10 +29,9 @@ const setupInterceptors = (client: AxiosInstance, setAccessToken: (value: string
           const response = await postRefreshAccessToken();
           const newAccessToken = response.data.accessToken;
 
-          originalRequest.headers = {
-            ...originalRequest.headers,
-            'Authorization': `Bearer ${newAccessToken}`,
-        };
+          if (originalRequest.headers) {
+            originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          }
 
           setAccessToken(newAccessToken);
 

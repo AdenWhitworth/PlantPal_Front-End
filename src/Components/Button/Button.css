@@ -37,7 +37,8 @@
     font-family: inherit;
 }
 
-.text-btn span{
+.tertiary-button-text{
     cursor: pointer;
 }
+
 

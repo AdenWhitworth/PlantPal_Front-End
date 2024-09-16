@@ -36,9 +36,7 @@ export const useChangePasswordHandlers = () => {
         return true;
     };
 
-    const handleForgotPassword = async (e: React.FormEvent<HTMLFormElement>, userData: UserData) => {
-        
-        e.preventDefault();
+    const handleForgotPassword = async (userData: UserData) => {
         resetError();
         resetMessage();
         if (!validateForgotForm(userData)) return;

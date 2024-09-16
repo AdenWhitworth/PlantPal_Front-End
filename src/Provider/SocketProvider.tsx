@@ -40,6 +40,32 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
   const socketRef = useRef<Socket | null>(null);
   const { accessToken, setAccessToken, user } = useAuth();
 
+  const handleRefreshAccessToken = useCallback(async () => {
+    try {
+      const response = await postRefreshAccessToken();
+      const newAccessToken = response.data.accessToken;
+      setAccessToken(newAccessToken);
+    } catch (error: any) {
+      console.error('Failed to refresh token', error);
+    }
+  }, [setAccessToken]);
+
+  const sendAddUser = useCallback((user_id: string) => {
+    if (socketRef.current) {
+      socketRef.current.emit('addUser', user_id, (response: any) => {
+        if (response.error) {
+          setErrorSocket('Add user error');
+          console.error('Add user error:', response.message);
+        } else {
+          setErrorSocket(null);
+        }
+      });
+    } else {
+      setErrorSocket('Socket is not connected');
+      console.error('Socket is not connected');
+    }
+  }, []);
+
   const connectSocket = useCallback((passedToken: string) => {
     if (socketRef.current) return;
 
@@ -109,17 +135,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       setRefresh(true);
     });
 
-  }, [url, user]);
-
-  const handleRefreshAccessToken = async () => {
-    try {
-      const response = await postRefreshAccessToken();
-      const newAccessToken = response.data.accessToken;
-      setAccessToken(newAccessToken);
-    } catch (error: any) {
-      console.error('Failed to refresh token', error);
-    }
-  };
+  }, [url, user, handleRefreshAccessToken, sendAddUser]);
 
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
@@ -140,22 +156,6 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
       disconnectSocket();
     };
   }, [connectSocket, disconnectSocket, accessToken]);
-
-  const sendAddUser = useCallback((user_id: string) => {
-    if (socketRef.current) {
-      socketRef.current.emit('addUser', user_id, (response: any) => {
-        if (response.error) {
-          setErrorSocket('Add user error');
-          console.error('Add user error:', response.message);
-        } else {
-          setErrorSocket(null);
-        }
-      });
-    } else {
-      setErrorSocket('Socket is not connected');
-      console.error('Socket is not connected');
-    }
-  }, [isConnected]);
 
   const sendRemoveUser = useCallback((user_id: string) => {
     if (socketRef.current && isConnected) {
