@@ -10,7 +10,6 @@ jest.mock('./Containers/Dashboard/Dashboard', () => () => <div>Dashboard</div>);
 jest.mock('./Containers/Authentication/ForgotPassword/ForgotPassword', () => () => <div>Forgot Password</div>);
 jest.mock('./Containers/Authentication/ResetPassword/ResetPassword', () => () => <div>Reset Password</div>);
 
-// Mock the providers
 jest.mock('./Provider/AuthProvider', () => ({
     useAuth: jest.fn(),
     AuthProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

@@ -33,22 +33,18 @@ describe('SocketProvider', () => {
     let mockSocketOn: jest.Mock;
     
     beforeEach(() => {
-        jest.clearAllMocks();
-        
-        (useAuth as jest.Mock).mockReturnValue({
-            accessToken: mockAccessToken,
-            user: mockUser,
-            setAccessToken: jest.fn(),
-        });
-        
-        const mockSocket = io() as unknown as Socket;
-        mockSocketEmit = mockSocket.emit as jest.Mock;
-        mockSocketDisconnect = mockSocket.disconnect as jest.Mock;
-        mockSocketOn = mockSocket.on as jest.Mock;
-
-        //mockSocketEmit.mockClear();
-        //mockSocketDisconnect.mockClear();
-        
+      jest.clearAllMocks();
+      
+      (useAuth as jest.Mock).mockReturnValue({
+          accessToken: mockAccessToken,
+          user: mockUser,
+          setAccessToken: jest.fn(),
+      });
+      
+      const mockSocket = io() as unknown as Socket;
+      mockSocketEmit = mockSocket.emit as jest.Mock;
+      mockSocketDisconnect = mockSocket.disconnect as jest.Mock;
+      mockSocketOn = mockSocket.on as jest.Mock;
     });
 
     const TestComponent: React.FC = () => {
@@ -80,51 +76,31 @@ describe('SocketProvider', () => {
     });
 
     test('handles addUser and removeUser socket events', async () => {
-        // Render the component
         render(
           <SocketProvider url="http://localhost">
             <TestComponent />
           </SocketProvider>
         );
     
-        // Simulate connecting the socket (trigger the 'connect' event)
         fireEvent.click(screen.getByText('Connect'));
     
-        // Simulate the socket 'connect' event to set isConnected to true
         act(() => {
           mockSocketOn.mock.calls.forEach(([event, handler]) => {
             if (event === 'connect') {
-              handler(); // Call the handler for the 'connect' event
+              handler();
             }
           });
         });
     
-        // Wait for the UI to reflect the "Connected" state
         await waitFor(() => {
           expect(screen.getByText('Connected')).toBeInTheDocument();
         });
     
-        // Simulate adding a user
         fireEvent.click(screen.getByText('Add User'));
     
-        // Wait for the 'addUser' event to be emitted
         await waitFor(() => {
           expect(mockSocketEmit).toHaveBeenCalledWith('addUser', '123', expect.any(Function));
         });
-        /*
-        act(() => {
-            fireEvent.click(screen.getByText('Remove User'));
-        });
-        
-    
-        // Wait for the 'removeUser' event to be emitted and the socket to be disconnected
-        await waitFor(() => {
-          expect(mockSocketEmit).toHaveBeenCalledWith('removeUser', '123', expect.any(Function));
-          expect(mockSocketDisconnect).toHaveBeenCalled();
-        });
-
-        */
-
     });
 
     test('handles removeUser socket event and disconnects the socket', async () => {
@@ -139,7 +115,7 @@ describe('SocketProvider', () => {
         act(() => {
           mockSocketOn.mock.calls.forEach(([event, handler]) => {
             if (event === 'connect') {
-              handler(); // Call the handler for the 'connect' event
+              handler();
             }
           });
         });
@@ -154,11 +130,10 @@ describe('SocketProvider', () => {
           expect(mockSocketEmit).toHaveBeenCalledWith('removeUser', '123', expect.any(Function));
         });
 
-        // Simulate successful callback for 'removeUser'
         act(() => {
         const callback = mockSocketEmit.mock.calls.find(call => call[0] === 'removeUser')?.[2];
         if (callback) {
-          callback({}); // Simulate successful response with no error
+          callback({});
         }
       });
 

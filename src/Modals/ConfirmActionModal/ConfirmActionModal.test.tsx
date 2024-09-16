@@ -5,7 +5,6 @@ import { useAuth } from '../../Provider/AuthProvider';
 import { useDevice } from '../../Provider/DeviceProvider';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 
-// Mock the hooks and components
 jest.mock('../../Provider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         accessToken: null,

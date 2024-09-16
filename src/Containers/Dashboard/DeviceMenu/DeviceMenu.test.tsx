@@ -140,7 +140,6 @@ describe('DeviceMenu component', () => {
       />
     );
 
-    // The search input should be reset
     expect(searchInput.value).toBe('');
   });
 });
