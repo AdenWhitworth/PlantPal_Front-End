@@ -169,7 +169,7 @@ export const useSettingsHandlers = () => {
             return;
         }
 
-        if (deviceShadow.state.reported.pump || deviceShadow.state.desired.pump && autoSwitch){
+        if ((deviceShadow.state.reported.pump || deviceShadow.state.desired.pump) && autoSwitch){
             setError("Cannot switch to auto while waiting to pump water");
             return;
         }

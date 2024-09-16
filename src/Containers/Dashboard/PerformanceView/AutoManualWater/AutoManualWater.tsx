@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import traingle from "../../../../Images/triangle-orange.svg";
 import ToggleSwitch from '../../../../Components/ToggleSwitch/ToggleSwitch';
 import Auto from './Auto/Auto';
@@ -57,7 +57,7 @@ export default function AutoManualWater({
         });
     };
 
-    const countWaterOccurances = () => {
+    const countWaterOccurances = useCallback(() => {
         const now = new Date();
         const sevenDaysAgo = new Date(now);
         sevenDaysAgo.setDate(now.getDate() - 7);
@@ -73,7 +73,7 @@ export default function AutoManualWater({
 
         const occuranceArray = Object.entries(dateCount).map(([date, times]) => ({ date, times })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setWaterOccurance(occuranceArray);
-    };
+    }, [deviceLogs]);
 
     useEffect(() => {
         setIsAuotVisible(devices.length > 0);
@@ -81,7 +81,7 @@ export default function AutoManualWater({
 
     useEffect(() => {
         countWaterOccurances();
-    }, [deviceLogs]);
+    }, [deviceLogs, countWaterOccurances]);
 
     return (
         <div className={`dashboard-automate ${isAutoVisible ? '' : 'hidden'}`}>

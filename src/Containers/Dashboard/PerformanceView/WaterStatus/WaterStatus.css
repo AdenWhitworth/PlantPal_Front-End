@@ -8,7 +8,7 @@
 
 .status-indicator{
     flex-grow: 1;
-    background-image: url("../../Images/water.svg");
+    background-image: url("../../../../Images/water.svg");
     
     background-repeat: no-repeat;
     background-position: center;

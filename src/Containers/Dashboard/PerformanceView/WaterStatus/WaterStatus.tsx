@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import x_circle from "../../../../Images/x-circle-red.svg";
 import check_circle from "../../../../Images/check-circle-green.svg";
 import triangle from "../../../../Images/triangle-orange.svg";
 import { useDevice } from '../../../../Provider/DeviceProvider';
 import './WaterStatus.css';
 
-interface WaterStatus {
+interface WaterStatusState {
     text: string;
     cssClass: string;
     imgSrc: string;
@@ -14,7 +14,7 @@ interface WaterStatus {
 
 export default function WaterStatus() {
 
-    const [waterStatus, setWaterStatus] = useState<WaterStatus>({
+    const [waterStatus, setWaterStatus] = useState<WaterStatusState>({
         text: "",
         cssClass: "good-water",
         imgSrc: triangle,
@@ -24,8 +24,7 @@ export default function WaterStatus() {
     const { devices, lastLog } = useDevice();
     const cap_target = 600;
 
-    const formatWaterStatus = () => {
-        
+    const formatWaterStatus = useCallback(() => {
         if (!lastLog) {
             setWaterStatus({
                 text: "",
@@ -37,22 +36,22 @@ export default function WaterStatus() {
             setWaterStatus({
                 text: "Sufficient Water",
                 cssClass: "good-water",
-                imgSrc: check_circle ,
+                imgSrc: check_circle,
                 imgAlt: "Status icon check"
             });
         } else {
             setWaterStatus({
                 text: "Needs Water",
                 cssClass: "bad-water",
-                imgSrc: x_circle  ,
+                imgSrc: x_circle,
                 imgAlt: "Status icon cross"
             });
         }
-    }
+    }, [lastLog, cap_target]); 
 
     useEffect(() => {
         formatWaterStatus();
-    }, [lastLog]);
+    }, [lastLog, formatWaterStatus]);
 
     useEffect(() => {
         setIsStatusVisible(devices.length > 0);

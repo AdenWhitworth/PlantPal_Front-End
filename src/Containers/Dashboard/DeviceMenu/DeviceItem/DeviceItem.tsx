@@ -38,7 +38,7 @@ export default function DeviceItem({
             showPerformanceView();
         }
         setDevice(devices);
-    }, [isSettingsVisible, devices, setDevice]);
+    }, [isSettingsVisible, devices, setDevice, showPerformanceView]);
     
     useEffect(() => {
         const isSameDevice = device?.cat_num === devices.cat_num;

@@ -67,14 +67,14 @@ export default function Authentication() {
 
   useEffect(() => {
     resetError();
-  }, [isLoginSelected]);
+  }, [isLoginSelected,resetError]);
 
   useEffect(() => {
     if(accessToken && isConnected && !hasNavigated.current) {
       navigate('/dashboard', { replace: true });
       hasNavigated.current = true;
     }
-  }, [accessToken, isConnected])
+  }, [accessToken, isConnected, navigate])
 
   return (
     <section className="userAuthentication">

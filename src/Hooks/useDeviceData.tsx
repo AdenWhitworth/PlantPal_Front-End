@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService';
 import { useAuth } from "../Provider/AuthProvider";
 import { useDevice } from '../Provider/DeviceProvider';
@@ -17,7 +17,7 @@ export const useDeviceData = ({
     const { accessToken, setAccessToken } = useAuth();
     const { setDevices, device, setDeviceShadow, setDeviceLogs, lastLog, setLastLog, setRefreshDate } = useDevice();
 
-    const fetchUserDevices = async () => {
+    const fetchUserDevices = useCallback(async () => {
         setIsDevicesLoading(true);
         try {
             const response = await getUserDevices(accessToken, setAccessToken);
@@ -28,13 +28,10 @@ export const useDeviceData = ({
             await new Promise((resolve) => setTimeout(resolve, 1000));
             setIsDevicesLoading(false);
         }
-    };
+    }, [accessToken, setAccessToken, setDevices, handleLogout]);
 
-    const fetchUserDevice = async () => {
-
-        if (!device?.cat_num && !device?.thing_name) {
-            return;
-        }
+    const fetchUserDevice = useCallback(async () => {
+        if (!device?.cat_num && !device?.thing_name) return;
 
         setIsDeviceLoading(true);
         
@@ -42,7 +39,7 @@ export const useDeviceData = ({
             const deviceLogsPromise = await getDeviceLogs(accessToken, setAccessToken, { cat_num: device.cat_num });
             const shadowPromise = await getDeviceShadow(accessToken, setAccessToken, { thingName: device.thing_name });
 
-            const [ deviceLogsResponse, shadowResponse] = await Promise.all([deviceLogsPromise, shadowPromise]);
+            const [deviceLogsResponse, shadowResponse] = await Promise.all([deviceLogsPromise, shadowPromise]);
 
             setDeviceLogs(deviceLogsResponse.data.deviceLogs);
             setLastLog(deviceLogsResponse.data.lastLog);
@@ -52,52 +49,41 @@ export const useDeviceData = ({
         } finally {
             setIsDeviceLoading(false);
         }
-    }
+    }, [accessToken, setAccessToken, device, handleLogout, setDeviceLogs, setLastLog, setDeviceShadow]);
 
-    const formatRefreshDate = () => {
+    const isObjectEmpty = useCallback((obj: object): boolean => {
+        return Object.keys(obj).length === 0;
+    }, []);
+
+    const formatRefreshDate = useCallback(() => {
         if (!lastLog || isObjectEmpty(lastLog)) {
             setRefreshDate("");
-            return
+            return;
         }
-
 
         const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const dateObject = new Date(lastLog.log_date);
-
-        const localTimeString = dateObject.toLocaleString(undefined, {
-            timeZone: userTimeZone,
-        });
+        const localTimeString = dateObject.toLocaleString(undefined, { timeZone: userTimeZone });
           
         setRefreshDate(localTimeString);
-    }
-
-    const isObjectEmpty = (obj: object): boolean => {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                return false;
-            }
-        }
-        return true;
-    };
+    }, [lastLog, setRefreshDate, isObjectEmpty]);
 
     useEffect(() => {
         fetchUserDevice();
-    }, [device]);
+    }, [device, fetchUserDevice]);
 
     useEffect(() => {
-        if (isDevicesLoading){
+        if (isDevicesLoading) {
             setIsDevicesLoaded(true);
         }
-
-        if (!isDevicesLoading && isDevicesLoaded){
+        if (!isDevicesLoading && isDevicesLoaded) {
             setIsDevicesLoaded(false);
         }
-
     }, [isDevicesLoading, isDevicesLoaded]);
 
     useEffect(() => {
         formatRefreshDate();
-    }, [lastLog]);
+    }, [lastLog, formatRefreshDate]);
 
     return {
         fetchUserDevices, handleLogout, isDevicesLoading, isDeviceLoading, isDevicesLoaded

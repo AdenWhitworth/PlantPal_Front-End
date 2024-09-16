@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 interface BluetoothDeviceExtended extends BluetoothDevice {
   gatt: BluetoothRemoteGATTServer;
@@ -52,10 +52,10 @@ const useBluetooth = () => {
     }
   };
 
-  const onDisconnected = () => {
+  const onDisconnected = useCallback(() => {
     setBleStatus('Bluetooth device disconnected');
     cleanUpConnection();
-  };
+  }, []);
 
   const cleanUpConnection = () => {
     setServer(null);
@@ -85,8 +85,6 @@ const useBluetooth = () => {
       let errorMessage = 'An unexpected error occurred. Please try again later.';
 
       if (error instanceof Error) {
-        const bleError = error as any;
-
         errorMessage = 'Error sending WiFi credentials over ble';
       }
       
@@ -109,7 +107,7 @@ const useBluetooth = () => {
       }
       cleanUpConnection();
     };
-  }, [bleDevice]);
+  }, [bleDevice, onDisconnected]);
 
   return { connectBluetooth, sendCredentials, triggerDisconnection, onDisconnected, bleStatus, bleDevice, server, service };
 };

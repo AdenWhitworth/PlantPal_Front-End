@@ -127,21 +127,21 @@ export default function Dashboard() {
       sendCheckSocket(user.user_id);
       fetchUserDevices();
     }
-  }, [accessToken, user]);
+  }, [accessToken, user, sendCheckSocket, fetchUserDevices, handleLogout]);
 
   useEffect(() => {
     if (errorReconnect) {
       setErrorReconnect(false);
       handleLogout();
     }
-  }, [errorReconnect, setErrorReconnect]);
+  }, [errorReconnect, setErrorReconnect, handleLogout]);
 
   useEffect(() => {
     if (isConnected && refresh) {
       fetchUserDevices();
       setRefresh(false);
     }
-  }, [isConnected, refresh]);
+  }, [isConnected, refresh, fetchUserDevices, setRefresh]);
 
   return (
     <section className="dashboard">

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import triangle from "../../../../Images/triangle-orange.svg";
 import { useDevice } from '../../../../Provider/DeviceProvider';
 import WedgeGauge from '../../../../Components/WedgeGauge/WedgeGauge';
@@ -13,20 +13,20 @@ export default function MoistureLevel() {
     const cap_max = 2000;
     const cap_min = 200;
 
-    const formatMostureLevel = () => {
+    const formatMoistureLevel = useCallback(() => {
         if (lastLog && lastLog.soil_cap) {
-            const formatCap = ( lastLog.soil_cap - cap_min) / (cap_max - cap_min) * 100;
+            const formatCap = (lastLog.soil_cap - cap_min) / (cap_max - cap_min) * 100;
             setMoistureLevel(formatCap);
         }
-    };
+    }, [lastLog, cap_min, cap_max]);
 
     useEffect(() => {
         setIsMoistureVisible(devices.length > 0);
     }, [devices]);
 
     useEffect(() => {
-        formatMostureLevel();
-    }, [lastLog]);
+        formatMoistureLevel();
+    }, [lastLog, formatMoistureLevel]);
 
     return (
         <div className={`dashboard-moisture ${isMoistureVisible ? '' : 'hidden'}`}>
