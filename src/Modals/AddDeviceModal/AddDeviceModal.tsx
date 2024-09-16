@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
-import Modal from '../Components/Modal/Modal';
-import time from '../Images/time-green.svg';
-import plus from "../Images/plus-circle-green.svg";
-import { useDevice } from '../Provider/DeviceProvider';
+import React from 'react';
+import Modal from '../../Components/Modal/Modal';
+import time from '../../Images/time-green.svg';
+import plus from "../../Images/plus-circle-green.svg";
+import { useDevice } from '../../Provider/DeviceProvider';
 
 interface AddDeviceModalProps {
     setConnectDeviceToggle: (value: boolean) => void;

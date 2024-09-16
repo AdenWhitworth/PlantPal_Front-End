@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import Modal from '../Components/Modal/Modal';
-import { useAuth } from "../Provider/AuthProvider";
-import { useDevice } from '../Provider/DeviceProvider';
-import { useSettingsHandlers } from '../Hooks/useSettingsHandlers';
+import Modal from '../../Components/Modal/Modal';
+import { useAuth } from "../../Provider/AuthProvider";
+import { useDevice } from '../../Provider/DeviceProvider';
+import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 
 interface ConfirmActionModalProps {
     children: React.ReactNode;
