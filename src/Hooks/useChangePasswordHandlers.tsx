@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { postResetPassword, postForgotPassword } from '../Services/ApiService';
 
 interface UserData {
@@ -69,8 +69,13 @@ export const useChangePasswordHandlers = () => {
         }
     };
 
-    const resetError = () => setError(null);
-    const resetMessage = () => setMessage(null);
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
+    const resetMessage = useCallback(() => {
+        setMessage(null);
+    }, []);
 
     return { handleForgotPassword, handlePasswordReset, error, resetError, message, resetMessage, isLoading };
 };

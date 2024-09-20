@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { postLogin, postRegister } from '../Services/ApiService';
 
 interface UserData {
@@ -63,7 +63,6 @@ export const useAuthHandlers = ({
                     axiosError.response?.data?.message ||
                     'Invalid email or password';
             }
-
             setError(errorMessage);
         } finally {
             setIsLoading(false);
@@ -84,7 +83,9 @@ export const useAuthHandlers = ({
         }
     };
 
-    const resetError = () => setError(null);
+    const resetError = useCallback(() => {
+        setError(null);
+      }, []);
 
     return { handleSignIn, handleSignUp, validateForm, error, resetError, isLoading };
 };

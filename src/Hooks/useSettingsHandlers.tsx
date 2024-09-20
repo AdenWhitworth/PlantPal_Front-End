@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService';
 
 interface UserData {
@@ -215,7 +215,9 @@ export const useSettingsHandlers = () => {
         }
     }
 
-    const resetError = () => setError(null);
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
     
     return { handleUpdateUser, handleAddDevice, handleUpdateWifi, handleUpdateAuto, handleUpdatePumpWater, error, isLoading, resetError };
 }

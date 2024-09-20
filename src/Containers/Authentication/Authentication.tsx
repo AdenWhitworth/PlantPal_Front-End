@@ -67,7 +67,7 @@ export default function Authentication() {
 
   useEffect(() => {
     resetError();
-  }, [isLoginSelected,resetError]);
+  }, [isLoginSelected, resetError]);
 
   useEffect(() => {
     if(accessToken && isConnected && !hasNavigated.current) {
