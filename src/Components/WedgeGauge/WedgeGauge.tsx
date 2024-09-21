@@ -1,11 +1,12 @@
 import React from 'react';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
 
-interface WedgeGaugeProps {
-    className?: string;
-    value: number;
-}
-
+/**
+ * A gauge component that visually represents a value within a specified range.
+ *
+ * @param {WedgeGaugeProps} props - The properties for the WedgeGauge component.
+ * @returns {JSX.Element} The rendered gauge component.
+ */
 export default function WedgeGauge ({
     className,
     value

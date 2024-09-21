@@ -1,21 +1,13 @@
 import React from 'react';
 import './InputField.css';
+import { InputFieldProps } from './InputFieldTypes';
 
-interface InputFieldProps {
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void, 
-    isRequired: boolean, 
-    type: string, 
-    placeholder: string,
-    inputImg: string, 
-    isSpellCheck: boolean, 
-    setWidth?: string, 
-    setMarginTop?: string, 
-    isDisabled?: boolean, 
-    isPrimaryStyle?: boolean, 
-    value?: string, 
-    name?: string
-}
-
+/**
+ * InputField component renders a styled input field with an accompanying image.
+ * 
+ * @param {InputFieldProps} props - The props for the InputField component.
+ * @returns {JSX.Element} - The rendered input field component.
+ */
 export default function InputField ({
     onChange = () => {}, 
     isRequired, 

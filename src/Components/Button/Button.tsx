@@ -1,16 +1,15 @@
-import React, { ReactNode, MouseEventHandler } from 'react';
+import React from 'react';
 import './Button.css';
+import { ButtonProps } from './ButtonTypes';
 
-interface ButtonProps {
-    children: ReactNode;
-    styleType: 'primary' | 'secondary' | 'tertiary';
-    onClick?: MouseEventHandler<HTMLButtonElement>;
-    type?: 'button' | 'submit' | 'reset'; 
-    className?: string;
-    disabled?: boolean;
-    testId?: string;
-}
-
+/**
+ * A reusable Button component that renders a styled button with various options for
+ * customization, including style type, click handling, and button type.
+ *
+ * @component
+ * @param {ButtonProps} props - The props for the Button component.
+ * @returns {JSX.Element} The rendered button element.
+ */
 export default function Button({ 
     children, 
     styleType, 

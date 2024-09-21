@@ -2,8 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Modal from './Modal';
 
+/**
+ * Tests for the Modal component.
+ * 
+ * This suite contains various tests to ensure the Modal component renders correctly
+ * under different conditions, including the presence or absence of close and action buttons.
+ */
 describe('Modal component tests', () => {
 
+    /**
+     * Test to verify that the Modal renders without close and action buttons.
+     */
     test('renders without close and action buttons', () => {
         render(
             <Modal
@@ -21,6 +30,9 @@ describe('Modal component tests', () => {
         expect(screen.queryByText('Click Me')).not.toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that the Modal renders with a close button and handles click events.
+     */
     test('renders with close button', () => {
         const handleCloseClick = jest.fn();
         
@@ -44,6 +56,9 @@ describe('Modal component tests', () => {
         expect(handleCloseClick).toHaveBeenCalledTimes(1);
     });
 
+    /**
+     * Test to verify that the Modal renders with an action button and handles click events.
+     */
     test('renders with action button', () => {
         const handleButtonClick = jest.fn();
 
@@ -67,6 +82,10 @@ describe('Modal component tests', () => {
         expect(handleButtonClick).toHaveBeenCalledTimes(1);
     });
 
+    /**
+     * Test to verify that the Modal renders with both close and action buttons, and that
+     * both buttons handle click events appropriately.
+     */
     test('renders with both close and action buttons', () => {
         const handleCloseClick = jest.fn();
         const handleButtonClick = jest.fn();
@@ -98,3 +117,4 @@ describe('Modal component tests', () => {
     });
 
 });
+

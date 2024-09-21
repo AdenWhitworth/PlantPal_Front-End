@@ -3,6 +3,9 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
+/**
+ * Styled Switch component with custom styles applied.
+ */
 const IOSSwitch = styled((props: React.ComponentProps<typeof Switch>) => (
   <Switch {...props} />
 ))(({ theme }) => ({
@@ -57,6 +60,12 @@ interface ToggleSwitchProps {
   label: string;
 }
 
+/**
+ * ToggleSwitch component that renders a styled switch with a label.
+ *
+ * @param {ToggleSwitchProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered ToggleSwitch component.
+ */
 export default function ToggleSwitch ({
   checked, 
   onChange, 

@@ -16,5 +16,12 @@
     "jsx": "preserve",
     "incremental": true
   },
+  "typedocOptions": {
+    "entryPoints": [
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ],
+    "out": "docs/typedoc"
+  },
   "include": ["src"]
 }

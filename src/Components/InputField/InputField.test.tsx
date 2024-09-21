@@ -2,7 +2,14 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import InputField from './InputField';
 
+/**
+ * Tests for the InputField component.
+ */
 describe('InputField component tests', () => {
+
+  /**
+   * Test to ensure the InputField renders with primary style and required attribute.
+   */
   test('renders with primary style and required attribute', () => {
     render(
       <InputField
@@ -22,6 +29,9 @@ describe('InputField component tests', () => {
     expect(screen.getByRole('img')).toBeInTheDocument();
   });
 
+  /**
+   * Test to ensure InputField renders with secondary style when `isPrimaryStyle` is false.
+   */
   test('renders with secondary style when isPrimaryStyle is false', () => {
     render(
       <InputField
@@ -38,6 +48,9 @@ describe('InputField component tests', () => {
     expect(inputWrapper).toHaveClass('inputField-locked');
   });
 
+  /**
+   * Test to ensure InputField correctly handles the input change event.
+   */
   test('handles input change event', () => {
     const handleChange = jest.fn();
     render(
@@ -57,6 +70,9 @@ describe('InputField component tests', () => {
     expect(handleChange).toHaveBeenCalled();
   });
 
+  /**
+   * Test to ensure custom width and margin styles are applied.
+   */
   test('applies custom width and margin styles', () => {
     render(
       <InputField
@@ -76,6 +92,9 @@ describe('InputField component tests', () => {
     expect(inputWrapper).toHaveStyle('margin-top: 5%');
   });
 
+  /**
+   * Test to ensure InputField renders with an input image if the `inputImg` prop is provided.
+   */
   test('renders with input image if inputImg prop is provided', () => {
     render(
       <InputField 
@@ -94,6 +113,9 @@ describe('InputField component tests', () => {
     expect(img).toHaveAttribute('alt', 'Input icon');
   });
 
+  /**
+   * Test to ensure the input field is disabled when the `isDisabled` prop is true.
+   */
   test('disables input field when isDisabled is true', () => {
     render(
       <InputField
@@ -110,6 +132,9 @@ describe('InputField component tests', () => {
     expect(input).toBeDisabled();
   });
 
+  /**
+   * Test to ensure InputField handles the `value` and `name` props.
+   */
   test('handles input value and name props', () => {
     render(
       <InputField
@@ -127,4 +152,6 @@ describe('InputField component tests', () => {
     expect(input).toHaveValue('Test Value');
     expect(input).toHaveAttribute('name', 'test-input');
   });
+
 });
+
