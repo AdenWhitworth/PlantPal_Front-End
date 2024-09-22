@@ -6,9 +6,9 @@
  * @property {function} onChange - Callback function that is called when the switch's checked state changes.
  * @property {string} label - The label to display next to the switch.
  */
-interface ToggleSwitchProps {
-    checked: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    label: string;
-  }
+export interface ToggleSwitchProps {
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+}
   

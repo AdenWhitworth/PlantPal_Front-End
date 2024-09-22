@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gauge, gaugeClasses  } from '@mui/x-charts/Gauge';
+import { WedgeGaugeProps } from './WedgeGaugeTypes';
 
 /**
  * A gauge component that visually represents a value within a specified range.

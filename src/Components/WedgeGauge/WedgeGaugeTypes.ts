@@ -5,7 +5,7 @@
  * @property {string} [className] - Optional class name for custom styling.
  * @property {number} value - The value to be displayed by the gauge, typically between 0 and 100.
  */
-interface WedgeGaugeProps {
+export interface WedgeGaugeProps {
     className?: string;
     value: number;
 }
