@@ -6,15 +6,28 @@ import lock from '../../../Images/lock-brown.svg';
 import user_circle from '../../../Images/user-circle-brown.svg';
 import tag from '../../../Images/tag-brown.svg';
 import plantpal_logo from '../../../Images/PlantPal Logo.svg';
+import { SignUpFormProps } from './SignUpFormTypes';
 
-interface SignUpFormProps {
-    handleReturnHome: () => void;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    error: string | null;
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-    isLoading: boolean;
-}
-
+/**
+ * SignUpForm component for user registration.
+ * 
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {Function} props.handleReturnHome - Function to navigate back to the home page.
+ * @param {Function} props.handleInputChange - Function to handle input changes.
+ * @param {string|null} props.error - Error message to display, if any.
+ * @param {Function} props.handleSubmit - Function to handle form submission.
+ * @param {boolean} props.isLoading - Indicates if the form is in a loading state.
+ * 
+ * @example
+ * <SignUpForm
+ *     handleReturnHome={handleReturnHome}
+ *     handleInputChange={handleInputChange}
+ *     handleSubmit={handleSubmit}
+ *     error={error}
+ *     isLoading={isLoading}
+ * />
+ */
 export default function SignUpForm({
     handleReturnHome, 
     error,

@@ -2,6 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import LoginForm from './LoginForm';
 
+/**
+ * Test suite for the LoginForm component.
+ */
 describe('LoginForm Component', () => {
     const mockHandleReturnHome = jest.fn();
     const mockHandleReturnForgotPassword = jest.fn();
@@ -9,6 +12,9 @@ describe('LoginForm Component', () => {
     const mockHandleSubmit = jest.fn();
     const errorMessage = 'This is an error message';
 
+    /**
+     * Test to ensure the LoginForm component renders correctly.
+     */
     test('renders the LoginForm component correctly', () => {
         render(
             <LoginForm
@@ -31,6 +37,9 @@ describe('LoginForm Component', () => {
         expect(screen.getByText('Sign In')).toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that input changes are handled correctly.
+     */
     test('handles input changes', () => {
         render(
             <LoginForm
@@ -53,6 +62,9 @@ describe('LoginForm Component', () => {
         expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
+    /**
+     * Test to ensure the form submission is handled correctly.
+     */
     test('handles form submission', () => {
         render(
             <LoginForm
@@ -69,6 +81,9 @@ describe('LoginForm Component', () => {
         expect(mockHandleSubmit).toHaveBeenCalled();
     });
 
+    /**
+     * Test to check the loading state of the form.
+     */
     test('shows loading state correctly', () => {
         render(
             <LoginForm
@@ -84,6 +99,9 @@ describe('LoginForm Component', () => {
         expect(screen.getByRole('button', { name: /Signing/i })).toBeDisabled();
     });
 
+    /**
+     * Test to verify that an error message is displayed when present.
+     */
     test('displays error message when present', () => {
         render(
             <LoginForm

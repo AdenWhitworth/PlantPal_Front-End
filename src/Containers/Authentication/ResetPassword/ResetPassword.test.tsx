@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Routes  } from 'react-router-dom';
 import ResetPassword from './ResetPassword';
 import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers';
 
+// Mock the useChangePasswordHandlers
 jest.mock('../../../Hooks/useChangePasswordHandlers', () => ({
     useChangePasswordHandlers: jest.fn(() => ({
         handlePasswordReset: jest.fn(),
@@ -14,12 +15,16 @@ jest.mock('../../../Hooks/useChangePasswordHandlers', () => ({
     })),
 }));
 
+// Mock the react-router-dom
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useNavigate: () => mockNavigate,
 }));
 
+/**
+ * Tests for the ResetPassword component.
+ */
 describe('ResetPassword Component', () => {
     const mockHandlePasswordReset = jest.fn();
     const mockResetError = jest.fn();
@@ -37,6 +42,9 @@ describe('ResetPassword Component', () => {
         });
     });
     
+    /**
+     * Tests if the ResetPassword component renders correctly within a routing context.
+     */
     test('renders ResetPassword component with routing context', () => {
         render(
             <MemoryRouter initialEntries={['/reset-password?resetToken=token123&user_id=1']}>
@@ -49,6 +57,9 @@ describe('ResetPassword Component', () => {
         expect(screen.getByTestId('reset-password-title')).toHaveTextContent('Reset Password');
     });
 
+    /**
+     * Tests the form submission with valid data to ensure handlePasswordReset is called.
+     */
     test('calls handlePasswordReset when form is submitted with valid data', async () => {
         render(
             <MemoryRouter initialEntries={['/reset-password?resetToken=token123&user_id=1']}>
@@ -75,6 +86,9 @@ describe('ResetPassword Component', () => {
         });
     });
 
+    /**
+     * Tests navigation to home if no resetToken or userId is provided on form submission.
+     */
     test('navigates to home if no resetToken or userId', () => {
         render(
             <MemoryRouter initialEntries={['/reset-password']}>
@@ -89,6 +103,9 @@ describe('ResetPassword Component', () => {
         expect(mockNavigate).toHaveBeenCalledWith("/", {"replace": true});
     });
 
+    /**
+     * Tests navigation to the auth page after a successful password reset.
+     */
     test('navigates to auth page after successful password reset', async () => {
         (useChangePasswordHandlers as jest.Mock).mockReturnValue({
             handlePasswordReset: jest.fn((data, confirmPassword, callback) => {
@@ -118,6 +135,9 @@ describe('ResetPassword Component', () => {
         });
     });
 
+    /**
+     * Tests the display of error and message when they are present.
+     */
     test('displays message and error when present', () => {
         const errorMessage = "This is an error message";
         const messageMessage = "This is a message";
@@ -137,10 +157,14 @@ describe('ResetPassword Component', () => {
                 </Routes>
             </MemoryRouter>
         );
+
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
         expect(screen.getByText(messageMessage)).toBeInTheDocument();
     });
 
+    /**
+     * Tests that the error and message are reset when the component mounts.
+     */
     test('resets error and message on mount', () => {
         render(
             <MemoryRouter initialEntries={['/reset-password?resetToken=token123&user_id=1']}>

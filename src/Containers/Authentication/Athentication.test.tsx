@@ -6,6 +6,7 @@ import { useSocket } from '../../Provider/SocketProvider';
 import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 import Authentication from './Authentication';
 
+// Mock the AuthProvider
 jest.mock('../../Provider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
@@ -14,6 +15,7 @@ jest.mock('../../Provider/AuthProvider', () => ({
     })),
 }));
 
+// Mock the SocketProvider
 jest.mock('../../Provider/SocketProvider', () => ({
     useSocket: jest.fn(() => ({
         connectSocket: jest.fn(),
@@ -21,6 +23,7 @@ jest.mock('../../Provider/SocketProvider', () => ({
     })),
 }));
 
+// Mock the useAuthHandlers
 jest.mock('../../Hooks/useAuthHandlers', () => ({
     useAuthHandlers: jest.fn(() => ({
         handleSignIn: jest.fn(),
@@ -31,12 +34,16 @@ jest.mock('../../Hooks/useAuthHandlers', () => ({
     })),
 }));
 
+// Mock the react-router-dom
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useNavigate: () => mockNavigate,
 }));
 
+/**
+ * Test cases for the Authentication component.
+ */
 describe('Authentication Component', () => {
     const mockSetAccessToken = jest.fn();
     const mockSetUser = jest.fn();
@@ -45,6 +52,9 @@ describe('Authentication Component', () => {
     const mockHandleSignUp = jest.fn();
     const mockResetError = jest.fn();
 
+    /**
+     * Clears all mocks before each test to ensure a clean state.
+     */
     beforeEach(() => {
         jest.clearAllMocks();
 
@@ -68,6 +78,9 @@ describe('Authentication Component', () => {
         });
     });
 
+    /**
+     * Test case to ensure that the login form is rendered by default.
+     */
     test('renders login form by default', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -82,6 +95,9 @@ describe('Authentication Component', () => {
         expect(screen.getByText('Sign In')).toBeInTheDocument();
     });
 
+    /**
+     * Test case to ensure that the signup form is displayed when toggled.
+     */
     test('switches to signup form when toggled', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -100,6 +116,9 @@ describe('Authentication Component', () => {
         expect(screen.getByText('Create')).toBeInTheDocument();
     });
 
+    /**
+     * Test case to verify that the handleSignIn function is called when the login form is submitted.
+     */
     test('calls handleSignIn when login form is submitted', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -109,8 +128,8 @@ describe('Authentication Component', () => {
             </MemoryRouter>
         );
 
-        fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' }});
-        fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' }});
+        fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
+        fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
 
         fireEvent.submit(screen.getByTestId('login-form'));
 
@@ -121,6 +140,9 @@ describe('Authentication Component', () => {
         );
     });
 
+    /**
+     * Test case to verify that the handleSignUp function is called when the signup form is submitted.
+     */
     test('calls handleSignUp when signup form is submitted', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -132,10 +154,10 @@ describe('Authentication Component', () => {
 
         fireEvent.click(screen.getByText('Sign Up'));
 
-        fireEvent.change(screen.getByPlaceholderText('First Name'), { target: { value: 'John' }});
-        fireEvent.change(screen.getByPlaceholderText('Last Name'), { target: { value: 'Doe' }});
-        fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' }});
-        fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' }});
+        fireEvent.change(screen.getByPlaceholderText('First Name'), { target: { value: 'John' } });
+        fireEvent.change(screen.getByPlaceholderText('Last Name'), { target: { value: 'Doe' } });
+        fireEvent.change(screen.getByPlaceholderText('Email'), { target: { value: 'test@example.com' } });
+        fireEvent.change(screen.getByPlaceholderText('Password'), { target: { value: 'password123' } });
 
         fireEvent.submit(screen.getByTestId('signup-form'));
 
@@ -151,6 +173,9 @@ describe('Authentication Component', () => {
         );
     });
 
+    /**
+     * Test case to verify that navigation to the dashboard occurs when an access token is present and the socket is connected.
+     */
     test('navigates to dashboard when access token and socket are connected', async () => {
         (useAuth as jest.Mock).mockReturnValue({
             setAccessToken: mockSetAccessToken,
@@ -172,10 +197,13 @@ describe('Authentication Component', () => {
         );
 
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith("/dashboard", {"replace": true});
+            expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
         });
     });
 
+    /**
+     * Test case to verify that navigation to the forgot password page occurs when the forgot password link is clicked.
+     */
     test('navigates to forgot password page when clicked', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -188,9 +216,12 @@ describe('Authentication Component', () => {
 
         fireEvent.click(screen.getByText('Forgot Password?'));
 
-        expect(mockNavigate).toHaveBeenCalledWith('/forgotPassword', { "replace": true });
+        expect(mockNavigate).toHaveBeenCalledWith('/forgotPassword', { replace: true });
     });
 
+    /**
+     * Test case to verify that navigation to the home page occurs from the login form when the logo button is clicked.
+     */
     test('navigates to home page from login when Logo button is clicked', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -202,9 +233,12 @@ describe('Authentication Component', () => {
         );
 
         fireEvent.click(screen.getByAltText('PlantPal auth logo'));
-        expect(mockNavigate).toHaveBeenCalledWith('/', { "replace": true });
+        expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
     });
 
+    /**
+     * Test case to verify that navigation to the home page occurs from the signup form when the logo button is clicked.
+     */
     test('navigates to home page from sign up when Logo button is clicked', () => {
         render(
             <MemoryRouter initialEntries={['/auth']}>
@@ -217,6 +251,6 @@ describe('Authentication Component', () => {
 
         fireEvent.click(screen.getByText('Sign Up'));
         fireEvent.click(screen.getByAltText('PlantPal auth logo'));
-        expect(mockNavigate).toHaveBeenCalledWith('/', { "replace": true });
+        expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
     });
 });
