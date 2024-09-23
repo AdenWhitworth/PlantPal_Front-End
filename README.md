@@ -75,7 +75,7 @@ Create a `.env` file in the root directory and define the following variables:
 
   ```plain text
   # Application Configuration
-  REACT_APP_BASE_URL=your_server_url  # url for the server application
+  REACT_APP_BASE_URL=your_back-end_url  # url for the server application
 
   #BLE Configuration
   REACT_APP_BLE_SERVICE_UUID=your_ble_service_uuid # Unique BLE service UUID
