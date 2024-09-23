@@ -19,12 +19,12 @@ jest.mock('socket.io-client', () => {
 });
 
 //Mocking the AuthProvider
-jest.mock('./AuthProvider', () => ({
+jest.mock('../AuthProvider/AuthProvider', () => ({
   useAuth: jest.fn(),
 }));
 
 //Mocking the AoiService
-jest.mock('../Services/ApiService', () => ({
+jest.mock('../../Services/ApiService/ApiService', () => ({
   postRefreshAccessToken: jest.fn(),
 }));
 
