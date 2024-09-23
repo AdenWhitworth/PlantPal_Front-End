@@ -3,14 +3,21 @@ import Modal from '../../Components/Modal/Modal';
 import time from '../../Images/time-green.svg';
 import plus from "../../Images/plus-circle-green.svg";
 import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
+import { AddDeviceModalProps } from './AddDeviceModalTypes';
 
-interface AddDeviceModalProps {
-    setConnectDeviceToggle: (value: boolean) => void;
-}
-
+/**
+ * Represents a modal for adding a device.
+ *
+ * @function AddDeviceModal
+ * @param {AddDeviceModalProps} props - The props for the AddDeviceModal component.
+ * @returns {JSX.Element} The rendered modal component.
+ *
+ * @example
+ * <AddDeviceModal setConnectDeviceToggle={setToggle} />
+ */
 export default function AddDeviceModal({
     setConnectDeviceToggle
-}:AddDeviceModalProps) {
+}:AddDeviceModalProps): JSX.Element {
 
     const { device } = useDevice();
     

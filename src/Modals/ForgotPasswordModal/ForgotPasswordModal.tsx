@@ -4,22 +4,22 @@ import Button from '../../Components/Button/Button';
 import InputField from '../../Components/InputField/InputField';
 import Modal from '../../Components/Modal/Modal';
 import './ForgotPasswordModal.css';
+import { ForgotPasswordModalProps } from "./ForgotPasswordModalTypes";
 
-interface ForgotPasswordModalProps {
-    handleReturnHome: () => void;
-    message: string | null;
-    error: string | null;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
+/**
+ * A modal component for handling forgotten password functionality.
+ * 
+ * @function ForgotPasswordModal
+ * @param {ForgotPasswordModalProps} props - The props for the ForgotPasswordModal component.
+ * @returns {JSX.Element} The rendered ForgotPasswordModal component.
+ */
 export default function ForgotPasswordModal ({ 
     handleReturnHome, 
     message,
     error,
     handleInputChange,
     handleSubmit,
-}: ForgotPasswordModalProps) {
+}: ForgotPasswordModalProps): JSX.Element {
     return(
         <Modal 
             addClose={true} 
