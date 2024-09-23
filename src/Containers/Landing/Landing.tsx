@@ -5,10 +5,25 @@ import LandingFileContent from './LandingFileContent/LandingFileContent';
 import { useNavigate } from "react-router-dom";
 import './Landing.css';
 
-export default function Landing() {
+/**
+ * Landing component for the application.
+ * 
+ * This component serves as the entry point of the application, containing
+ * the header, a call to action, and file content sections.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Landing component.
+ */
+export default function Landing(): JSX.Element {
 
     const navigate = useNavigate();
 
+    /**
+     * Handles the click event for managing devices.
+     * Navigates to the dashboard route.
+     * 
+     * @function
+     */
     const HandleManageDevicesClick = () => {
         navigate('/dashboard', {
             replace: true,

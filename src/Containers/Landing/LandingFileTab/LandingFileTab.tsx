@@ -1,7 +1,13 @@
 import React from 'react';
 import './LandingFileTab.css';
 
-export default function LandingFileTab(){
+/**
+ * Renders a tab interface for the landing page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered tab component.
+ */
+export default function LandingFileTab(): JSX.Element{
     return(
         <div className="file-tab-container">
             <div className="file-tab"></div>

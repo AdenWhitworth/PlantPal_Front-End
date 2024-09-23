@@ -2,7 +2,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import LandingFileContent from './LandingFileContent';
 
+/**
+ * Tests for the LandingFileContent component.
+ */
 describe('LandingFileContent Component', () => {
+    /**
+     * Test to ensure that the LandingFileTab and LandingCard components are rendered correctly.
+     */
     test('renders LandingFileTab and LandingCard components correctly', () => {
         
         const { container } = render(<LandingFileContent />);

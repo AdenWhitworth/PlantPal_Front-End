@@ -2,14 +2,18 @@ import React from 'react';
 import Button from "../../../Components/Button/Button";
 import house_plant from "../../../Images/house-plant.png";
 import './LandingCallToAction.css';
+import { LandingCallToActionProps } from './LandingCallToActionTypes';
 
-interface LandingCallToActionProps{
-    HandleManageDevicesClick: () => void;
-}
-
+/**
+ * LandingCallToAction component for displaying a call to action on the landing page.
+ *
+ * @component
+ * @param {LandingCallToActionProps} props - The properties for the LandingCallToAction component.
+ * @returns {JSX.Element} The rendered LandingCallToAction component.
+ */
 export default function LandingCallToAction({
     HandleManageDevicesClick
-}:LandingCallToActionProps) {
+}:LandingCallToActionProps): JSX.Element {
     
     return (
         <section className="landing-body-1">
