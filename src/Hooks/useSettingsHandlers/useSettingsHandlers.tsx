@@ -1,59 +1,32 @@
 import { useState, useCallback } from 'react';
-import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService/ApiService';
+import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../../Services/ApiService/ApiService';
+import { UserData, DeviceData, DeviceShadow, WifiData, PumpData, AutoData } from './useSettingsHandlersTypes';
 
-interface UserData {
-    email: string;
-    first_name: string;
-    last_name: string;
-}
-
-interface DeviceData {
-    location: string;
-    cat_num: string;
-    wifi_ssid: string;
-    wifi_password: string;
-}
-
-interface WifiData {
-    wifi_ssid: string;
-    wifi_password: string;
-    device_id: number;
-}
-
-interface AuotData {
-    device_id: number;
-    automate: boolean;
-}
-
-interface PumpData {
-    device_id: number;
-    pump_water: boolean;
-}
-
-interface DeviceShadow {
-    state: {
-        reported: {
-            welcome: string;
-            connected: boolean;
-            auto: boolean;
-            pump: boolean;
-        };
-        desired: {
-            welcome: string;
-            connected: boolean;
-            auto: boolean;
-            pump: boolean;
-        };
-    };
-    metadata?: any;
-}
-
-
+/**
+ * Custom hook for managing settings-related actions such as user updates, device management, and error handling.
+ *
+ * @returns {Object} An object containing handlers for various settings-related actions.
+ * @returns {Function} handleUpdateUser - Function to handle user update submissions.
+ * @returns {Function} handleAddDevice - Function to handle adding new devices.
+ * @returns {Function} handleUpdateWifi - Function to handle updating Wi-Fi settings.
+ * @returns {Function} handleUpdateAuto - Function to handle updating automation settings.
+ * @returns {Function} handleUpdatePumpWater - Function to handle updating pump water settings.
+ * @returns {string | null} error - The current error message, if any.
+ * @returns {boolean} isLoading - Indicates if any action is currently loading.
+ * @returns {Function} resetError - Function to reset the error state.
+ */
 export const useSettingsHandlers = () => {
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const validateUpdateUserform = (userData: UserData) => {
+    /**
+     * Validates the user update form data.
+     *
+     * @function
+     * @param {UserData} userData - The user data to validate.
+     * @returns {boolean} True if validation passes, otherwise false.
+     */
+    const validateUpdateUserform = (userData: UserData): boolean => {
         if (!userData.email || !userData.first_name || !userData.last_name) {
             setError('Email, first name, and last name are required.');
             return false;
@@ -61,7 +34,14 @@ export const useSettingsHandlers = () => {
         return true;
     };
 
-    const validateAddDeviceform = (deviceData: DeviceData) => {
+    /**
+     * Validates the add device form data.
+     *
+     * @function
+     * @param {DeviceData} deviceData - The device data to validate.
+     * @returns {boolean} True if validation passes, otherwise false.
+     */
+    const validateAddDeviceform = (deviceData: DeviceData): boolean => {
 
         if (!deviceData.location || !deviceData.cat_num || !deviceData.wifi_ssid || !deviceData.wifi_password) {
             setError('Location, asset number, Wifi SSID, and Wifi Password required');
@@ -70,7 +50,14 @@ export const useSettingsHandlers = () => {
         return true;
     };
 
-    const validateUpdateWifiform = (wifiData: WifiData) => {
+    /**
+     * Validates the Wi-Fi update form data.
+     *
+     * @function
+     * @param {WifiData} wifiData - The Wi-Fi data to validate.
+     * @returns {boolean} True if validation passes, otherwise false.
+     */
+    const validateUpdateWifiform = (wifiData: WifiData): boolean => {
         if (!wifiData.wifi_ssid || !wifiData.wifi_password || !wifiData.device_id) {
             setError('Device id, Wifi SSID, and Wifi Password required');
             return false;
@@ -78,7 +65,14 @@ export const useSettingsHandlers = () => {
         return true;
     };
 
-    const validateUpdateAuto = (autoData: AuotData) => {
+    /**
+     * Validates the automation update form data.
+     *
+     * @function
+     * @param {AutoData} autoData - The automation data to validate.
+     * @returns {boolean} True if validation passes, otherwise false.
+     */
+    const validateUpdateAuto = (autoData: AutoData): boolean => {
         if (!autoData.device_id || !autoData.automate) {
             setError('Device id, and Automate required');
             return false;
@@ -86,7 +80,13 @@ export const useSettingsHandlers = () => {
         return true;
     }
 
-    const validateUpdatePump = (pumpData: PumpData) => {
+    /**
+     * Validates the pump update form data.
+     *
+     * @param {PumpData} pumpData - The pump data to validate.
+     * @returns {boolean} True if validation passes, otherwise false.
+     */
+    const validateUpdatePump = (pumpData: PumpData): boolean => {
         if (!pumpData.device_id || !pumpData.pump_water) {
             setError('Device id, and Pump Water required');
             return false;
@@ -94,6 +94,16 @@ export const useSettingsHandlers = () => {
         return true;
     }
 
+    /**
+     * Handles user update form submission.
+     *
+     * @function
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+     * @param {string | null} accessToken - The access token for authentication.
+     * @param {function} setAccessToken - Function to set the access token.
+     * @param {UserData} userData - The user data to update.
+     * @param {function} onSuccess - Callback to call on successful update.
+     */
     const handleUpdateUser = async (e:React.FormEvent<HTMLFormElement>, accessToken: string | null, setAccessToken: (value: string) => void, userData: UserData, onSuccess: (updatedUserData: object) => void) => {
         e.preventDefault();
         resetError();
@@ -118,6 +128,15 @@ export const useSettingsHandlers = () => {
         }
     };
 
+    /**
+     * Handles adding a new device.
+     *
+     * @function
+     * @param {string | null} accessToken - The access token for authentication.
+     * @param {function} setAccessToken - Function to set the access token.
+     * @param {DeviceData} deviceData - The device data to add.
+     * @param {function} onSuccess - Callback to call on successful addition.
+     */
     const handleAddDevice = async (accessToken: string | null, setAccessToken: (value: string) => void, deviceData: DeviceData, onSuccess: (newDeviceData: object) => void) => {
         resetError();
         if (!validateAddDeviceform(deviceData)) return;
@@ -140,6 +159,15 @@ export const useSettingsHandlers = () => {
         }
     }
     
+    /**
+     * Handles updating Wi-Fi settings for a device.
+     *
+     * @function
+     * @param {string | null} accessToken - The access token for authentication.
+     * @param {function} setAccessToken - Function to set the access token.
+     * @param {WifiData} wifiData - The Wi-Fi data to update.
+     * @param {function} onSuccess - Callback to call on successful update.
+     */
     const handleUpdateWifi = async (accessToken: string | null, setAccessToken: (value: string) => void, wifiData: WifiData, onSuccess: () => void) => {
         resetError();
         if (!validateUpdateWifiform(wifiData)) return;
@@ -162,7 +190,17 @@ export const useSettingsHandlers = () => {
         }
     }
 
-    const handleUpdateAuto = async (accessToken: string | null, setAccessToken: (value: string) => void, deviceShadow: DeviceShadow | null, autoSwitch: boolean, autoData: AuotData) => {
+    /**
+     * Handles updating the automation settings for a device.
+     *
+     * @function
+     * @param {string | null} accessToken - The access token for authentication.
+     * @param {function} setAccessToken - Function to set the access token.
+     * @param {DeviceShadow | null} deviceShadow - The current state of the device shadow.
+     * @param {boolean} autoSwitch - Indicates whether to switch automation on or off.
+     * @param {AutoData} autoData - The automation data to update.
+     */
+    const handleUpdateAuto = async (accessToken: string | null, setAccessToken: (value: string) => void, deviceShadow: DeviceShadow | null, autoSwitch: boolean, autoData: AutoData) => {
         resetError();
         if (!deviceShadow){
             setError("Missing device shadow");
@@ -192,6 +230,15 @@ export const useSettingsHandlers = () => {
         }
     }
 
+    /**
+     * Handles updating the pump water settings for a device.
+     *
+     * @function
+     * @param {string | null} accessToken - The access token for authentication.
+     * @param {function} setAccessToken - Function to set the access token.
+     * @param {PumpData} pumpData - The pump data to update.
+     * @param {function} onSuccess - Callback to call on successful update.
+     */
     const handleUpdatePumpWater = async (accessToken: string | null, setAccessToken: (value: string) => void, pumpData: PumpData, onSuccess: () => void) => {
         resetError();
 
@@ -215,6 +262,11 @@ export const useSettingsHandlers = () => {
         }
     }
 
+    /**
+     * Resets the current error state.
+     * 
+     * @function
+     */
     const resetError = useCallback(() => {
         setError(null);
     }, []);

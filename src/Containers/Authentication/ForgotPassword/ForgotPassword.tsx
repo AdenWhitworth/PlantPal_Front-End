@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ForgotPasswordModal from '../../../Modals/ForgotPasswordModal/ForgotPasswordModal';
-import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers';
+import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers/useChangePasswordHandlers';
 import { FormData } from '../AthenticationTypes';
 
 /**

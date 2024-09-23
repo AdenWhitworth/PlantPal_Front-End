@@ -10,7 +10,7 @@ import AddDevice from './AddDevice/AddDevice';
 import { useAuth } from "../../Provider/AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
-import { useDeviceData } from '../../Hooks/useDeviceData';
+import { useDeviceData } from '../../Hooks/useDeviceData/useDeviceData';
 import LoadingDots from '../../Components/LoadingDots/LoadingDots';
 import './Dashboard.css';
 import { State, StateAction } from './DashboardTypes';

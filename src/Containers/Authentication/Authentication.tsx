@@ -6,7 +6,7 @@ import AuthSelection from './AuthSelection/AuthSelection';
 import LoginForm from './LoginForm/LoginForm';
 import SignUpForm from './SignUpForm/SignUpForm';
 import './Athentication.css';
-import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
+import { useAuthHandlers } from '../../Hooks/useAuthHandlers/useAuthHandlers';
 import { FormData } from './AthenticationTypes';
 
 /**

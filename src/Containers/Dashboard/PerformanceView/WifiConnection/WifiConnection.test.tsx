@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import WifiConnection from './WifiConnection';
 import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
-import useBluetooth from '../../../../Hooks/useBluetooth';
+import useBluetooth from '../../../../Hooks/useBluetooth/useBluetooth';
 import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
-import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
 //Mocking the DeviceProvider
 jest.mock('../../../../Provider/DeviceProvider/DeviceProvider', () => ({
@@ -15,7 +15,7 @@ jest.mock('../../../../Provider/DeviceProvider/DeviceProvider', () => ({
 }));
 
 //Mocking the useBluetooth
-jest.mock('../../../../Hooks/useBluetooth', () => ({
+jest.mock('../../../../Hooks/useBluetooth/useBluetooth', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         connectBluetooth: jest.fn(),
@@ -33,7 +33,7 @@ jest.mock('../../../../Provider/AuthProvider/AuthProvider', () => ({
 }));
 
 //Mocking the useSettingsHandlers
-jest.mock('../../../../Hooks/useSettingsHandlers', () => ({
+jest.mock('../../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateWifi: jest.fn(),
         error: null, 

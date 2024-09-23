@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import { useAuth } from '../../../Provider/AuthProvider/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import AccountForm from './AccountForm/AccountForm';
 import "./Account.css";
 import { UserDetails } from './AccountTypes';

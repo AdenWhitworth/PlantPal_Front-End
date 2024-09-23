@@ -3,10 +3,10 @@ import wifi from "../../../../Images/wifi-green.svg";
 import triangle from "../../../../Images/triangle-orange.svg";
 import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
 import Button from '../../../../Components/Button/Button';
-import useBluetooth from "../../../../Hooks/useBluetooth";
+import useBluetooth from "../../../../Hooks/useBluetooth/useBluetooth";
 import {useAuth} from '../../../../Provider/AuthProvider/AuthProvider';
 import EditWifiForm from './EditWifiForm/EditWifiForm';
-import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import './WifiConnection.css';
 import { WifiConnectionProps, WifiDetails } from './WifiConnectionTypes';
 

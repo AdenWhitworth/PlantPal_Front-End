@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes  } from 'react-router-dom';
 import ForgotPassword from './ForgotPassword';
-import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers';
+import { useChangePasswordHandlers } from '../../../Hooks/useChangePasswordHandlers/useChangePasswordHandlers';
 
 // Mock the useChangePasswordHandlers
-jest.mock('../../../Hooks/useChangePasswordHandlers', () => ({
+jest.mock('../../../Hooks/useChangePasswordHandlers/useChangePasswordHandlers', () => ({
     useChangePasswordHandlers: jest.fn(() => ({
         handleForgotPassword: jest.fn(),
         error: null,

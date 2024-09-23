@@ -2,6 +2,7 @@ import React, {act, useState} from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import useBluetooth from './useBluetooth';
 
+//mocking the useBluetooth
 jest.mock('./useBluetooth', () => ({
     __esModule: true,
     default: jest.fn(() => ({
@@ -14,10 +15,26 @@ jest.mock('./useBluetooth', () => ({
     })),
 }));
 
-const TestBluetoothComponent = ({ cat_num, wifi_ssid, wifi_password }: { cat_num: string, wifi_ssid?: string, wifi_password?: string }) => {
+
+/**
+ * Test component that uses the `useBluetooth` hook to handle Bluetooth connection, disconnection, and sending credentials.
+ * 
+ * @param {Object} props - Component props.
+ * @param {string} props.cat_num - The Bluetooth device name to connect.
+ * @param {string} [props.wifi_ssid] - Optional WiFi SSID to send to the Bluetooth device.
+ * @param {string} [props.wifi_password] - Optional WiFi password to send to the Bluetooth device.
+ * @returns {JSX.Element} - The rendered component.
+ */
+const TestBluetoothComponent = ({ cat_num, wifi_ssid, wifi_password }: { cat_num: string, wifi_ssid?: string, wifi_password?: string }): JSX.Element => {
     const { connectBluetooth, sendCredentials, bleStatus, onDisconnected } = useBluetooth();
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Handle the Bluetooth connection process by calling the `connectBluetooth` function from `useBluetooth` hook.
+     * Sets an error message if the connection fails.
+     * 
+     * @function
+     */
     const handleConnectBluetooth = async () => {
         try {
             await connectBluetooth(cat_num);
@@ -26,6 +43,12 @@ const TestBluetoothComponent = ({ cat_num, wifi_ssid, wifi_password }: { cat_num
         }
     };
 
+    /**
+     * Handle sending WiFi credentials (SSID and password) to the connected Bluetooth device.
+     * Sets an error message if sending credentials fails.
+     * 
+     * @function
+     */
     const handleSendCredentials = async () => {
         try {
             await sendCredentials(wifi_ssid!, wifi_password!);
@@ -35,18 +58,21 @@ const TestBluetoothComponent = ({ cat_num, wifi_ssid, wifi_password }: { cat_num
     };
 
     return (
-      <div>
+    <div>
         <button onClick={handleConnectBluetooth}>Connect Bluetooth</button>
         <button onClick={onDisconnected}>Simulate Disconnection</button>
         {wifi_ssid && wifi_password && (
-          <button onClick={handleSendCredentials}>Send Credentials</button>
+        <button onClick={handleSendCredentials}>Send Credentials</button>
         )}
         <h4 data-testid="bleStatus">{bleStatus}</h4>
         {error && <p data-testid="error">{error}</p>}
-      </div>
+    </div>
     );
 };
 
+/**
+ * Tests for the useBluetooth hook.
+ */
 describe('useBluetooth hook', () => {
     const mockConnectBluetooth = jest.fn();
     const mockSendCredentials = jest.fn();
@@ -57,6 +83,9 @@ describe('useBluetooth hook', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Test to verify that the `connectBluetooth` function is called with the correct arguments.
+     */
     it('calls connectBluetooth', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: mockConnectBluetooth,
@@ -77,6 +106,9 @@ describe('useBluetooth hook', () => {
         });
     });
 
+    /**
+     * Test to verify that the `onDisconnected` function is called when simulating a disconnection.
+     */
     it('calls onDisconnected', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: mockConnectBluetooth,
@@ -105,6 +137,9 @@ describe('useBluetooth hook', () => {
 
     }); 
 
+    /**
+     * Test to verify that WiFi credentials are successfully sent via the `sendCredentials` function.
+     */
     it('should send WiFi credentials successfully', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: mockConnectBluetooth,
@@ -141,6 +176,9 @@ describe('useBluetooth hook', () => {
         });
     });
 
+    /**
+     * Test to verify that an error message is displayed when Bluetooth connection fails.
+     */
     it('should handle connection failure', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: jest.fn().mockRejectedValue(new Error('Connection failed')),
@@ -165,6 +203,9 @@ describe('useBluetooth hook', () => {
         });
     });
     
+    /**
+     * Test to verify that an error message is displayed when sending WiFi credentials fails.
+     */
     it('should handle errors during WiFi credentials sending', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: mockConnectBluetooth,

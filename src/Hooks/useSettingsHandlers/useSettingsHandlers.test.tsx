@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { useSettingsHandlers } from './useSettingsHandlers';
-import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService/ApiService';
+import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../../Services/ApiService/ApiService';
 
-jest.mock('../Services/ApiService/ApiService', () => ({
+jest.mock('../../Services/ApiService/ApiService', () => ({
     postAddDevice: jest.fn(),
     postUpdateUser: jest.fn(),
     postUpdateWifi: jest.fn(),
@@ -11,7 +11,12 @@ jest.mock('../Services/ApiService/ApiService', () => ({
     postUpdatePumpWater: jest.fn(),
 }));
 
-const TestComponent = () => {
+/**
+ * Test component to utilize the `useSettingsHandlers` hook for testing.
+ * 
+ * @returns {JSX.Element} The rendered test component.
+ */
+const TestComponent = (): JSX.Element => {
     const {
         handleUpdateUser,
         handleAddDevice,
@@ -140,11 +145,17 @@ const TestComponent = () => {
     );
 };
 
+/**
+ * Tests for the `useSettingsHandlers` custom hook.
+ */
 describe('useSettingsHandlers', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Tests successful user update handling.
+     */
     it('should handle successful user update', async () => {
         (postUpdateUser as jest.Mock).mockResolvedValue({ data: { id: 1 } });
 
@@ -157,6 +168,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests validation failure on user update.
+     */
     it('should fail on update user validator', async () => {
         render(<TestComponent />);
 
@@ -167,6 +181,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests user update error handling.
+     */
     it('should handle user update errors correctly', async () => {
         (postUpdateUser as jest.Mock).mockRejectedValue({ response: { data: { message: 'Update failed' } } });
 
@@ -179,6 +196,9 @@ describe('useSettingsHandlers', () => {
         });
     });
     
+    /**
+     * Tests successful device addition.
+     */
     it('should handle successful device addition', async () => {
         (postAddDevice as jest.Mock).mockResolvedValue({ data: { id: 1 } });
 
@@ -191,6 +211,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests validation failure on device addition.
+     */
     it('should fail on add device validator', async () => {
         render(<TestComponent />);
 
@@ -201,6 +224,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests device addition error handling.
+     */
     it('should add device errors correctly', async () => {
         (postAddDevice as jest.Mock).mockRejectedValue({ response: { data: { message: 'Add device failed' } } });
 
@@ -213,6 +239,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests successful Wi-Fi update handling.
+     */
     it('should handle successful wifi update', async () => {
         (postUpdateWifi as jest.Mock).mockResolvedValue({ data: { id: 1 } });
 
@@ -223,8 +252,11 @@ describe('useSettingsHandlers', () => {
         await waitFor(() => {
             expect(postUpdateWifi).toHaveBeenCalled();
         });
-    });
+    }); 
 
+    /**
+     * Tests validation failure on Wi-Fi update.
+     */
     it('should fail on update wifi validator', async () => {
         render(<TestComponent />);
 
@@ -233,8 +265,11 @@ describe('useSettingsHandlers', () => {
         await waitFor(() => {
             expect(screen.getByTestId('error')).toHaveTextContent('Device id, Wifi SSID, and Wifi Password required');
         });
-    });
+    }); 
 
+    /**
+     * Tests Wi-Fi update error handling.
+     */
     it('should handle update wifi errors correctly', async () => {
         (postUpdateWifi as jest.Mock).mockRejectedValue({ response: { data: { message: 'Update wifi failed' } } });
 
@@ -247,6 +282,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests successful automation update handling.
+     */
     it('should handle successful auto update', async () => {
         (postUpdateAuto as jest.Mock).mockResolvedValue({ data: { id: 1 } });
 
@@ -259,6 +297,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests automation update error handling.
+     */
     it('should handle update auto errors correctly', async () => {
         (postUpdateAuto as jest.Mock).mockRejectedValue({ response: { data: { message: 'Update auto failed' } } });
 
@@ -271,6 +312,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests successful pump water update handling.
+     */
     it('should handle successful pump update', async () => {
         (postUpdatePumpWater as jest.Mock).mockResolvedValue({ data: { id: 1 } });
 
@@ -283,6 +327,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests pump water update error handling.
+     */
     it('should handle update pump errors correctly', async () => {
         (postUpdatePumpWater as jest.Mock).mockRejectedValue({ response: { data: { message: 'Update pump failed' } } });
 
@@ -295,6 +342,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests loading state management during updates.
+     */
     it('should handle loading state correctly', async () => {
         (postUpdateAuto as jest.Mock).mockImplementation(() => new Promise((resolve) => setTimeout(() => resolve({}), 500)));
 
@@ -309,6 +359,9 @@ describe('useSettingsHandlers', () => {
         });
     });
 
+    /**
+     * Tests error state reset functionality.
+     */
     it('should reset error state', async () => {
         (postUpdateUser as jest.Mock).mockRejectedValue({ response: { data: { message: 'Update failed' } } });
 

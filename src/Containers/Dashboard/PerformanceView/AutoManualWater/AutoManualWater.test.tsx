@@ -4,7 +4,7 @@ import AutoManualWater from './AutoManualWater';
 import { useSocket } from '../../../../Provider/SocketProvider/SocketProvider';
 import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
 import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
-import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
 // Mocking the mui BarChart
 jest.mock('@mui/x-charts/BarChart', () => ({
@@ -37,7 +37,7 @@ jest.mock('../../../../Provider/AuthProvider/AuthProvider', () => ({
 }));
 
 // Mocking the useSettingsHandlers
-jest.mock('../../../../Hooks/useSettingsHandlers', () => ({
+jest.mock('../../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdatePumpWater: jest.fn(),
     })),

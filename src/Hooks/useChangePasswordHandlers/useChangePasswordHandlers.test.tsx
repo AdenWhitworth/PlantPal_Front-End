@@ -1,13 +1,20 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { postForgotPassword, postResetPassword } from '../Services/ApiService/ApiService';
+import { postForgotPassword, postResetPassword } from '../../Services/ApiService/ApiService';
 import { useChangePasswordHandlers } from './useChangePasswordHandlers';
 
-jest.mock('../Services/ApiService/ApiService', () => ({
+// Mocking the ApiService
+jest.mock('../../Services/ApiService/ApiService', () => ({
     postForgotPassword: jest.fn(),
     postResetPassword: jest.fn(),
 }));
 
+/**
+ * Test component for demonstrating the use of change password handlers.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered component.
+ */
 const TestComponent = () => {
     const {
         handleForgotPassword,
@@ -37,11 +44,17 @@ const TestComponent = () => {
     );
 };
 
+/**
+ * Tests for the useChangePasswordHandlers hook.
+ */
 describe('useChangePasswordHandlers', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Tests the successful handling of a forgot password request.
+     */
     it('should handle forgot password request successfully', async () => {
         (postForgotPassword as jest.Mock).mockResolvedValue({});
 
@@ -57,6 +70,9 @@ describe('useChangePasswordHandlers', () => {
         });
     });
 
+    /**
+     * Tests the handling of a failed forgot password request.
+     */
     it('should handle forgot password request failure', async () => {
         (postForgotPassword as jest.Mock).mockRejectedValue(new Error('Network error'));
 
@@ -72,6 +88,9 @@ describe('useChangePasswordHandlers', () => {
         });
     });
 
+    /**
+     * Tests the successful handling of a password reset request.
+     */
     it('should handle password reset request successfully', async () => {
         (postResetPassword as jest.Mock).mockResolvedValue({});
 
@@ -87,6 +106,9 @@ describe('useChangePasswordHandlers', () => {
         });
     });
 
+    /**
+     * Tests the handling of a failed password reset request.
+     */
     it('should handle password reset request failure', async () => {
         (postResetPassword as jest.Mock).mockRejectedValue(new Error('Network error'));
 

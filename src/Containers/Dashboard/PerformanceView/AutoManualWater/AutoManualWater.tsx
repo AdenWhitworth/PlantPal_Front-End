@@ -6,7 +6,7 @@ import Manual from './Manual/Manual';
 import { useSocket } from '../../../../Provider/SocketProvider/SocketProvider';
 import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
 import {useAuth} from '../../../../Provider/AuthProvider/AuthProvider';
-import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import './AutoManualWater.css';
 import { AutoManualWaterProps, WaterOccurrence } from './AutoManualWaterTypes';
 

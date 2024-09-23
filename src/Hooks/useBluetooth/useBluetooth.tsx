@@ -1,18 +1,27 @@
 import { useState, useEffect, useCallback } from 'react';
+import { BluetoothDeviceExtended, BluetoothCharacteristicExtended } from './useBluetoothTypes';
 
-interface BluetoothDeviceExtended extends BluetoothDevice {
-  gatt: BluetoothRemoteGATTServer;
-}
-
-interface BluetoothCharacteristicExtended extends BluetoothRemoteGATTCharacteristic {}
-
+/**
+ * Custom hook to manage Bluetooth connections, including device discovery, GATT server connection,
+ * characteristic interaction, and handling disconnections.
+ * 
+ * @returns {Object} Contains methods for connecting to a Bluetooth device, sending credentials,
+ * triggering disconnection, and maintaining Bluetooth connection status.
+ */
 const useBluetooth = () => {
   const [bleDevice, setBleDevice] = useState<BluetoothDeviceExtended | null>(null);
   const [server, setServer] = useState<BluetoothRemoteGATTServer | null>(null);
   const [service, setService] = useState<BluetoothRemoteGATTService | null>(null);
   const [characteristic, setCharacteristic] = useState<BluetoothCharacteristicExtended | null>(null);
-  const [bleStatus, setBleStatus] = useState('');
+  const [bleStatus, setBleStatus] = useState<string>('');
 
+  /**
+   * Initiates connection to a Bluetooth device and retrieves its GATT server, service, and characteristic.
+   * 
+   * @function
+   * @param {string} cat_num - The Bluetooth device's name used for filtering during the connection request.
+   * @throws {Error} Throws an error if the connection fails or GATT server is unavailable.
+   */
   const connectBluetooth = async (cat_num: string) => {
     try {
         setBleStatus('Requesting Bluetooth device...');
@@ -52,11 +61,21 @@ const useBluetooth = () => {
     }
   };
 
+  /**
+   * Callback function to handle disconnection events from the Bluetooth device.
+   * 
+   * @function
+   */
   const onDisconnected = useCallback(() => {
     setBleStatus('Bluetooth device disconnected');
     cleanUpConnection();
   }, []);
 
+  /**
+   * Cleans up the Bluetooth connection by resetting the server, service, characteristic, and device state.
+   * 
+   * @function
+   */
   const cleanUpConnection = () => {
     setServer(null);
     setService(null);
@@ -64,6 +83,14 @@ const useBluetooth = () => {
     setBleDevice(null);
   };
 
+  /**
+   * Sends Wi-Fi credentials to the connected Bluetooth device using the characteristic.
+   * 
+   * @function
+   * @param {string} wifi_ssid - The Wi-Fi SSID to send.
+   * @param {string} wifi_password - The Wi-Fi password to send.
+   * @throws {Error} Throws an error if the characteristic is not available or if the credentials cannot be sent.
+   */
   const sendCredentials = async (wifi_ssid: string, wifi_password: string) => {
     try {
       console.log(characteristic);
@@ -94,12 +121,20 @@ const useBluetooth = () => {
     }
   };
 
+  /**
+   * Manually triggers a disconnection event for the Bluetooth device testing.
+   * 
+   * @function
+   */
   const triggerDisconnection = () => {
     if (bleDevice) {
       bleDevice.dispatchEvent(new Event('gattserverdisconnected'));
     }
   };
 
+  /**
+   * Effect to clean up the connection and remove event listeners when the component unmounts or the device disconnects.
+   */
   useEffect(() => {
     return () => {
       if (bleDevice) {

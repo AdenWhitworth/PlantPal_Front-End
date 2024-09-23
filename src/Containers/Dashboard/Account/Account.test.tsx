@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../../../Provider/AuthProvider/AuthProvider';
-import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import Account from './Account';
 
 // Mock the AuthProvider
@@ -15,7 +15,7 @@ jest.mock('../../../Provider/AuthProvider/AuthProvider', () => ({
 }));
 
 // Mock the useSettingsHandlers
-jest.mock('../../../Hooks/useSettingsHandlers', () => ({
+jest.mock('../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateUser: jest.fn(),
         error: null,

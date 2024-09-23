@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ConfirmActionModal from './ConfirmActionModal';
 import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
 //Mocking the AuthProvider
 jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
@@ -22,7 +22,7 @@ jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
 }));
 
 //Mocking the useSettingsHandlers
-jest.mock('../../Hooks/useSettingsHandlers', () => ({
+jest.mock('../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateAuto: jest.fn(),
         error: null,

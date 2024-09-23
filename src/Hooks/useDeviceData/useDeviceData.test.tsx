@@ -1,25 +1,37 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService/ApiService';
-import { useAuth } from '../Provider/AuthProvider/AuthProvider';
-import { useDevice } from '../Provider/DeviceProvider/DeviceProvider';
+import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../../Services/ApiService/ApiService';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 import { useDeviceData } from './useDeviceData';
 
-jest.mock('../Services/ApiService/ApiService', () => ({
+//mocking the ApiService
+jest.mock('../../Services/ApiService/ApiService', () => ({
     getUserDevices: jest.fn(),
     getDeviceLogs: jest.fn(),
     getDeviceShadow: jest.fn(),
 }));
 
-jest.mock('../Provider/AuthProvider/AuthProvider', () => ({
+//mocking the AuthProvider
+jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('../Provider/DeviceProvider/DeviceProvider', () => ({
+//mocking the DeviceProvider
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(),
 }));
 
-const TestComponent= ({handleLogout}:{handleLogout: () => void}) => {
+
+/**
+ * Test component that uses the `useDeviceData` hook.
+ * 
+ * @component TestComponent
+ * @param {Object} props - Component properties.
+ * @param {Function} props.handleLogout - Function to handle user logout.
+ * @returns {JSX.Element} Rendered TestComponent.
+ */
+const TestComponent= ({handleLogout}:{handleLogout: () => void}): JSX.Element => {
     const {
         fetchUserDevices,
         isDevicesLoading,
@@ -37,6 +49,9 @@ const TestComponent= ({handleLogout}:{handleLogout: () => void}) => {
     );
 };
 
+/**
+ * Tests for the useDeviceData hook.
+ */
 describe('useDeviceData', () => {
     const mockSetAccessToken = jest.fn();
     const mockSetDevices = jest.fn();
@@ -65,6 +80,9 @@ describe('useDeviceData', () => {
         });
     });
 
+    /**
+     * Test case for handling successful fetching of user devices.
+     */
     it('should handle fetchUserDevices', async () => {
         (getUserDevices as jest.Mock).mockResolvedValue({ data: { devices: [] } });
 
@@ -81,6 +99,9 @@ describe('useDeviceData', () => {
         });
     });
 
+    /**
+     * Test case for handling error during fetching of user devices.
+     */
     it('should handle fetchUserDevices error', async () => {
         (getUserDevices as jest.Mock).mockRejectedValue(new Error('Network error'));
 
@@ -93,6 +114,9 @@ describe('useDeviceData', () => {
         });
     });
 
+    /**
+     * Test case for handling successful fetching of user device details.
+     */
     it('should handle fetchUserDevice', async () => {
         (getDeviceLogs as jest.Mock).mockResolvedValue({ data: { deviceLogs: [], lastLog: null } });
         (getDeviceShadow as jest.Mock).mockResolvedValue({ data: { deviceShadow: {} } });
@@ -104,6 +128,9 @@ describe('useDeviceData', () => {
         });
     });
 
+    /**
+     * Test case for handling error during fetching of user device details.
+     */
     it('should handle fetchUserDevice error', async () => {
         (getDeviceLogs as jest.Mock).mockRejectedValue(new Error('Network error'));
         (getDeviceShadow as jest.Mock).mockRejectedValue(new Error('Network error'));

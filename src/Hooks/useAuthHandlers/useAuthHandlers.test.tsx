@@ -1,46 +1,57 @@
 import React, { useState } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useAuthHandlers } from './useAuthHandlers';
-import { postLogin, postRegister } from '../Services/ApiService/ApiService';
+import { postLogin, postRegister } from '../../Services/ApiService/ApiService';
+import { TestComponentProps } from './useAuthHandlersTypes';
 
-jest.mock('../Services/ApiService/ApiService', () => ({
+//Mocking the ApiService
+jest.mock('../../Services/ApiService/ApiService', () => ({
   postLogin: jest.fn(),
   postRegister: jest.fn(),
 }));
 
-interface TestComponentProps {
-  setAccessToken: (token: string) => void;
-  setUser: (user: any) => void;
-  isLoginSelected: boolean;
-}
+/**
+ * Test component to simulate the usage of useAuthHandlers hook.
+ *
+ * @component
+ * @param {TestComponentProps} props - The props for TestComponent.
+ * @returns {JSX.Element} The rendered test component.
+ */
+const TestComponent: React.FC<TestComponentProps> = ({ setAccessToken, setUser, isLoginSelected }: TestComponentProps): JSX.Element => {
+  const authHandlers = useAuthHandlers({ setAccessToken, setUser, isLoginSelected });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  
+  /**
+   * Handles the form submission for login or signup.
+   * 
+   * @function
+   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   */
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (isLoginSelected) {
+      authHandlers.handleSignIn(e, { email, password });
+    } else {
+      authHandlers.handleSignUp(e, { email, password, first_name: firstName, last_name: lastName });
+    }
+  };
 
-const TestComponent: React.FC<TestComponentProps> = ({ setAccessToken, setUser, isLoginSelected }) => {
-    const authHandlers = useAuthHandlers({ setAccessToken, setUser, isLoginSelected });
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-  
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    
-        if (isLoginSelected) {
-          authHandlers.handleSignIn(e, { email, password });
-        } else {
-          authHandlers.handleSignUp(e, { email, password, first_name: firstName, last_name: lastName });
-        }
-      };
-  
-    return (
-        <form onSubmit={handleSubmit} data-testid="test-form">
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name" />
-                <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name" />
-                {authHandlers.error && <span>{authHandlers.error}</span>}
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit} data-testid="test-form">
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="First Name" />
+            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Last Name" />
+            {authHandlers.error && <span>{authHandlers.error}</span>}
+    </form>
+  );
 };
 
+/**
+ * Tests for the useAuthHandlers hook.
+ */
 describe('useAuthHandlers', () => {
     const mockSetAccessToken = jest.fn();
     const mockSetUser = jest.fn();
@@ -49,6 +60,9 @@ describe('useAuthHandlers', () => {
     jest.resetAllMocks();
   });
 
+  /**
+   * Test case: should validate login form data correctly.
+   */
   test('should validate login form data correctly', async () => {
     render(
       <TestComponent setAccessToken={mockSetAccessToken} setUser={mockSetUser} isLoginSelected={true} />
@@ -68,6 +82,9 @@ describe('useAuthHandlers', () => {
 
   });
   
+  /**
+   * Test case: handleSignIn should succeed and call setAccessToken and setUser.
+   */
   test('handleSignIn should succeed and call setAccessToken and setUser', async () => {
     (postLogin as jest.Mock).mockResolvedValue({
       data: {
@@ -96,6 +113,9 @@ describe('useAuthHandlers', () => {
     });
   });
 
+  /**
+   * Test case: should validate signup form data correctly.
+   */
   test('should validate signup form data correctly', async () => {
     render(
       <TestComponent setAccessToken={mockSetAccessToken} setUser={mockSetUser} isLoginSelected={false} />
@@ -128,6 +148,9 @@ describe('useAuthHandlers', () => {
 
   });
 
+  /**
+   * Test case: handleSignUp should succeed and call handleSignIn.
+   */
   test('handleSignUp should succeed and call handleSignIn', async () => {
     (postRegister as jest.Mock).mockResolvedValue({});
     (postLogin as jest.Mock).mockResolvedValue({
@@ -160,6 +183,9 @@ describe('useAuthHandlers', () => {
     });
   });
 
+  /**
+   * Test case: handleSignUp should set error on failure.
+   */
   test('handleSignUp should set error on failure', async () => {
     (postRegister as jest.Mock).mockRejectedValue({
       response: { data: { message: 'Registration failed' } },

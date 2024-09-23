@@ -4,7 +4,7 @@ import Dashboard from './Dashboard';
 import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
-import { useDeviceData } from '../../Hooks/useDeviceData';
+import { useDeviceData } from '../../Hooks/useDeviceData/useDeviceData';
 
 //Mocking the PerformanceView
 jest.mock('./PerformanceView/PerformanceView', () => (props: any) => (
@@ -94,7 +94,7 @@ jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
 }));
 
 //Mocking the useDeviceData
-jest.mock('../../Hooks/useDeviceData', () => ({
+jest.mock('../../Hooks/useDeviceData/useDeviceData', () => ({
     useDeviceData: jest.fn(() => ({
         fetchUserDevices: jest.fn(),
         isDevicesLoading: false, 

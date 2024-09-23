@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
-import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
+import { useAuthHandlers } from '../../Hooks/useAuthHandlers/useAuthHandlers';
 import Authentication from './Authentication';
 
 // Mock the AuthProvider
@@ -24,7 +24,7 @@ jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
 }));
 
 // Mock the useAuthHandlers
-jest.mock('../../Hooks/useAuthHandlers', () => ({
+jest.mock('../../Hooks/useAuthHandlers/useAuthHandlers', () => ({
     useAuthHandlers: jest.fn(() => ({
         handleSignIn: jest.fn(),
         handleSignUp: jest.fn(),

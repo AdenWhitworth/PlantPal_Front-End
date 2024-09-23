@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {useAuth} from '../../../Provider/AuthProvider/AuthProvider';
-import useBluetooth from '../../../Hooks/useBluetooth';
+import useBluetooth from '../../../Hooks/useBluetooth/useBluetooth';
 import { useDevice } from '../../../Provider/DeviceProvider/DeviceProvider';
 import AddDeviceForm from './AddDeviceForm/AddDeviceForm';
-import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import './AddDevice.css';
 import { AddDeviceProps, WifiDetails } from './AddDeviceTypes';
 
