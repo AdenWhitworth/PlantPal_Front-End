@@ -1,24 +1,21 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback, ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { useAuth } from './AuthProvider';
-import { postRefreshAccessToken } from '../Services/ApiService';
+import { useAuth } from '../AuthProvider/AuthProvider';
+import { postRefreshAccessToken } from '../../Services/ApiService';
+import { SocketContextType, SocketProviderProps } from './SocketProviderTypes';
 
-interface SocketContextType {
-  isConnected: boolean;
-  errorSocket: string | null;
-  refresh: boolean;
-  errorReconnect: boolean;
-  setErrorReconnect: React.Dispatch<React.SetStateAction<boolean>>;
-  setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
-  sendAddUser: (user_id: string) => void;
-  sendRemoveUser: (user_id: string) => void;
-  sendCheckSocket: (user_id: string) => void;
-  connectSocket: (passedToken: string) => void;
-  disconnectSocket: () => void;
-}
+/**
+ * Context for authentication state and actions.
+ * @type {React.Context<SocketContextType | undefined>}
+ */
+const SocketContext: React.Context<SocketContextType | undefined> = createContext<SocketContextType | undefined>(undefined);
 
-const SocketContext = createContext<SocketContextType | undefined>(undefined);
-
+/**
+ * Custom hook to use the SocketContext.
+ * 
+ * @returns {SocketContextType} The socket context value.
+ * @throws {Error} Throws an error if used outside of a SocketProvider.
+ */
 export const useSocket = (): SocketContextType => {
   const context = useContext(SocketContext);
   if (!context) {
@@ -27,12 +24,13 @@ export const useSocket = (): SocketContextType => {
   return context;
 };
 
-interface SocketProviderProps {
-  url: string;
-  children: ReactNode;
-}
-
-export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }) => {
+/**
+ * Provider component for managing socket connections and providing context to its children.
+ * 
+ * @param {SocketProviderProps} props - The properties for the SocketProvider.
+ * @returns {JSX.Element} The rendered SocketProvider component.
+ */
+export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }: SocketProviderProps): JSX.Element => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
@@ -40,6 +38,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
   const socketRef = useRef<Socket | null>(null);
   const { accessToken, setAccessToken, user } = useAuth();
 
+  /**
+   * Handles refreshing the access token from the server.
+   * 
+   * @function
+   */
   const handleRefreshAccessToken = useCallback(async () => {
     try {
       const response = await postRefreshAccessToken();
@@ -50,6 +53,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     }
   }, [setAccessToken]);
 
+  /**
+   * Sends a request to add a user to the socket.
+   * 
+   * @function
+   * @param {string} user_id - The ID of the user to add.
+   */
   const sendAddUser = useCallback((user_id: string) => {
     if (socketRef.current) {
       socketRef.current.emit('addUser', user_id, (response: any) => {
@@ -66,6 +75,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     }
   }, []);
 
+  /**
+   * Connects to the socket using the provided token.
+   * 
+   * @function
+   * @param {string} passedToken - The token used for authentication.
+   */
   const connectSocket = useCallback((passedToken: string) => {
     if (socketRef.current) return;
 
@@ -137,6 +152,11 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
 
   }, [url, user, handleRefreshAccessToken, sendAddUser]);
 
+  /**
+   * Disconnects the current socket connection.
+   * 
+   * @function
+   */
   const disconnectSocket = useCallback(() => {
     if (socketRef.current) {
       socketRef.current.disconnect();
@@ -146,6 +166,13 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     }
   }, []);
 
+  /**
+   * Effect to manage the socket connection based on the access token.
+   * 
+   * If the access token changes, it disconnects the current socket (if connected)
+   * and establishes a new connection using the updated token. It cleans up by
+   * disconnecting the socket when the component is unmounted.
+   */
   useEffect(() => {
     if (accessToken) {
       disconnectSocket();
@@ -157,6 +184,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     };
   }, [connectSocket, disconnectSocket, accessToken]);
 
+  /**
+   * Sends a request to remove a user from the socket.
+   * 
+   * @function 
+   * @param {string} user_id - The ID of the user to remove.
+   */
   const sendRemoveUser = useCallback((user_id: string) => {
     if (socketRef.current && isConnected) {
       socketRef.current.emit('removeUser', user_id, (response: any) => {
@@ -174,6 +207,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children })
     }
   }, [isConnected, disconnectSocket]);
 
+  /**
+   * Sends a request to check the socket status for a specific user.
+   * 
+   * @function
+   * @param {string} user_id - The ID of the user to check.
+   */
   const sendCheckSocket = useCallback((user_id: string) => {
     if (socketRef.current && isConnected) {
       socketRef.current.emit('checkSocket', user_id, (response: any) => {

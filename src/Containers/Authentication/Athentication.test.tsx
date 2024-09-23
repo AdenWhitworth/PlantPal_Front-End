@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { useAuth } from '../../Provider/AuthProvider';
-import { useSocket } from '../../Provider/SocketProvider';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
+import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
 import { useAuthHandlers } from '../../Hooks/useAuthHandlers';
 import Authentication from './Authentication';
 
 // Mock the AuthProvider
-jest.mock('../../Provider/AuthProvider', () => ({
+jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
         setUser: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock('../../Provider/AuthProvider', () => ({
 }));
 
 // Mock the SocketProvider
-jest.mock('../../Provider/SocketProvider', () => ({
+jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
     useSocket: jest.fn(() => ({
         connectSocket: jest.fn(),
         isConnected: false,

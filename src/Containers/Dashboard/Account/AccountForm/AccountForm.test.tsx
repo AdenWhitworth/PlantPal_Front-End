@@ -1,14 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useAuth } from '../../../../Provider/AuthProvider';
+import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
 import AccountForm from './AccountForm';
 
-jest.mock('../../../../Provider/AuthProvider', () => ({
+// Mock the AuthProvider
+jest.mock('../../../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         user: null,
     })),
 }));
 
+/**
+ * Tests for the AccountForm component.
+ */
 describe('AccountForm Component', () => {
     const mockHandleReturnForgotPassword = jest.fn();
     const mockHandleInputChange = jest.fn();
@@ -32,6 +36,9 @@ describe('AccountForm Component', () => {
         });
     });
 
+    /**
+     * Test that verifies the AccountForm renders correctly.
+     */
     test('renders the AccountForm component correctly', () => {
         render(
             <AccountForm
@@ -53,6 +60,9 @@ describe('AccountForm Component', () => {
         expect(screen.getByText('Edit')).toBeInTheDocument();
     });
 
+    /**
+     * Test that verifies the AccountForm in edit mode renders correctly.
+     */
     test('renders the AccountForm edit component correctly', () => {
         render(
             <AccountForm
@@ -74,6 +84,9 @@ describe('AccountForm Component', () => {
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
+    /**
+     * Test that verifies inputs are disabled when editing is not enabled.
+     */
     test('doesnt allow editing by default', () => {
         render(
             <AccountForm
@@ -97,6 +110,9 @@ describe('AccountForm Component', () => {
         expect(inputEmail).toBeDisabled();
     });
 
+    /**
+     * Test that verifies input changes are handled correctly when editing is enabled.
+     */
     test('allows input changes when editing is enabled', () => {
         render(
             <AccountForm
@@ -118,6 +134,9 @@ describe('AccountForm Component', () => {
         expect(mockHandleInputChange).toHaveBeenCalledTimes(3);
     });
 
+    /**
+     * Test that verifies form submission is handled correctly.
+     */
     test('handles form submission', () => {
         render(
             <AccountForm
@@ -136,6 +155,9 @@ describe('AccountForm Component', () => {
         expect(mockHandleSaveClick).toHaveBeenCalled();
     });
 
+    /**
+     * Test that verifies error messages are displayed when present.
+     */
     test('displays error message when present', () => {
         render(
             <AccountForm
@@ -153,6 +175,9 @@ describe('AccountForm Component', () => {
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
     });
 
+    /**
+     * Test that verifies the change password button click is handled correctly.
+     */
     test('handles change password click', () => {
         render(
             <AccountForm
@@ -171,6 +196,9 @@ describe('AccountForm Component', () => {
         expect(mockHandleReturnForgotPassword).toHaveBeenCalled();
     });
 
+    /**
+     * Test that verifies the close button click is handled correctly.
+     */
     test('handles close click', () => {
         render(
             <AccountForm

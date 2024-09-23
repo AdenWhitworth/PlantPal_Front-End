@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService';
-import { useAuth } from '../Provider/AuthProvider';
-import { useDevice } from '../Provider/DeviceProvider';
+import { useAuth } from '../Provider/AuthProvider/AuthProvider';
+import { useDevice } from '../Provider/DeviceProvider/DeviceProvider';
 import { useDeviceData } from './useDeviceData';
 
 jest.mock('../Services/ApiService', () => ({
@@ -11,11 +11,11 @@ jest.mock('../Services/ApiService', () => ({
     getDeviceShadow: jest.fn(),
 }));
 
-jest.mock('../Provider/AuthProvider', () => ({
+jest.mock('../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(),
 }));
 
-jest.mock('../Provider/DeviceProvider', () => ({
+jest.mock('../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(),
 }));
 

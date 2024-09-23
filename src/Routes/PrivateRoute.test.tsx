@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../Provider/AuthProvider';
+import { useAuth } from '../Provider/AuthProvider/AuthProvider';
 import PrivateRoute from './PrivateRoute';
 
 jest.mock('react-router-dom', () => ({
@@ -9,7 +9,7 @@ jest.mock('react-router-dom', () => ({
   useLocation: jest.fn(),
 }));
 
-jest.mock('../Provider/AuthProvider', () => ({
+jest.mock('../Provider/AuthProvider/AuthProvider', () => ({
   useAuth: jest.fn(),
 }));
 

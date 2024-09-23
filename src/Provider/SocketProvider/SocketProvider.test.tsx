@@ -2,9 +2,10 @@ import React from 'react';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import { SocketProvider, useSocket } from './SocketProvider';
 import { io, Socket } from 'socket.io-client';
-import { useAuth } from './AuthProvider';
-import { postRefreshAccessToken } from '../Services/ApiService';
+import { useAuth } from '../AuthProvider/AuthProvider';
+import { postRefreshAccessToken } from '../../Services/ApiService';
 
+//Mocking the socket.io-client
 jest.mock('socket.io-client', () => {
     const mockSocket = {
       on: jest.fn(),
@@ -17,21 +18,44 @@ jest.mock('socket.io-client', () => {
     };
 });
 
+//Mocking the AuthProvider
 jest.mock('./AuthProvider', () => ({
   useAuth: jest.fn(),
 }));
 
+//Mocking the AoiService
 jest.mock('../Services/ApiService', () => ({
   postRefreshAccessToken: jest.fn(),
 }));
 
+/**
+ * Tests the functionality of the SocketProvider component.
+ */
 describe('SocketProvider', () => {
     const mockUser = { user_id: '123' };
     const mockAccessToken = 'token123';
     let mockSocketEmit: jest.Mock;
     let mockSocketDisconnect: jest.Mock;
     let mockSocketOn: jest.Mock;
-    
+
+    /**
+     * Test component to interact with the SocketProvider.
+     * 
+     * @returns {JSX.Element} The rendered TestComponent.
+     */
+    const TestComponent: React.FC = (): JSX.Element => {
+        const { connectSocket, sendAddUser, sendRemoveUser, isConnected } = useSocket();
+        
+        return (
+        <div>
+            <button onClick={() => connectSocket(mockAccessToken)}>Connect</button>
+            <button onClick={() => sendAddUser(mockUser.user_id)}>Add User</button>
+            <button onClick={() => sendRemoveUser(mockUser.user_id)}>Remove User</button>
+            <div>{isConnected ? 'Connected' : 'Not Connected'}</div>
+        </div>
+        );
+    };
+
     beforeEach(() => {
       jest.clearAllMocks();
       
@@ -47,19 +71,9 @@ describe('SocketProvider', () => {
       mockSocketOn = mockSocket.on as jest.Mock;
     });
 
-    const TestComponent: React.FC = () => {
-        const { connectSocket, sendAddUser, sendRemoveUser, isConnected } = useSocket();
-        
-        return (
-        <div>
-            <button onClick={() => connectSocket(mockAccessToken)}>Connect</button>
-            <button onClick={() => sendAddUser(mockUser.user_id)}>Add User</button>
-            <button onClick={() => sendRemoveUser(mockUser.user_id)}>Remove User</button>
-            <div>{isConnected ? 'Connected' : 'Not Connected'}</div>
-        </div>
-        );
-    };
-
+    /**
+     * Tests that the socket connects on button click.
+     */
     test('connects the socket on button click', () => {
         render(
             <SocketProvider url="http://localhost">
@@ -75,6 +89,9 @@ describe('SocketProvider', () => {
         expect(mockSocketOn).toHaveBeenCalled();
     });
 
+    /**
+     * Tests the handling of addUser and removeUser socket events.
+     */
     test('handles addUser and removeUser socket events', async () => {
         render(
           <SocketProvider url="http://localhost">
@@ -103,6 +120,9 @@ describe('SocketProvider', () => {
         });
     });
 
+    /**
+     * Tests the handling of removeUser socket event and verifies the socket disconnection.
+     */
     test('handles removeUser socket event and disconnects the socket', async () => {
         render(
           <SocketProvider url="http://localhost">
@@ -142,6 +162,9 @@ describe('SocketProvider', () => {
         });
     });
 
+    /**
+     * Tests that the socket disconnects correctly and updates the connection status.
+     */
     test('disconnects the socket and handles errors', () => {
         render(
             <SocketProvider url="http://localhost">
@@ -160,6 +183,9 @@ describe('SocketProvider', () => {
         expect(screen.getByText('Not Connected')).toBeInTheDocument();
     });
     
+    /**
+     * Tests handling of connection errors and refreshing the access token.
+     */
     test('handles connection errors and refreshes token', async () => {
         const mockNewAccessToken = 'newToken123';
         
@@ -182,6 +208,9 @@ describe('SocketProvider', () => {
         expect(postRefreshAccessToken).toHaveBeenCalled();
     });
 
+    /**
+     * Tests that an error is thrown when useSocket is used outside of SocketProvider.
+     */
     test('throws an error when useSocket is used outside of SocketProvider', () => {
         const TestErrorComponent = () => {
             useSocket();

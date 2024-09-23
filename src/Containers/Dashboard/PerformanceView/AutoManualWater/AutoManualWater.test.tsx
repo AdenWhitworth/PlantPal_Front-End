@@ -1,22 +1,25 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import AutoManualWater from './AutoManualWater';
-import { useSocket } from '../../../../Provider/SocketProvider';
-import { useDevice } from '../../../../Provider/DeviceProvider';
-import { useAuth } from '../../../../Provider/AuthProvider';
+import { useSocket } from '../../../../Provider/SocketProvider/SocketProvider';
+import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
+import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
 import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
 
+// Mocking the mui BarChart
 jest.mock('@mui/x-charts/BarChart', () => ({
     BarChart: jest.fn(() => <div data-testid="mock-bar-chart"></div>),
 }));
 
-jest.mock('../../../../Provider/SocketProvider', () => ({
+// Mocking the SocketProvider
+jest.mock('../../../../Provider/SocketProvider/SocketProvider', () => ({
     useSocket: jest.fn(() => ({
         setRefresh: jest.fn(),
     })),
 }));
 
-jest.mock('../../../../Provider/DeviceProvider', () => ({
+// Mocking the DeviceProvider
+jest.mock('../../../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         devices: null,
         lastLog: null,
@@ -25,19 +28,24 @@ jest.mock('../../../../Provider/DeviceProvider', () => ({
     })),
 }));
 
-jest.mock('../../../../Provider/AuthProvider', () => ({
+// Mocking the AuthProvider
+jest.mock('../../../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
         accessToken: null,
     })),
 }));
 
+// Mocking the useSettingsHandlers
 jest.mock('../../../../Hooks/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdatePumpWater: jest.fn(),
     })),
 }));
 
+/**
+ * Test suite for the AutoManualWater component.
+ */
 describe('AutoManualWater Component', () => {
     const mockSetAutoSwitch = jest.fn();
     const mockSetConfirmAuto = jest.fn();
@@ -76,6 +84,9 @@ describe('AutoManualWater Component', () => {
 
     });
 
+    /**
+     * Test to verify that the auto-triangle image is rendered when lastLog is not available.
+     */
     test('renders auto-triangle image when lastLog is not available', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [],
@@ -96,6 +107,9 @@ describe('AutoManualWater Component', () => {
         expect(autoTriangleImage).toBeInTheDocument();
     });
     
+    /**
+     * Test to ensure that handleUpdatePumpWaterClick is called when the Manual button is clicked.
+     */
     test('calls handleUpdatePumpWaterClick when Manual button is clicked', () => {
         render(
             <AutoManualWater
@@ -111,6 +125,9 @@ describe('AutoManualWater Component', () => {
         expect(mockHandleUpdatePumpWater).toHaveBeenCalled();
     });
 
+    /**
+     * Test to verify that the Auto component is displayed when autoSwitch is true.
+     */
     test('shows Auto component when autoSwitch is true', () => {
         render(
             <AutoManualWater

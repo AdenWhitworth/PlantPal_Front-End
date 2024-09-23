@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../Provider/AuthProvider';
-import { useSocket } from '../../Provider/SocketProvider';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
+import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
 import AuthSelection from './AuthSelection/AuthSelection';
 import LoginForm from './LoginForm/LoginForm';
 import SignUpForm from './SignUpForm/SignUpForm';

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import Modal from '../../Components/Modal/Modal';
-import { useAuth } from "../../Provider/AuthProvider";
-import { useDevice } from '../../Provider/DeviceProvider';
+import { useAuth } from "../../Provider/AuthProvider/AuthProvider";
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 
 interface ConfirmActionModalProps {

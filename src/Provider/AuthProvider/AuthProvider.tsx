@@ -1,33 +1,18 @@
 import axios from "axios";
 import React, { createContext, useContext, useMemo, useReducer, useEffect, ReactNode } from "react";
+import { AuthContextType, AuthState, AuthAction, User } from "./AuthProviderTypes";
 
-interface User {
-  first_name: string;
-  last_name: string;
-  email: string;
-  user_id: string;
-}
+/**
+ * Context for authentication state and actions.
+ * @type {React.Context<AuthContextType | undefined>}
+ */
+const AuthContext: React.Context<AuthContextType | undefined> = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthState {
-  accessToken: string | null;
-  user: User | null;
-}
-
-type AuthAction = 
-  | { type: "setToken"; payload: string }
-  | { type: "clearToken" }
-  | { type: "setUser"; payload: User }
-  | { type: "clearUser" };
-
-interface AuthContextType extends AuthState {
-  setAccessToken: (token: string) => void;
-  clearAccessToken: () => void;
-  setUser: (userData: User) => void;
-  clearUser: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
+/**
+ * Custom hook to access the AuthContext.
+ * @returns {AuthContextType} The authentication context value.
+ * @throws {Error} If used outside of an AuthProvider.
+ */
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
@@ -43,6 +28,15 @@ const ACTIONS = {
   clearUser: "clearUser" as const,
 };
 
+/**
+ * Reducer function to manage authentication state.
+ * 
+ * @function
+ * @param {AuthState} state - The current authentication state.
+ * @param {AuthAction} action - The action to be handled.
+ * @returns {AuthState} The updated authentication state.
+ * @throws {Error} If an unhandled action type is provided.
+ */
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   switch (action.type) {
     case ACTIONS.setAccessToken:
@@ -68,6 +62,10 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   }
 };
 
+/**
+ * Initial state for the authentication context.
+ * @type {AuthState}
+ */
 const initialData: AuthState = {
   accessToken: localStorage.getItem("accessToken") || null,
   user: (() => {
@@ -76,7 +74,12 @@ const initialData: AuthState = {
   })(),
 };
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+/**
+ * AuthProvider component to provide authentication context to its children.
+ * @param {{ children: ReactNode }} props - The props for the provider component.
+ * @returns {JSX.Element} The provider with authentication context.
+ */
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }: { children: ReactNode; }): JSX.Element => {
   const [state, dispatch] = useReducer(authReducer, initialData);
 
   const setAccessToken = (newToken: string) => dispatch({ type: ACTIONS.setAccessToken, payload: newToken });
@@ -90,8 +93,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     clearAccessToken,
     setUser,
     clearUser,
-  }), [state]);
+  }), [state]); 
 
+  /**
+   * Effect that sets the default Authorization header for Axios when the access token changes.
+   * This ensures that all outgoing requests include the current access token.
+   */
   useEffect(() => {
     if (state.accessToken) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${state.accessToken}`;

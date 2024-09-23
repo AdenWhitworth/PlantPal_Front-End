@@ -6,20 +6,26 @@ import user_circle from '../../../../Images/user-circle-brown.svg';
 import tag from '../../../../Images/tag-brown.svg';
 import gear from '../../../../Images/gear-grey.svg';
 import React from 'react';
-import { useAuth } from '../../../../Provider/AuthProvider';
+import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
 import './AccountForm.css';
+import { AccountFormProps } from './AccountFormTypes';
 
-interface AccountFormProps {
-    handleReturnForgotPassword: () => void;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    error: string | null;
-    handleSaveClick: (event: React.FormEvent<HTMLFormElement>) => void;
-    handleEditClick: () => void;
-    editToggle: boolean;
-    inputDisabled: boolean;
-    handleCloseClick: () => void;
-}
-
+/**
+ * AccountForm component for managing user account information.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.handleReturnForgotPassword - Function to navigate to the forgot password screen.
+ * @param {Function} props.handleInputChange - Function to handle changes in input fields.
+ * @param {string|null} props.error - Error message to display, or null if there are no errors.
+ * @param {Function} props.handleSaveClick - Function to handle saving account changes.
+ * @param {Function} props.handleEditClick - Function to toggle edit mode.
+ * @param {boolean} props.editToggle - Indicates if the form is in edit mode.
+ * @param {boolean} props.inputDisabled - Indicates if the input fields should be disabled.
+ * @param {Function} props.handleCloseClick - Function to close the account form.
+ * 
+ * @returns {JSX.Element} The rendered AccountForm component.
+ */
 export default function AccountForm({ 
     handleSaveClick, 
     handleReturnForgotPassword,
@@ -29,7 +35,7 @@ export default function AccountForm({
     editToggle,
     inputDisabled,
     handleCloseClick,
-}: AccountFormProps) {
+}: AccountFormProps): JSX.Element {
 
     const { user } = useAuth();
 

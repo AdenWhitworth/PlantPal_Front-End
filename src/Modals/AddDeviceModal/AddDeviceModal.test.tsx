@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AddDeviceModal from './AddDeviceModal';
-import { useDevice } from '../../Provider/DeviceProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 
-jest.mock('../../Provider/DeviceProvider', () => ({
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         device: null,
     })),

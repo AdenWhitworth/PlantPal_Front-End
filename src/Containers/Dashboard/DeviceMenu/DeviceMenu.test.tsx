@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import DeviceMenu from './DeviceMenu';
-import { useDevice } from '../../../Provider/DeviceProvider';
+import { useDevice } from '../../../Provider/DeviceProvider/DeviceProvider';
 
-jest.mock('../../../Provider/DeviceProvider', () => ({
+// Mocking the DeviceProvider
+jest.mock('../../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         devices: null,
         device: null,
@@ -11,6 +12,9 @@ jest.mock('../../../Provider/DeviceProvider', () => ({
     })),
 }));
 
+/**
+ * Tests for the DeviceItem component.
+ */
 describe('DeviceMenu component', () => {
   const mockShowAddDeviceView = jest.fn();
   const mockShowPerformanceView = jest.fn();
@@ -51,6 +55,9 @@ describe('DeviceMenu component', () => {
 
   });
 
+  /**
+   * Test rendering of the DeviceMenu with devices and search input.
+   */
   it('renders the device menu with devices and search input', () => {
     render(
       <DeviceMenu
@@ -67,6 +74,9 @@ describe('DeviceMenu component', () => {
     expect(screen.getByText('Kitchen - 654321')).toBeInTheDocument();
   });
 
+  /**
+   * Test that showAddDeviceView is called when the Plus icon is clicked.
+   */
   it('calls showAddDeviceView when the Plus icon is clicked', () => {
     render(
       <DeviceMenu
@@ -83,6 +93,9 @@ describe('DeviceMenu component', () => {
     expect(mockShowAddDeviceView).toHaveBeenCalledTimes(1);
   });
 
+  /**
+   * Test filtering of devices based on search term.
+   */
   it('filters devices based on search term', () => {
     render(
       <DeviceMenu
@@ -103,6 +116,9 @@ describe('DeviceMenu component', () => {
     expect(screen.queryByText('Kitchen - 654321')).toBeNull();
   });
 
+  /**
+   * Test that the search term is reset when a new device is selected.
+   */
   it('resets search term when a new device is selected', () => {
     (useDevice as jest.Mock).mockReturnValue({
       device: mockDevices[0],

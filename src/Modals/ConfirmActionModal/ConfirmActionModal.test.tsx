@@ -1,18 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ConfirmActionModal from './ConfirmActionModal';
-import { useAuth } from '../../Provider/AuthProvider';
-import { useDevice } from '../../Provider/DeviceProvider';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
 
-jest.mock('../../Provider/AuthProvider', () => ({
+jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         accessToken: null,
         setAccessToken: jest.fn(),
     })),
 }));
 
-jest.mock('../../Provider/DeviceProvider', () => ({
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         device: null,
         deviceShadow: null,

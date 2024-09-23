@@ -1,38 +1,32 @@
 import React, {useState , useEffect, useCallback} from "react";
-import { useDevice } from '../../../../Provider/DeviceProvider';
+import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
 import './DeviceItem.css';
+import { DeviceItemProps } from "./DeviceItemTypes";
 
-interface Device {
-    device_id: number;
-    cat_num: string;
-    user_id: number;
-    wifi_ssid: string;
-    wifi_password: string;
-    init_vec: string;
-    presence_connection: boolean;
-    location: string;
-    thing_name: string;
-}
-
-interface DeviceItemProps {
-    devices: Device;
-    index: number;
-    connectDeviceToggle: boolean;
-    isSettingsVisible: boolean
-    showPerformanceView: () => void;
-}
-
+/**
+ * DeviceItem component displays individual device information and handles interactions.
+ *
+ * @component
+ * @param {DeviceItemProps} props - The component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function DeviceItem({
     devices, 
     index,  
     connectDeviceToggle,
     isSettingsVisible,
     showPerformanceView
-}: DeviceItemProps) {
-
-    const [colorStyle, setColorStyle] = useState("device-line");
+}: DeviceItemProps): JSX.Element {
+    const [colorStyle, setColorStyle] = useState<string>("device-line");
     const { device, setDevice } = useDevice();
 
+    /**
+     * Handles the click event on the device item.
+     * If the settings view is visible, it shows the performance view.
+     * Sets the current device in the context.
+     * 
+     * @function
+     */
     const handleDeviceClick = useCallback(() => {
         if (isSettingsVisible) {
             showPerformanceView();
@@ -40,6 +34,11 @@ export default function DeviceItem({
         setDevice(devices);
     }, [isSettingsVisible, devices, setDevice, showPerformanceView]);
     
+    /**
+     * Checks if the current device matches the clicked device.
+     * Updates the color style based on the settings visibility and connection toggle state.
+     * If the device properties have changed, updates the device in context.
+     */
     useEffect(() => {
         const isSameDevice = device?.cat_num === devices.cat_num;
         const hasDeviceChanged = 

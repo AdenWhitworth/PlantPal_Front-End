@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getUserDevices, getDeviceLogs, getDeviceShadow } from '../Services/ApiService';
-import { useAuth } from "../Provider/AuthProvider";
-import { useDevice } from '../Provider/DeviceProvider';
+import { useAuth } from "../Provider/AuthProvider/AuthProvider";
+import { useDevice } from '../Provider/DeviceProvider/DeviceProvider';
 
 interface UseDeviceDataProps {
     handleLogout: () => void;

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
-import { useAuth } from './Provider/AuthProvider';
+import { useAuth } from './Provider/AuthProvider/AuthProvider';
 
 jest.mock('./Containers/Landing/Landing', () => () => <div>Landing Page</div>);
 jest.mock('./Containers/Authentication/Authentication', () => () => <div>Authentication</div>);
@@ -10,14 +10,14 @@ jest.mock('./Containers/Dashboard/Dashboard', () => () => <div>Dashboard</div>);
 jest.mock('./Containers/Authentication/ForgotPassword/ForgotPassword', () => () => <div>Forgot Password</div>);
 jest.mock('./Containers/Authentication/ResetPassword/ResetPassword', () => () => <div>Reset Password</div>);
 
-jest.mock('./Provider/AuthProvider', () => ({
+jest.mock('./Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(),
     AuthProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
-jest.mock('./Provider/SocketProvider', () => ({
+jest.mock('./Provider/SocketProvider/SocketProvider', () => ({
     SocketProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
-jest.mock('./Provider/DeviceProvider', () => ({
+jest.mock('./Provider/DeviceProvider/DeviceProvider', () => ({
     DeviceProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 

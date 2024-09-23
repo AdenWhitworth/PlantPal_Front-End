@@ -7,27 +7,13 @@ import ConfirmActionModal from '../../Modals/ConfirmActionModal/ConfirmActionMod
 import DashboardHeader from './DashboardHeader/DashboardHeader';
 import DeviceMenu from './DeviceMenu/DeviceMenu';
 import AddDevice from './AddDevice/AddDevice';
-import { useAuth } from "../../Provider/AuthProvider";
+import { useAuth } from "../../Provider/AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from '../../Provider/SocketProvider';
+import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
 import { useDeviceData } from '../../Hooks/useDeviceData';
 import LoadingDots from '../../Components/LoadingDots/LoadingDots';
 import './Dashboard.css';
-
-interface State {
-    connectDeviceToggle: boolean;
-    autoSwitch: boolean;
-    confirmAuto: boolean;
-    currentDashboardView: string;
-    isSettingsVisible: boolean;
-}
-
-type StateAction =
-  | { type: 'SET_VIEW'; payload: { view: string; settingsVisible: boolean } }
-  | { type: 'SET_CONNECT_DEVICE_TOGGLE'; payload: boolean }
-  | { type: 'SET_AUTO_SWITCH'; payload: boolean }
-  | { type: 'SET_CONFIRM_AUTO'; payload: boolean }
-  | { type: 'RESET_STATE' };
+import { State, StateAction } from './DashboardTypes';
 
 const initialState: State = {
   connectDeviceToggle: false,
@@ -37,6 +23,14 @@ const initialState: State = {
   isSettingsVisible: false,
 };
 
+/**
+ * Reducer function to manage the dashboard state.
+ * 
+ * @function
+ * @param {State} state - The current state of the dashboard.
+ * @param {StateAction} action - The action to be processed.
+ * @returns {State} - The new state after the action is applied.
+ */
 function reducer(state: State, action: StateAction): State {
   switch (action.type) {
     case 'SET_VIEW':
@@ -58,13 +52,25 @@ function reducer(state: State, action: StateAction): State {
   }
 }
 
-export default function Dashboard() {
+/**
+ * Dashboard component responsible for rendering various views and handling the application state.
+ * It includes managing device connection, auto-switch functionality, and user session management.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered Dashboard component.
+ */
+export default function Dashboard(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const navigate = useNavigate();
   const { clearAccessToken, accessToken, user, clearUser } = useAuth();
   const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh, errorReconnect, setErrorReconnect } = useSocket();
   
+  /**
+   * Handles the user logout process, including removing the user from the socket, clearing user data, and redirecting to the login page.
+   * 
+   * @function
+   */
   const handleLogout = useCallback(() => {
     if (user) {
       try {
@@ -80,12 +86,30 @@ export default function Dashboard() {
 
   const { fetchUserDevices, isDevicesLoading, isDevicesLoaded } = useDeviceData({handleLogout});
 
+  /**
+   * Handles the "PlantPal" button click, navigating the user to the homepage.
+   * 
+   * @function
+   */
   const handlePlantPalClick = useCallback(() => navigate('/', { replace: true }), [navigate]);
 
+  /**
+   * Sets the current dashboard view and toggles the settings visibility.
+   * 
+   * @function
+   * @param {string} view - The view to set (e.g., 'performanceView', 'accountView').
+   * @param {boolean} settingsVisible - Whether the settings should be visible.
+   */
   const setView = useCallback((view: string, settingsVisible: boolean) => {
     dispatch({ type: 'SET_VIEW', payload: { view, settingsVisible } });
   }, []);
 
+  /**
+   * Renders the current view based on the state.
+   * 
+   * @function
+   * @returns {JSX.Element} The component corresponding to the current view.
+   */
   const renderView = useCallback(() => {
     switch (state.currentDashboardView) {
       case 'performanceView':
@@ -120,6 +144,11 @@ export default function Dashboard() {
     }
   }, [state, fetchUserDevices, setView]);
 
+  /**
+   * useEffect hook that handles the user authentication state and checks the socket connection.
+   * - If the access token or user is not available, the user is logged out.
+   * - If the user exists, it checks the socket connection and fetches user devices.
+   */
   useEffect(() => {
     if (!accessToken || !user) {
       handleLogout();
@@ -129,6 +158,10 @@ export default function Dashboard() {
     }
   }, [accessToken, user, sendCheckSocket, fetchUserDevices, handleLogout]);
 
+  /**
+   * useEffect hook that monitors socket reconnection errors.
+   * - If a reconnection error occurs, the user is logged out.
+   */
   useEffect(() => {
     if (errorReconnect) {
       setErrorReconnect(false);
@@ -136,6 +169,10 @@ export default function Dashboard() {
     }
   }, [errorReconnect, setErrorReconnect, handleLogout]);
 
+  /**
+   * useEffect hook that refreshes user devices when the socket connection is restored.
+   * - If the socket is connected and the refresh flag is set, it fetches the user's devices.
+   */
   useEffect(() => {
     if (isConnected && refresh) {
       fetchUserDevices();

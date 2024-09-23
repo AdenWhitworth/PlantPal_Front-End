@@ -2,11 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import EditWifiForm from './EditWifiForm';
 
+/**
+ * Test suite for the EditWifiForm component.
+ */
 describe('EditWifiForm Component', () => {
     const mockHandleInputChange = jest.fn();
     const mockHandleUpdateWifiSubmit = jest.fn();
     const errorMessage = 'This is an error message';
 
+    /**
+     * Test to verify the correct rendering of the EditWifiForm component.
+     */
     test('renders the EditWifiForm component correctly', () => {
         render(
             <EditWifiForm
@@ -22,6 +28,9 @@ describe('EditWifiForm Component', () => {
         expect(screen.getByText('Connect Wifi?')).toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that input changes are handled correctly.
+     */
     test('handles input changes', () => {
         render(
             <EditWifiForm
@@ -41,6 +50,9 @@ describe('EditWifiForm Component', () => {
         expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
+    /**
+     * Test to verify that form submission is handled correctly.
+     */
     test('handles form submission', () => {
         render(
             <EditWifiForm
@@ -54,6 +66,9 @@ describe('EditWifiForm Component', () => {
         expect(mockHandleUpdateWifiSubmit).toHaveBeenCalled();
     });
 
+    /**
+     * Test to verify that an error message is displayed when present.
+     */
     test('displays error message when present', () => {
         render(
             <EditWifiForm

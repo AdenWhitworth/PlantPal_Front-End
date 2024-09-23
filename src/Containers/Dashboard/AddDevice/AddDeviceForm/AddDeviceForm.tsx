@@ -7,18 +7,20 @@ import location from '../../../../Images/location-brown.svg';
 import tag from '../../../../Images/tag-brown.svg';
 import plus_circle from '../../../../Images/plus-circle-gray.svg';
 import './AddDeviceForm.css';
+import { AddDeviceFormProps } from './AddDeviceFormTypes';
 
-interface AddDeviceFormProps {
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    error: string | null;
-    handleConnectClick: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
+/**
+ * A form component for adding a new device.
+ * 
+ * @component
+ * @param {AddDeviceFormProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function AddDeviceForm({ 
     handleInputChange,
     error,
     handleConnectClick,
-}: AddDeviceFormProps) {
+}: AddDeviceFormProps): JSX.Element {
     return (
         <form id="new-device" className="new-device-section-2" onSubmit={handleConnectClick} data-testid="add-form">
                         

@@ -1,40 +1,44 @@
 import React, {useState, useEffect} from 'react';
 import wifi from "../../../../Images/wifi-green.svg";
 import triangle from "../../../../Images/triangle-orange.svg";
-import { useDevice } from '../../../../Provider/DeviceProvider';
+import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
 import Button from '../../../../Components/Button/Button';
 import useBluetooth from "../../../../Hooks/useBluetooth";
-import {useAuth} from '../../../../Provider/AuthProvider';
+import {useAuth} from '../../../../Provider/AuthProvider/AuthProvider';
 import EditWifiForm from './EditWifiForm/EditWifiForm';
 import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
 import './WifiConnection.css';
+import { WifiConnectionProps, WifiDetails } from './WifiConnectionTypes';
 
-interface WifiDetails {
-    wifiSSID: string;
-    wifiPassword: string;
-}
-
-interface WifiConnectionProps {
-    setConnectDeviceToggle: (value: boolean) => void;
-    handleRefreshClick: () => void;
-}
-
+/**
+ * Component that manages WiFi connection settings for a device.
+ * 
+ * @component
+ * @param {WifiConnectionProps} props - The component props.
+ * @returns {JSX.Element} The rendered WifiConnection component.
+ */
 export default function WifiConnection({
     setConnectDeviceToggle,
     handleRefreshClick
-}:WifiConnectionProps) {
+}:WifiConnectionProps): JSX.Element {
 
     const [wifiDetails, setWifiDetails] = useState<WifiDetails>({
         wifiSSID: '',
         wifiPassword: ''
     });
-    const [isConnectionVisible, setIsConnectionVisible] = useState(false);
-    const [updateWifiToggle, setUpdateWifiToggle] = useState(false);
+    const [isConnectionVisible, setIsConnectionVisible] = useState<boolean>(false);
+    const [updateWifiToggle, setUpdateWifiToggle] = useState<boolean>(false);
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
     const { devices, device } = useDevice();
     const { accessToken, setAccessToken } = useAuth();
     const { handleUpdateWifi, error, resetError} = useSettingsHandlers();
 
+    /**
+     * Handles input changes in the WiFi details form.
+     * 
+     * @function
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+     */
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setWifiDetails((prevData) => ({
@@ -43,6 +47,11 @@ export default function WifiConnection({
         }));
     };
 
+    /**
+     * Handles the click event for changing WiFi.
+     * 
+     * @function
+     */
     const handleChangeWifiClick = async () => {
         if(!device || !device.cat_num){
             console.error("Device cat_num required")
@@ -54,9 +63,14 @@ export default function WifiConnection({
         } catch (error) {
             console.error(error);
         }
-
     }
 
+    /**
+     * Handles the form submission for updating WiFi credentials.
+     * 
+     * @function
+     * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+     */
     const handleUpdateWifiSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -79,10 +93,16 @@ export default function WifiConnection({
         });
     }
 
+    /**
+     * Effect to set visibility based on available devices
+     */
     useEffect(() => {
         setIsConnectionVisible(devices.length > 0);
     }, [devices]);
 
+    /**
+     * Effect to update toggle based on Bluetooth device connection
+     */
     useEffect(() => {
         if (bleDevice){
             setUpdateWifiToggle(true);

@@ -7,9 +7,9 @@ import ResetPassword from './Containers/Authentication/ResetPassword/ResetPasswo
 import React from 'react';
 import PrivateRoute from './Routes/PrivateRoute';
 import { Route, Routes } from 'react-router-dom';
-import { AuthProvider } from './Provider/AuthProvider';
-import { SocketProvider } from './Provider/SocketProvider';
-import { DeviceProvider } from './Provider/DeviceProvider';
+import { AuthProvider } from './Provider/AuthProvider/AuthProvider';
+import { SocketProvider } from './Provider/SocketProvider/SocketProvider';
+import { DeviceProvider } from './Provider/DeviceProvider/DeviceProvider';
 
 function App() {
   
