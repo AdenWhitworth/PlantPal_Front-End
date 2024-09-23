@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { postResetPassword, postForgotPassword } from '../Services/ApiService';
+import { postResetPassword, postForgotPassword } from '../Services/ApiService/ApiService';
 
 interface UserData {
     email?: string;

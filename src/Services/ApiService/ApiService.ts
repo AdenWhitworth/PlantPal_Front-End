@@ -1,37 +1,6 @@
-import {authClient, cookieClient, publicClient} from './ApiClient';
+import {authClient, cookieClient, publicClient} from '../ApiClient/ApiClient';
+import { UserData, DeviceData, WifiData, AutoData, PumpData } from './ApiServiceTypes';
 
-interface UserData {
-    email?: string;
-    password?: string;
-    first_name?: string;
-    last_name?: string;
-    resetToken?: string;
-    user_id?: string;
-}
-  
-interface DeviceData {
-    location?: string;
-    cat_num?: string;
-    wifi_ssid?: string;
-    wifi_password?: string;
-    thingName?: string;
-}
-
-interface WifiData {
-    wifi_ssid?: string;
-    wifi_password?: string;
-    device_id?: number;
-}
-
-interface AuotData {
-    device_id?: number;
-    automate?: boolean;
-}
-
-interface PumpData {
-    device_id?: number;
-    pump_water?: boolean;
-}
 
 // Public API requests require API Key
 export const postLogin = (userData: UserData) => publicClient.post('/users/login', userData);
@@ -47,7 +16,7 @@ export const postUpdateUser = (accessToken: string | null, setAccessToken: (valu
 export const postAddDevice = (accessToken: string | null, setAccessToken: (value: string) => void, deviceData: DeviceData) => authClient(accessToken, setAccessToken).post('/dashboard/addDevice', deviceData);
 export const postUpdatePumpWater = (accessToken: string | null, setAccessToken: (value: string) => void, pumpData: PumpData) => authClient(accessToken, setAccessToken).post('/dashboard/updatePumpWater', pumpData);
 export const postUpdateWifi = (accessToken: string | null, setAccessToken: (value: string) => void, wifiData: WifiData) => authClient(accessToken, setAccessToken).post('/dashboard/updateWifi', wifiData);
-export const postUpdateAuto = (accessToken: string | null, setAccessToken: (value: string) => void, auotData: AuotData) => authClient(accessToken, setAccessToken).post('/dashboard/updateAuto', auotData);
+export const postUpdateAuto = (accessToken: string | null, setAccessToken: (value: string) => void, auotData: AutoData) => authClient(accessToken, setAccessToken).post('/dashboard/updateAuto', auotData);
 export const getUserDevices = (accessToken: string | null, setAccessToken: (value: string) => void) => authClient(accessToken, setAccessToken).get('/dashboard/userDevices');
 export const getDeviceLogs = (accessToken: string | null, setAccessToken: (value: string) => void, deviceData: DeviceData) => authClient(accessToken, setAccessToken).get('/dashboard/deviceLogs', { params: deviceData });
 export const getDeviceShadow = (accessToken: string | null, setAccessToken: (value: string) => void, deviceData: DeviceData) => authClient(accessToken, setAccessToken).get('/dashboard/deviceShadow', { params: deviceData });

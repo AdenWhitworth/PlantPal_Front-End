@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { postLogin, postRegister } from '../Services/ApiService';
+import { postLogin, postRegister } from '../Services/ApiService/ApiService';
 
 interface UserData {
     email: string;

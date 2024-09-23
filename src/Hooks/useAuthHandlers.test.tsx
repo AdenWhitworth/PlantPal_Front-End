@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useAuthHandlers } from './useAuthHandlers';
-import { postLogin, postRegister } from '../Services/ApiService';
+import { postLogin, postRegister } from '../Services/ApiService/ApiService';
 
-jest.mock('../Services/ApiService', () => ({
+jest.mock('../Services/ApiService/ApiService', () => ({
   postLogin: jest.fn(),
   postRegister: jest.fn(),
 }));

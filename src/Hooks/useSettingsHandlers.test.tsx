@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { useSettingsHandlers } from './useSettingsHandlers';
-import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService';
+import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService/ApiService';
 
-jest.mock('../Services/ApiService', () => ({
+jest.mock('../Services/ApiService/ApiService', () => ({
     postAddDevice: jest.fn(),
     postUpdateUser: jest.fn(),
     postUpdateWifi: jest.fn(),

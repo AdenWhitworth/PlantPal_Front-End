@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import { SocketProvider, useSocket } from './SocketProvider';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../AuthProvider/AuthProvider';
-import { postRefreshAccessToken } from '../../Services/ApiService';
+import { postRefreshAccessToken } from '../../Services/ApiService/ApiService';
 
 //Mocking the socket.io-client
 jest.mock('socket.io-client', () => {

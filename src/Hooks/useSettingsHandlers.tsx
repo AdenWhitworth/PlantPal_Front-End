@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService';
+import { postAddDevice, postUpdateUser, postUpdateWifi, postUpdateAuto, postUpdatePumpWater } from '../Services/ApiService/ApiService';
 
 interface UserData {
     email: string;

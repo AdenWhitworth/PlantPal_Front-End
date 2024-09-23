@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { postForgotPassword, postResetPassword } from '../Services/ApiService';
+import { postForgotPassword, postResetPassword } from '../Services/ApiService/ApiService';
 import { useChangePasswordHandlers } from './useChangePasswordHandlers';
 
-jest.mock('../Services/ApiService', () => ({
+jest.mock('../Services/ApiService/ApiService', () => ({
     postForgotPassword: jest.fn(),
     postResetPassword: jest.fn(),
 }));
