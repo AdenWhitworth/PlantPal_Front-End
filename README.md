@@ -1,70 +1,125 @@
-# Getting Started with Create React App
+<img width="80" src="https://github.com/AdenWhitworth/PlantPal_Front-End/raw/master/src/Images/PlantPal%20Logo.svg" alt="PlantPal Logo">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# PlantPal Front-End
 
-## Available Scripts
+Welcome to the **PlantPal Front-End**! This repository contains the code for the web-based user interface of the PlantPal application, designed to help plant enthusiasts monitor and manage their plants through a seamless and interactive experience.
 
-In the project directory, you can run:
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Environment Variables](#environment-variables)
+  - [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
-### `npm start`
+## Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The PlantPal Front-End is built using React and provides an intuitive user interface that connects to the PlantPal back-end. Users can view their plants, monitor conditions, and manage their settings through this interactive application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **User Authentication**: Secure login and registration for users.
+- **Plant Dashboard**: View and manage all your plants in one place.
+- **Real-Time Updates**: Receive live updates on plant conditions and statuses.
+- **Device Integration**: Connects with IoT devices for monitoring.
+- **Responsive Design**: Optimized for both desktop and mobile devices.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technologies Used
 
-### `npm run build`
+- **React**: A powerful JavaScript library for building user interfaces, enabling the development of dynamic and responsive web applications.
+- **TypeScript**: A strongly typed superset of JavaScript that enhances code quality and provides better tooling and type safety during development.
+- **HTML/JSX**: The foundational markup language used for structuring the components of the React application, ensuring semantic and accessible content.
+- **Web Bluetooth**: A JavaScript library that enables communication with Bluetooth Low Energy (BLE) devices directly from the web, enhancing the application's connectivity features.
+- **Axios**: A promise-based HTTP client that simplifies making API requests and handling responses, making it easier to interact with back-end services.
+- **CSS**: Styles the application with a modern aesthetic, allowing for flexible and maintainable design.
+- **React Router**: A library that enables dynamic routing in the application, providing a seamless navigation experience for users.
+- **Figma**: A collaborative design tool used for crafting the application's UI/UX, allowing for prototyping and feedback before implementation.
+- **MUI (Material-UI)**: A popular React component library that implements Google's Material Design, providing pre-designed components for charts, gauges, and more, enhancing visual consistency.
+- **Socket.IO**: A library that facilitates real-time, bidirectional communication between clients and servers, crucial for features like live updates and notifications.
+- **Jest**: A delightful JavaScript testing framework that ensures the reliability of the application by allowing developers to write unit tests for their functions and components.
+- **TypeDoc**: A documentation generator for TypeScript projects that creates consistent and user-friendly API documentation, making it easier for developers to understand and use the codebase.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Getting Started
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Follow the instructions below to set up the project on your local machine.
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Make sure you have the following installed:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **Node.js** (v16 or higher)
+- **npm** (v7 or higher)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AdenWhitworth/PlantPal_Front-End.git
+   cd PlantPal_Front-End
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+### Environment Variables
+Create a `.env` file in the root directory and define the following variables:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  ```plain text
+  # Application Configuration
+  REACT_APP_BASE_URL=your_url  # url for the client application
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  #BLE Configuration
+  REACT_APP_BLE_SERVICE_UUID=your_ble_service_uuid # Unique BLE service UUID
+  REACT_APP_BLE_CHARACTERISTIC_UUID=your_ble_characteristic_uuid # Unique BLE characteristic UUID
 
-### Code Splitting
+  #API Configuration
+  REACT_APP_API_CLIENT_KEY=your_client_api_key #API key to communicate with backend server
+  ```
+### Running the Application
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Once the environment variables are configured and dependencies are installed, you can start the application with:
+```bash
+npm start
+```
+## Testing
 
-### Analyzing the Bundle Size
+The project uses `Jest` and `Supertest` for unit and integration testing.
+Run the test suite with:
+```bash
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+You can view test coverage reports with:
+```bash
+npm run coverage
+```
 
-### Making a Progressive Web App
+## Documentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This project uses [TypeDoc](https://typedoc.org/) to generate documentation from the TypeScript code comments. To generate and view the documentation, follow these steps:
 
-### Advanced Configuration
+1. Ensure TypeDoc is installed:
+   ```bash
+   npm install --save-dev typedoc
+   ```
+2. Generate the documentation:
+   ```bash
+   npm run type-docs
+   ```
+3. The generated documentation will be located in the `docs/` directory. You can open the `index.html` file in your browser to view it.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+If you want to contribute to this project, feel free to open an issue or submit a pull request. Any contributions, from bug fixes to new features, are welcome!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License. See the LICENSE file for more details.
