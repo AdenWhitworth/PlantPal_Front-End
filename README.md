@@ -15,6 +15,7 @@ Welcome to the **PlantPal Front-End**! This repository contains the code for the
   - [Running the Application](#running-the-application)
 - [Testing](#testing)
 - [Documentation](#documentation)
+- [Future Features](#future-features)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -115,6 +116,14 @@ This project uses [TypeDoc](https://typedoc.org/) to generate documentation from
    npm run type-docs
    ```
 3. The generated documentation will be located in the `docs/` directory. You can open the `index.html` file in your browser to view it.
+
+## Future Features
+
+We're excited about the upcoming features that will enhance the PlantPal experience:
+
+1. **Stripe Checkout**: Streamline the purchasing process for PlantPal devices, making PlantPal commercially available to help people care for their plants.
+2. **Notification System**: Implement text or push notifications to keep users updated on their plants' status, ensuring they never miss important alerts.
+3. **Battery Management**: Introduce a battery indicator and management feature for PlantPal devices, helping users monitor power levels and extend device longevity.
 
 ## Contributing
 
