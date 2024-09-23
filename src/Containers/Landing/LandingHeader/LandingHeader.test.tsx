@@ -5,6 +5,9 @@ import plantpal_logo from "../../Images/PlantPal Logo.svg";
 import shopping_cart from "../../Images/shopping-grey.svg";
 import user from "../../Images/user-grey.svg";
 
+/**
+ * Test suite for the LandingHeader component.
+ */
 describe('LandingHeader Component', () => {
     const mockHandleManageDevicesClick = jest.fn();
 
@@ -12,6 +15,9 @@ describe('LandingHeader Component', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Tests that the PlantPal logo and navigation images render correctly.
+     */
     test('renders the PlantPal logo and navigation images', () => {
         render(<LandingHeader HandleManageDevicesClick={mockHandleManageDevicesClick} />);
         
@@ -28,6 +34,9 @@ describe('LandingHeader Component', () => {
         expect(userIcon).toHaveAttribute('src', user);
     });
 
+    /**
+     * Tests that the HandleManageDevicesClick function is called when the user icon is clicked.
+     */
     test('calls HandleManageDevicesClick when the user icon is clicked', () => {
         render(<LandingHeader HandleManageDevicesClick={mockHandleManageDevicesClick} />);
 

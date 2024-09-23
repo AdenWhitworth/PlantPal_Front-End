@@ -2,11 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ResetPasswordModal from './ResetPasswordModal';
 
+/**
+ * Tests for the ResetPasswordModal component.
+ */
 describe('ResetPasswordModal Component', () => {
     const handleReturnHome = jest.fn();
     const handleInputChange = jest.fn();
     const handleSubmit = jest.fn();
-
+    
+    /**
+     * Test that the ResetPasswordModal renders with the correct initial state.
+     */
     test('renders ResetPasswordModal with correct initial state', () => {
         render(
             <ResetPasswordModal 
@@ -26,6 +32,9 @@ describe('ResetPasswordModal Component', () => {
         expect(screen.getByAltText('Close Icon')).toBeInTheDocument();
     });
 
+    /**
+     * Test that handleInputChange is called when inputs change.
+     */
     test('calls handleInputChange on input change', () => {
         render(
             <ResetPasswordModal 
@@ -43,6 +52,9 @@ describe('ResetPasswordModal Component', () => {
         expect(handleInputChange).toHaveBeenCalledTimes(2);
     });
 
+    /**
+     * Test that handleSubmit is called on form submission.
+     */
     test('calls handleSubmit on form submit', async () => {
         render(
             <ResetPasswordModal 
@@ -59,6 +71,9 @@ describe('ResetPasswordModal Component', () => {
         expect(handleSubmit).toHaveBeenCalled();
     });
 
+    /**
+     * Test that the component displays a message and error if provided.
+     */
     test('displays message and error if provided', () => {
         const message = "Password reset link sent!";
         const error = "Error resetting password";
@@ -77,6 +92,9 @@ describe('ResetPasswordModal Component', () => {
         expect(screen.getByText(error)).toBeInTheDocument();
     });
 
+    /**
+     * Test that handleReturnHome is called when the modal is closed.
+     */
     test('calls handleReturnHome when modal is closed', () => {
         render(
             <ResetPasswordModal 

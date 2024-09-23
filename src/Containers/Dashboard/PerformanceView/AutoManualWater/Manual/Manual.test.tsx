@@ -1,15 +1,19 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Manual from './Manual';
-import { useDevice } from '../../../../../Provider/DeviceProvider';
+import { useDevice } from '../../../../../Provider/DeviceProvider/DeviceProvider';
 
-jest.mock('../../../../../Provider/DeviceProvider', () => ({
+//Mocking the DeviceProvider
+jest.mock('../../../../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         device: null,
         deviceShadow: null,
     })),
 }));
 
+/**
+ * Test suite for the Manual component.
+ */
 describe('Manual Component', () => {
     const mockHandleUpdatePumpWaterClick = jest.fn();
 
@@ -40,6 +44,9 @@ describe('Manual Component', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Test case: renders tap image when pump is off and device is connected.
+     */
     test('renders tap image when pump is off and device is connected', () => {
         (useDevice as jest.Mock).mockReturnValue({
             device: deviceConnected,
@@ -55,6 +62,9 @@ describe('Manual Component', () => {
         expect(mockHandleUpdatePumpWaterClick).toHaveBeenCalled();
     });
 
+    /**
+     * Test case: renders tap_locked image when pump is off and device is not connected.
+     */
     test('renders tap_locked image when pump is off and device is not connected', () => {
         (useDevice as jest.Mock).mockReturnValue({
             device: deviceDisconnected,
@@ -67,6 +77,9 @@ describe('Manual Component', () => {
         expect(tapLockedImage).toBeInTheDocument();
     });
 
+    /**
+     * Test case: renders time image when pump is on and reported state is off.
+     */
     test('renders time image when pump is on and reported state is off', () => {
         (useDevice as jest.Mock).mockReturnValue({
             device: deviceConnected,
@@ -80,6 +93,9 @@ describe('Manual Component', () => {
         expect(timeImage).toHaveClass('flip-image');
     });
 
+    /**
+     * Test case: renders nothing when pump state does not match any condition.
+     */
     test('renders nothing when pump state does not match any condition', () => {
         (useDevice as jest.Mock).mockReturnValue({
             device: deviceConnected,

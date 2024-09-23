@@ -1,14 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AddDeviceModal from './AddDeviceModal';
-import { useDevice } from '../../Provider/DeviceProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 
-jest.mock('../../Provider/DeviceProvider', () => ({
+//Mocking the DeviceProvider
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         device: null,
     })),
 }));
 
+/**
+ * Test suite for the AddDeviceModal component.
+ */
 describe('AddDeviceModal', () => {
   const setConnectDeviceToggleMock = jest.fn();
 
@@ -16,6 +20,9 @@ describe('AddDeviceModal', () => {
     jest.clearAllMocks();
   });
 
+  /**
+   * Tests rendering when the device is present and connected.
+   */
   it('should render correctly when device is present and connected', () => {
     (useDevice as jest.Mock).mockReturnValue({
       device: {
@@ -32,6 +39,9 @@ describe('AddDeviceModal', () => {
     expect(screen.queryByText('Press the network button on the device to connect. Led on device will turn green when successful.')).not.toBeInTheDocument();
   });
 
+  /**
+   * Tests rendering when the device is present but not connected.
+   */
   it('should render correctly when device is present but not connected', () => {
     (useDevice as jest.Mock).mockReturnValue({
       device: {
@@ -49,6 +59,9 @@ describe('AddDeviceModal', () => {
     expect(screen.getByAltText('Time Icon')).toBeInTheDocument();
   });
 
+  /**
+   * Tests that the close button calls setConnectDeviceToggle with false.
+   */
   it('should call setConnectDeviceToggle with false when close button is clicked', () => {
     (useDevice as jest.Mock).mockReturnValue({ device: null });
 
@@ -58,6 +71,9 @@ describe('AddDeviceModal', () => {
     expect(setConnectDeviceToggleMock).toHaveBeenCalledWith(false);
   });
 
+  /**
+   * Tests that the continue button calls setConnectDeviceToggle with false.
+   */
   it('should call setConnectDeviceToggle with false when continue button is clicked', () => {
     (useDevice as jest.Mock).mockReturnValue({
         device: {

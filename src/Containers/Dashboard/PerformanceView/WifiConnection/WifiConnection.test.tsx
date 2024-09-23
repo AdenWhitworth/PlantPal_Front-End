@@ -1,19 +1,21 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import WifiConnection from './WifiConnection';
-import { useDevice } from '../../../../Provider/DeviceProvider';
-import useBluetooth from '../../../../Hooks/useBluetooth';
-import { useAuth } from '../../../../Provider/AuthProvider';
-import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers';
+import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
+import useBluetooth from '../../../../Hooks/useBluetooth/useBluetooth';
+import { useAuth } from '../../../../Provider/AuthProvider/AuthProvider';
+import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
-jest.mock('../../../../Provider/DeviceProvider', () => ({
+//Mocking the DeviceProvider
+jest.mock('../../../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         devices: null,
         device: null,
     })),
 }));
 
-jest.mock('../../../../Hooks/useBluetooth', () => ({
+//Mocking the useBluetooth
+jest.mock('../../../../Hooks/useBluetooth/useBluetooth', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         connectBluetooth: jest.fn(),
@@ -22,14 +24,16 @@ jest.mock('../../../../Hooks/useBluetooth', () => ({
     })),
 }));
 
-jest.mock('../../../../Provider/AuthProvider', () => ({
+//Mocking the AuthProvider
+jest.mock('../../../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
         accessToken: null,
     })),
 }));
 
-jest.mock('../../../../Hooks/useSettingsHandlers', () => ({
+//Mocking the useSettingsHandlers
+jest.mock('../../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateWifi: jest.fn(),
         error: null, 
@@ -37,6 +41,9 @@ jest.mock('../../../../Hooks/useSettingsHandlers', () => ({
     })),
 }));
 
+/**
+ * Test suite for WifiConnection component
+ */
 describe('WifiConnection', () => {
     const mockConnectBluetooth = jest.fn();
     const mockSendCredentials = jest.fn();
@@ -48,6 +55,9 @@ describe('WifiConnection', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Test to verify that the component is hidden when there are no devices.
+     */
     test('does not render when there are no devices', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [],
@@ -60,6 +70,9 @@ describe('WifiConnection', () => {
         expect(connectionElement).toHaveClass('hidden');
     });
 
+    /**
+     * Test to verify that the EditWifiForm is rendered when a Bluetooth device is available.
+     */
     test('renders and shows EditWifiForm when bleDevice is present', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
@@ -77,6 +90,9 @@ describe('WifiConnection', () => {
         expect(screen.getByTestId('wifi-form')).toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that connection details are displayed when a device is present and no Bluetooth device is available.
+     */
     test('renders connection details when device is present and bleDevice is not', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
@@ -95,6 +111,9 @@ describe('WifiConnection', () => {
         expect(screen.getByText('SSID: test_ssid')).toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that the connectBluetooth function is called with the correct device.cat_num when the button is clicked.
+     */
     test('calls connectBluetooth with correct device.cat_num on button click', async () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
@@ -116,6 +135,9 @@ describe('WifiConnection', () => {
         });
     });
     
+    /**
+     * Test to verify that form submission correctly handles updating WiFi credentials and calling the necessary functions.
+     */
     test('handles form submission correctly', async () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],

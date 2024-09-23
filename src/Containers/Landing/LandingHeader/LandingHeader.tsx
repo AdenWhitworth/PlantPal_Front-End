@@ -3,22 +3,18 @@ import plantpal_logo from "../../../Images/PlantPal Logo.svg";
 import shopping_cart from "../../../Images/shopping-grey.svg";
 import user from "../../../Images/user-grey.svg";
 import './LandingHeader.css';
+import { LandingHeaderProps, Link } from './LandingHeaderTypes';
 
-interface Link {
-    key: number;
-    alt: string;
-    imgSrc: string;
-    onClick: () => void;
-    className: string;
-}
-
-interface DashboardHeaderProps {
-    HandleManageDevicesClick: () => void;
-}
-
+/**
+ * DashboardHeader component that renders the header section of the dashboard.
+ *
+ * @component
+ * @param {LandingHeaderProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered header component.
+ */
 export default function DashboardHeader({
     HandleManageDevicesClick
-}: DashboardHeaderProps) {
+}: LandingHeaderProps): JSX.Element {
     
     const links: Link[] = [
         { key: 1, alt: "Shopping cart logo", imgSrc: shopping_cart, onClick: () => console.log("clicked"), className: "shopping_cart" },

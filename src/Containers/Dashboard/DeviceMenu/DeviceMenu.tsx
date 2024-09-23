@@ -3,30 +3,43 @@ import DeviceItem from "./DeviceItem/DeviceItem";
 import InputField from "../../../Components/InputField/InputField";
 import glass from "../../../Images/glass-brown.svg";
 import plus from "../../../Images/plus-circle-green.svg";
-import { useDevice } from '../../../Provider/DeviceProvider';
+import { useDevice } from '../../../Provider/DeviceProvider/DeviceProvider';
 import './DeviceMenu.css';
+import { DeviceMenuProps } from './DeviceMenuTypes';
 
-interface DeviceMenuProps {
-    connectDeviceToggle: boolean;
-    showAddDeviceView: () => void;
-    isSettingsVisible: boolean;
-    showPerformanceView: () => void;
-}
-
+/**
+ * DeviceMenu component that renders a list of devices with a search functionality.
+ *
+ * @component
+ * @param {DeviceMenuProps} props - The props for the DeviceMenu component.
+ * @returns {JSX.Element} The rendered DeviceMenu component.
+ */
 export default function DeviceMenu({
     connectDeviceToggle, 
     showAddDeviceView,
     isSettingsVisible,
     showPerformanceView
-}: DeviceMenuProps) {
+}: DeviceMenuProps): JSX.Element {
 
     const { device, devices } = useDevice();
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
+    /**
+     * Handles changes in the search input field.
+     * 
+     * @function
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event from the input field.
+     */
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     }, []);
 
+    /**
+     * Filters the list of devices based on the search term.
+     * 
+     * @function
+     * @returns {Device[]} - An array of devices that match the search criteria.
+     */
     const filteredDevices = useMemo(() => {
         if (!devices) return [];
         if (!searchTerm) return devices;
@@ -37,6 +50,9 @@ export default function DeviceMenu({
         );
     }, [devices, searchTerm]);
 
+    /**
+     * Reset the search term when the current device changes
+     */
     useEffect(() => {
         setSearchTerm('');
     },[device]);

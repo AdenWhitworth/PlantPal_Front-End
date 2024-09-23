@@ -2,11 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AddDeviceForm from './AddDeviceForm';
 
+/**
+ * Tests for the AddDeviceForm component.
+ */
 describe('AddDeviceForm Component', () => {
     const mockHandleConnectClick = jest.fn();
     const mockHandleInputChange = jest.fn();
     const errorMessage = 'This is an error message';
 
+    /**
+     * Test to check if the AddDeviceForm component renders correctly.
+     */
     test('renders the AddDeviceForm component correctly', () => {
         render(
             <AddDeviceForm
@@ -25,6 +31,9 @@ describe('AddDeviceForm Component', () => {
         expect(screen.getByText('Connect')).toBeInTheDocument();
     });
 
+    /**
+     * Test to verify that input changes are handled correctly.
+     */
     test('handles input changes', () => {
         render(
             <AddDeviceForm
@@ -53,6 +62,9 @@ describe('AddDeviceForm Component', () => {
         expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
+    /**
+     * Test to check if form submission is handled correctly.
+     */
     test('handles form submission', () => {
         render(
             <AddDeviceForm
@@ -66,6 +78,9 @@ describe('AddDeviceForm Component', () => {
         expect(mockHandleConnectClick).toHaveBeenCalled();
     });
 
+    /**
+     * Test to verify that an error message is displayed when present.
+     */
     test('displays error message when present', () => {
         render(
             <AddDeviceForm

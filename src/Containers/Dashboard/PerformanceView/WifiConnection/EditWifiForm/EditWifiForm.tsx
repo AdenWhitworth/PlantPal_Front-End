@@ -4,18 +4,20 @@ import wifi_logo from '../../../../../Images/wifi-brown.svg';
 import lock from '../../../../../Images/lock-brown.svg';
 import "./EditWifiForm.css";
 import React from 'react';
+import { EditWifiFormProps } from './EditWifiFormTypes';
 
-interface EditWifiFormProps {
-    handleUpdateWifiSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    error: string | null;
-}
-
+/**
+ * A form component for updating Wi-Fi settings.
+ * 
+ * @component
+ * @param {EditWifiFormProps} props - The props for the EditWifiForm component.
+ * @returns {JSX.Element} The rendered form component.
+ */
 export default function EditWifiForm({ 
     handleUpdateWifiSubmit, 
     handleInputChange,
     error,
-}: EditWifiFormProps) {
+}: EditWifiFormProps): JSX.Element {
 
     return (
         <form id='update-wifi' className='update-wifi' onSubmit={handleUpdateWifiSubmit} data-testid="wifi-form">

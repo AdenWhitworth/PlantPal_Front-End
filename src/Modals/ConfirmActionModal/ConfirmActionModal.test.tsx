@@ -1,25 +1,28 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import ConfirmActionModal from './ConfirmActionModal';
-import { useAuth } from '../../Provider/AuthProvider';
-import { useDevice } from '../../Provider/DeviceProvider';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
+import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
-jest.mock('../../Provider/AuthProvider', () => ({
+//Mocking the AuthProvider
+jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         accessToken: null,
         setAccessToken: jest.fn(),
     })),
 }));
 
-jest.mock('../../Provider/DeviceProvider', () => ({
+//Mocking the DeviceProvider
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         device: null,
         deviceShadow: null,
     })),
 }));
 
-jest.mock('../../Hooks/useSettingsHandlers', () => ({
+//Mocking the useSettingsHandlers
+jest.mock('../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateAuto: jest.fn(),
         error: null,
@@ -27,32 +30,38 @@ jest.mock('../../Hooks/useSettingsHandlers', () => ({
     })),
 }));
 
+/**
+ * Test suite for the ConfirmActionModal component.
+ */
 describe('ConfirmActionModal', () => {
     const mockSetAutoSwitch = jest.fn();
     const mockSetConfirmAuto = jest.fn();
     const mockHandleUpdateAuto = jest.fn();
     const mockResetError = jest.fn();
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+  beforeEach(() => {
+      jest.clearAllMocks();
 
-        (useAuth as jest.Mock).mockReturnValue({
-            accessToken: 'test-access-token',
-            setAccessToken: jest.fn(),
-        });
-    
-        (useDevice as jest.Mock).mockReturnValue({
-            device: { device_id: '12345' },
-            deviceShadow: {},
-        });
-    
-        (useSettingsHandlers as jest.Mock).mockReturnValue({
-            handleUpdateAuto: mockHandleUpdateAuto,
-            error: null,
-            resetError: mockResetError,
-        });
-    });
-
+      (useAuth as jest.Mock).mockReturnValue({
+          accessToken: 'test-access-token',
+          setAccessToken: jest.fn(),
+      });
+  
+      (useDevice as jest.Mock).mockReturnValue({
+          device: { device_id: '12345' },
+          deviceShadow: {},
+      });
+  
+      (useSettingsHandlers as jest.Mock).mockReturnValue({
+          handleUpdateAuto: mockHandleUpdateAuto,
+          error: null,
+          resetError: mockResetError,
+      });
+  });
+  
+  /**
+   * Test that the ConfirmActionModal renders correctly with provided props.
+   */
   it('should render correctly with provided props', () => {
     render(
       <ConfirmActionModal
@@ -70,6 +79,9 @@ describe('ConfirmActionModal', () => {
     expect(screen.queryByText('error-message')).not.toBeInTheDocument();
   });
 
+  /**
+   * Test that clicking the close button calls setAutoSwitch and setConfirmAuto with the correct values.
+   */
   it('should call setAutoSwitch and setConfirmAuto with correct values when close button is clicked', () => {
     render(
       <ConfirmActionModal
@@ -87,6 +99,9 @@ describe('ConfirmActionModal', () => {
     expect(mockSetConfirmAuto).toHaveBeenCalledWith(false);
   });
 
+  /**
+   * Test that clicking the Accept button calls handleUpdateAuto with correct parameters.
+   */
   it('should call handleUpdateAuto with correct parameters when Accept button is clicked', async () => {
     render(
       <ConfirmActionModal
@@ -112,6 +127,9 @@ describe('ConfirmActionModal', () => {
     });
   });
 
+  /**
+   * Test that the error message is rendered when an error exists.
+   */
   it('should render error message when error exists', () => {
 
     (useSettingsHandlers as jest.Mock).mockReturnValue({
@@ -134,6 +152,9 @@ describe('ConfirmActionModal', () => {
     expect(screen.getByText('An error occurred')).toBeInTheDocument();
   });
 
+  /**
+   * Test that resetError is called on component mount.
+   */
   it('should call resetError on mount', () => {
     render(
       <ConfirmActionModal

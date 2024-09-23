@@ -4,15 +4,15 @@ import shower from "../../../Images/shower-green.svg";
 import LandingFileTab from '../LandingFileTab/LandingFileTab';
 import LandingCard from '../LandingCard/LandingCard';
 import './LandingFileContent.css';
+import { Card } from './LandingFileContentTypes';
 
-interface Card {
-    key: number;
-    cardImg: string;
-    cardTitle: string;
-    cardText: string;
-}
-
-export default function LandingFileContent() {
+/**
+ * Component that displays a collection of informational cards related to plant care.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered LandingFileContent component.
+ */
+export default function LandingFileContent(): JSX.Element {
 
     const cards: Card[] = [
         {   

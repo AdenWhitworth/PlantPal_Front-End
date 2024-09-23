@@ -3,6 +3,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import LandingCallToAction from './LandingCallToAction';
 import house_plant from '../../Images/house-plant.png';
 
+/**
+ * Tests for the LandingCallToAction component.
+ */
 describe('LandingCallToAction Component', () => {
     const mockHandleManageDevicesClick = jest.fn();
 
@@ -10,6 +13,9 @@ describe('LandingCallToAction Component', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Test that all elements are rendered correctly in the LandingCallToAction component.
+     */
     test('renders all elements correctly', () => {
         render(<LandingCallToAction HandleManageDevicesClick={mockHandleManageDevicesClick} />);
 
@@ -27,6 +33,9 @@ describe('LandingCallToAction Component', () => {
         expect(housePlantImage).toHaveAttribute('src', house_plant);
     });
 
+    /**
+     * Test that the HandleManageDevicesClick function is called when the "Manage" button is clicked.
+     */
     test('calls HandleManageDevicesClick when the "Manage" button is clicked', () => {
         render(<LandingCallToAction HandleManageDevicesClick={mockHandleManageDevicesClick} />);
 

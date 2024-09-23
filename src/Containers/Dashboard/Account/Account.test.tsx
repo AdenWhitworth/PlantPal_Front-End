@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { useAuth } from '../../../Provider/AuthProvider';
-import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import { useAuth } from '../../../Provider/AuthProvider/AuthProvider';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import Account from './Account';
 
-jest.mock('../../../Provider/AuthProvider', () => ({
+// Mock the AuthProvider
+jest.mock('../../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
         setUser: jest.fn(),
@@ -13,7 +14,8 @@ jest.mock('../../../Provider/AuthProvider', () => ({
     })),
 }));
 
-jest.mock('../../../Hooks/useSettingsHandlers', () => ({
+// Mock the useSettingsHandlers
+jest.mock('../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleUpdateUser: jest.fn(),
         error: null,
@@ -21,12 +23,16 @@ jest.mock('../../../Hooks/useSettingsHandlers', () => ({
     })),
 }));
 
+// Mock the react-router-dom
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useNavigate: () => mockNavigate,
 }));
 
+/**
+ * Test cases for the Account component.
+ */
 describe('Account Component', () => {
     const mockSetUser = jest.fn();
     const mockSetAccessToken = jest.fn();
@@ -51,6 +57,9 @@ describe('Account Component', () => {
         });
     });
 
+    /**
+     * Test case to verify that the AccountForm renders with default props.
+     */
     test('renders AccountForm with default props', () => {
         render(
             <MemoryRouter initialEntries={['/dashboard']}>
@@ -66,6 +75,9 @@ describe('Account Component', () => {
         expect(screen.getByText('Edit')).toBeInTheDocument();
     });
 
+    /**
+     * Test case to handle the save click and call handleUpdateUser.
+     */
     test('handles save click and calls handleUpdateUser', async () => {
         render(
             <MemoryRouter initialEntries={['/dashboard']}>
@@ -88,15 +100,18 @@ describe('Account Component', () => {
                 mockAccessToken,
                 mockSetAccessToken,
                 {
-                email: 'john@example.com',
-                first_name: 'John',
-                last_name: 'Doe',
+                    email: 'john@example.com',
+                    first_name: 'John',
+                    last_name: 'Doe',
                 },
                 expect.any(Function)
             );
         });
     });
 
+    /**
+     * Test case to verify navigation to the forgot password page when the button is clicked.
+     */
     test('navigates to forgot password page when forgot password is clicked', async () => {
         render(
             <MemoryRouter initialEntries={['/dashboard']}>
@@ -110,10 +125,13 @@ describe('Account Component', () => {
         fireEvent.click(screen.getByTestId('change-password-btn'));
 
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith('/forgotPassword', { "replace": true })
+            expect(mockNavigate).toHaveBeenCalledWith('/forgotPassword', { "replace": true });
         });
     });
 
+    /**
+     * Test case to verify that resetError is called on component mount.
+     */
     test('calls resetError on component mount', () => {
         render(
             <MemoryRouter initialEntries={['/dashboard']}>

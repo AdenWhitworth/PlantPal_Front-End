@@ -2,17 +2,32 @@ import React from 'react';
 import x_circle from '../../Images/x-circle-black.svg';
 import Button from '../Button/Button';
 import './Modal.css';
+import { ModalProps } from './ModalTypes';
 
-interface ModalProps { 
-    children?: React.ReactNode;
-    addButton: boolean;
-    handleButtonClick?: () => void;
-    buttonLabel: string;
-    styleType: 'primary' | 'secondary' | 'tertiary';
-    addClose: boolean;
-    handleCloseClick?: () => void;
-}
-
+/**
+ * A functional React component that renders a modal dialog.
+ * 
+ * The Modal can display content, an optional close icon, and an optional button.
+ * It supports different button styles and handles button and close actions.
+ * 
+ * @component
+ * @param {ModalProps} props - The props for the Modal component.
+ * @returns {JSX.Element} The rendered modal component.
+ * 
+ * @example
+ * return (
+ *   <Modal
+ *     addButton={true}
+ *     handleButtonClick={() => alert('Button clicked!')}
+ *     buttonLabel="Confirm"
+ *     styleType="primary"
+ *     addClose={true}
+ *     handleCloseClick={() => alert('Modal closed!')}
+ *   >
+ *     <p>This is the modal content.</p>
+ *   </Modal>
+ * )
+ */
 export default function Modal({
     handleCloseClick, 
     handleButtonClick, 

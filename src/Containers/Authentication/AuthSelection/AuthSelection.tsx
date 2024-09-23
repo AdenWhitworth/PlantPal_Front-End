@@ -1,11 +1,14 @@
 import React from 'react';
 import './AuthSelection.css';
+import { AuthSelectionProps } from './AuthSelectionTypes';
 
-interface AuthSelectionProps {
-    isLoginSelected: boolean;
-    setIsLoginSelected: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
+/**
+ * Component for rendering the authentication selection buttons for Login and Sign Up.
+ * Allows the user to toggle between the login and sign-up forms.
+ * 
+ * @param {AuthSelectionProps} props - The properties for the component.
+ * @returns {JSX.Element} - A JSX element containing the Login and Sign Up buttons.
+ */
 export default function AuthSelection({ 
     isLoginSelected,
     setIsLoginSelected,

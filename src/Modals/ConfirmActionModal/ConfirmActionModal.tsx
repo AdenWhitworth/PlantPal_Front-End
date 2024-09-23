@@ -1,29 +1,34 @@
 import React, {useEffect} from 'react';
 import Modal from '../../Components/Modal/Modal';
-import { useAuth } from "../../Provider/AuthProvider";
-import { useDevice } from '../../Provider/DeviceProvider';
-import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers';
+import { useAuth } from "../../Provider/AuthProvider/AuthProvider";
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
+import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers/useSettingsHandlers';
+import { ConfirmActionModalProps } from './ConfirmActionModalTypes';
 
-interface ConfirmActionModalProps {
-    children: React.ReactNode;
-    mainIcon: string;
-    setAutoSwitch: (value: boolean) => void;
-    setConfirmAuto: (value: boolean) => void;
-    autoSwitch: boolean;
-}
-
+/**
+ * A modal component that confirms an action related to device automation settings.
+ *
+ * @function ConfirmActionModal
+ * @param {ConfirmActionModalProps} props - The props for the ConfirmActionModal component.
+ * @returns {JSX.Element} The rendered ConfirmActionModal component.
+ */
 export default function ConfirmActionModal({
     children, 
     mainIcon, 
     setAutoSwitch, 
     setConfirmAuto, 
     autoSwitch
-}: ConfirmActionModalProps) {
+}: ConfirmActionModalProps): JSX.Element {
 
     const { accessToken, setAccessToken } = useAuth();
     const { device, deviceShadow } = useDevice();
     const { handleUpdateAuto, error, resetError} = useSettingsHandlers();
 
+     /**
+     * Handles the click event for closing the modal.
+     * Sets the state of the auto switch and confirmation based on the current autoSwitch state.
+     * @function
+     */
     const handleCloseClick = () => {
         if (autoSwitch){
             setAutoSwitch(false);
@@ -32,9 +37,14 @@ export default function ConfirmActionModal({
             setAutoSwitch(true);
             setConfirmAuto(false);
         }
-        
     }
 
+    /**
+     * Handles the click event for the action button.
+     * Triggers the update for device automation settings using the provided access token and device details.
+     * Logs an error if the device or its ID is not available.
+     * @function
+     */
     const handleButtonClick = async () => {
 
         if (!device || !device.device_id) {
@@ -48,6 +58,9 @@ export default function ConfirmActionModal({
         });
     }
 
+    /**
+     * Resets any error state when the component mounts or updates.
+     */
     useEffect(() => {
         resetError();
     }, [resetError]);

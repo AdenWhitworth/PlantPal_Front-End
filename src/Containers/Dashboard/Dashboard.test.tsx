@@ -1,11 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Dashboard from './Dashboard';
-import { useAuth } from '../../Provider/AuthProvider';
+import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { useSocket } from '../../Provider/SocketProvider';
-import { useDeviceData } from '../../Hooks/useDeviceData';
+import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
+import { useDeviceData } from '../../Hooks/useDeviceData/useDeviceData';
 
+//Mocking the PerformanceView
 jest.mock('./PerformanceView/PerformanceView', () => (props: any) => (
     <div>
         Performance View
@@ -15,7 +16,11 @@ jest.mock('./PerformanceView/PerformanceView', () => (props: any) => (
         <button onClick={props.setConfirmAuto}>Set Confirm Auto</button>
     </div>
 ));
+
+//Mocking the Account
 jest.mock('./Account/Account', () => () => <div>Account View</div>);
+
+//Mocking the AddDevice
 jest.mock('./AddDevice/AddDevice', () => (props: any) => (
     <div>
         Add Device View
@@ -23,12 +28,16 @@ jest.mock('./AddDevice/AddDevice', () => (props: any) => (
         <button onClick={props.showPerformanceView}>Show Performance</button>
     </div>
 ));
+
+//Mocking the AddDeviceModal
 jest.mock('../../Modals/AddDeviceModal/AddDeviceModal', () => (props: any) => (
     <div>
         Add Device Modal
         <button onClick={props.setConnectDeviceToggle}>Connect Device</button>
     </div>
 ));
+
+//Mocking the ConfirmActionModal
 jest.mock('../../Modals/ConfirmActionModal/ConfirmActionModal', () => (props: any) => (
     <div>
         Confirm Action Modal
@@ -36,6 +45,8 @@ jest.mock('../../Modals/ConfirmActionModal/ConfirmActionModal', () => (props: an
         <button onClick={props.setConfirmAuto}>Set Confirm Auto</button>
     </div>
 ));
+
+//Mocking the DashboardHeader
 jest.mock('./DashboardHeader/DashboardHeader', () => (props: any) => (
     <div>
         Dashboard Header
@@ -45,6 +56,8 @@ jest.mock('./DashboardHeader/DashboardHeader', () => (props: any) => (
         <button onClick={props.showAccountView}>Show Account</button>
     </div>
 ));
+
+//Mocking the DeviceMenu
 jest.mock('./DeviceMenu/DeviceMenu', () => (props: any) => (
     <div>
         Device Menu
@@ -52,9 +65,12 @@ jest.mock('./DeviceMenu/DeviceMenu', () => (props: any) => (
         <button onClick={props.showPerformanceView}>Show Performance</button>
     </div>
 ));
+
+//Mocking the LoadingDots
 jest.mock('../../Components/LoadingDots/LoadingDots', () => () => <div>Loading Dots</div>);
 
-jest.mock('../../Provider/AuthProvider', () => ({
+//Mocking the AuthProvider
+jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         clearAccessToken: jest.fn(),
         accessToken: null,
@@ -62,7 +78,9 @@ jest.mock('../../Provider/AuthProvider', () => ({
         clearUser: jest.fn(),
     })),
 }));
-jest.mock('../../Provider/SocketProvider', () => ({
+
+//Mocking the SocketProvider
+jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
     useSocket: jest.fn(() => ({
         connectSocket: jest.fn(),
         isConnected: false,
@@ -74,7 +92,9 @@ jest.mock('../../Provider/SocketProvider', () => ({
         setErrorReconnect: jest.fn(),
     })),
 }));
-jest.mock('../../Hooks/useDeviceData', () => ({
+
+//Mocking the useDeviceData
+jest.mock('../../Hooks/useDeviceData/useDeviceData', () => ({
     useDeviceData: jest.fn(() => ({
         fetchUserDevices: jest.fn(),
         isDevicesLoading: false, 
@@ -82,12 +102,17 @@ jest.mock('../../Hooks/useDeviceData', () => ({
     })),
 }));
 
+//Mocking the react-router-dom
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useNavigate: () => mockNavigate,
 }));
 
+
+/**
+ * Tests for the Dashboard component.
+ */
 describe('Dashboard Component', () => {
   const mockClearAccessToken = jest.fn();
   const mockClearUser = jest.fn();
@@ -128,6 +153,9 @@ describe('Dashboard Component', () => {
 
   });
 
+  /**
+   * Test case to verify that the Dashboard renders with Performance View by default.
+   */
   test('renders Dashboard with Performance View as the default view', () => {
     render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -142,6 +170,9 @@ describe('Dashboard Component', () => {
     expect(screen.getByText('Performance View')).toBeInTheDocument();
   });
 
+  /**
+   * Test case to verify that the Account View is rendered when the state changes to accountView.
+   */
   test('renders Account View when the state changes to accountView', () => {
     render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -158,7 +189,10 @@ describe('Dashboard Component', () => {
       expect(screen.getByText('Account View')).toBeInTheDocument();
     });
   });
-  
+
+  /**
+   * Test case to verify that `fetchUserDevices` is called when the component mounts and is connected.
+   */
   test('calls fetchUserDevices on component mount when connected', async () => {
     render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -173,6 +207,9 @@ describe('Dashboard Component', () => {
     });
   });
 
+  /**
+   * Test case to verify that the user is logged out and tokens are cleared when `errorReconnect` is true.
+   */
   test('logs out the user and clears tokens if errorReconnect is true', async () => {
     (useSocket as jest.Mock).mockReturnValue({
         isConnected: true,
@@ -198,6 +235,9 @@ describe('Dashboard Component', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/auth', { replace: true });
   });
   
+  /**
+   * Test case to verify that loading dots are displayed when devices are loading.
+   */
   test('shows loading dots when devices are loading', () => {
     (useDeviceData as jest.Mock).mockReturnValue({
         fetchUserDevices: mockFetchUserDevices,
@@ -216,6 +256,9 @@ describe('Dashboard Component', () => {
     expect(screen.getByText('Loading Dots')).toBeInTheDocument();
   });
 
+  /**
+   * Test case to verify that the Add Device Modal is rendered when `connectDeviceToggle` is true.
+   */
   test('renders Add Device Modal when connectDeviceToggle is true', () => {
     render(
         <MemoryRouter initialEntries={['/dashboard']}>
@@ -231,6 +274,9 @@ describe('Dashboard Component', () => {
     expect(screen.getByText('Add Device Modal')).toBeInTheDocument();
   });
   
+  /**
+   * Test case to verify that the logout functionality works correctly.
+   */
   test('handles logout correctly', () => {
     render(
         <MemoryRouter initialEntries={['/dashboard']}>

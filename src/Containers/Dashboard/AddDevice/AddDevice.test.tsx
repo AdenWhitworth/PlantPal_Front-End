@@ -1,25 +1,28 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import AddDevice from './AddDevice';
-import { useAuth } from '../../../Provider/AuthProvider';
-import { useDevice } from '../../../Provider/DeviceProvider';
-import useBluetooth from '../../../Hooks/useBluetooth';
-import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers';
+import { useAuth } from '../../../Provider/AuthProvider/AuthProvider';
+import { useDevice } from '../../../Provider/DeviceProvider/DeviceProvider';
+import useBluetooth from '../../../Hooks/useBluetooth/useBluetooth';
+import { useSettingsHandlers } from '../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 
-jest.mock('../../../Provider/AuthProvider', () => ({
+// Mocking the AuthProvider
+jest.mock('../../../Provider/AuthProvider/AuthProvider', () => ({
     useAuth: jest.fn(() => ({
         setAccessToken: jest.fn(),
         accessToken: null,
     })),
 }));
 
-jest.mock('../../../Provider/DeviceProvider', () => ({
+// Mocking the DeviceProvider
+jest.mock('../../../Provider/DeviceProvider/DeviceProvider', () => ({
     useDevice: jest.fn(() => ({
         setDevice: jest.fn(),
     })),
 }));
 
-jest.mock('../../../Hooks/useBluetooth', () => ({
+// Mocking the useBluetooth
+jest.mock('../../../Hooks/useBluetooth/useBluetooth', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         connectBluetooth: jest.fn(),
@@ -28,7 +31,8 @@ jest.mock('../../../Hooks/useBluetooth', () => ({
     })),
 }));
 
-jest.mock('../../../Hooks/useSettingsHandlers', () => ({
+// Mocking the useSettingsHandlers
+jest.mock('../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
     useSettingsHandlers: jest.fn(() => ({
         handleAddDevice: jest.fn(),
         error: null, 
@@ -36,6 +40,9 @@ jest.mock('../../../Hooks/useSettingsHandlers', () => ({
     })),
 }));
 
+/**
+ * Tests for the AddDevice component.
+ */
 describe('AddDevice component', () => {
     const mockSetConnectDeviceToggle = jest.fn();
     const mockShowPerformanceView = jest.fn();
@@ -48,6 +55,9 @@ describe('AddDevice component', () => {
         jest.clearAllMocks();
     });
 
+    /**
+     * Test that verifies connectBluetooth is called when the form is submitted.
+     */
     it('calls connectBluetooth when the form is submitted', async () => {
         (useBluetooth as jest.Mock).mockReturnValue({
             connectBluetooth: mockConnectBluetooth,
@@ -86,6 +96,9 @@ describe('AddDevice component', () => {
         });
     });
 
+    /**
+     * Test that verifies handleNewConnection is called when bleDevice is set.
+     */
     it('calls handleNewConnection when bleDevice is set', async () => {
         const mockHandleAddDevice = jest.fn((token, setToken, deviceData, callback) => {
             callback({ data: { device: { device_id: 1 } } });
@@ -166,6 +179,9 @@ describe('AddDevice component', () => {
         expect(mockShowPerformanceView).toHaveBeenCalled();
     });
 
+    /**
+     * Test that resets error on component mount.
+     */
     it('resets error on component mount', () => {
         (useSettingsHandlers as jest.Mock).mockReturnValue({
             handleAddDevice: jest.fn(),

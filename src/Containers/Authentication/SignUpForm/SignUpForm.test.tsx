@@ -2,12 +2,19 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import SignUpForm from './SignUpForm';
 
+/**
+ * Tests for the ResetPassword component.
+ */
 describe('SignUpForm Component', () => {
     const mockHandleReturnHome = jest.fn();
     const mockHandleInputChange = jest.fn();
     const mockHandleSubmit = jest.fn();
     const errorMessage = 'This is an error message';
 
+    
+    /**
+     * Tests rendering of the SignUpForm component.
+     */
     test('renders the SignUpForm component correctly', () => {
         render(
             <SignUpForm
@@ -21,16 +28,17 @@ describe('SignUpForm Component', () => {
 
         expect(screen.getByAltText('PlantPal auth logo')).toBeInTheDocument();
         expect(screen.getByText('PlantPal')).toBeInTheDocument();
-
         expect(screen.getByPlaceholderText('First Name')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Last Name')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
-
         expect(screen.getByText('Create')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /create/i })).not.toBeDisabled();
     });
 
+    /**
+     * Tests handling of input changes in the SignUpForm component.
+     */
     test('handles input changes', () => {
         render(
             <SignUpForm
@@ -57,6 +65,9 @@ describe('SignUpForm Component', () => {
         expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
+    /**
+     * Tests handling of form submission in the SignUpForm component.
+     */
     test('handles form submission', () => {
         render(
             <SignUpForm
@@ -72,6 +83,9 @@ describe('SignUpForm Component', () => {
         expect(mockHandleSubmit).toHaveBeenCalled();
     });
 
+    /**
+     * Tests the loading state of the SignUpForm component.
+     */
     test('shows loading state correctly', () => {
         render(
             <SignUpForm
@@ -87,6 +101,9 @@ describe('SignUpForm Component', () => {
         expect(screen.getByRole('button', { name: /creating/i })).toBeDisabled();
     });
 
+    /**
+     * Tests the display of error messages in the SignUpForm component.
+     */
     test('displays error message when present', () => {
         render(
             <SignUpForm

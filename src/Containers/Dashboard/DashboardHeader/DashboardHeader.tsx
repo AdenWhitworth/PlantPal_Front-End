@@ -3,20 +3,18 @@ import plantpal_logo from "../../../Images/PlantPal Logo.svg";
 import gear from "../../../Images/gear-grey.svg";
 import exit from "../../../Images/exit-grey.svg";
 import refresh from "../../../Images/refresh-gray.svg";
-import { useDevice } from '../../../Provider/DeviceProvider';
+import { useDevice } from '../../../Provider/DeviceProvider/DeviceProvider';
 import './DashboardHeader.css';
+import { DashboardHeaderProps } from './DashboardHeaderTypes';
 
-interface DashboardHeaderProps {
-    handlePlantPalClick: () => void; 
-    handleRefreshClick: () => void;
-    handleLogout: () => void;
-    showAccountView: () => void;
-    isSettingsVisible: boolean;
-    isDevicesLoading: boolean;
-    isDevicesLoaded: boolean;
-}
-
-
+/**
+ * DashboardHeader component displays the header of the dashboard with
+ * PlantPal branding, navigation links, and a refresh button.
+ *
+ * @component
+ * @param {DashboardHeaderProps} props - The props for the component.
+ * @returns {JSX.Element} The rendered DashboardHeader component.
+ */
 export default function DashboardHeader({
     handlePlantPalClick, 
     handleRefreshClick, 
@@ -25,16 +23,21 @@ export default function DashboardHeader({
     isSettingsVisible,
     isDevicesLoading,
     isDevicesLoaded
-}: DashboardHeaderProps) {
+}: DashboardHeaderProps): JSX.Element {
     const { refreshDate } = useDevice();
     const [refreshCSS, setRefreshCSS] = useState('refresh grow');
     
-
     const links = [
         { key: 1, alt: "Settings logo", imgSrc: gear, onClick: showAccountView, className: "gear" },
         { key: 2, alt: "Logout logo", imgSrc: exit, onClick: handleLogout, className: "exit" },
     ];
 
+    /**
+     * Effect that updates the CSS class for the refresh button
+     * based on the loading state of devices.
+     * If devices are loading, sets class to 'refresh loading'.
+     * If devices are loaded, sets class to 'refresh loaded'.
+     */
     useEffect(() => {
         if (isDevicesLoading){
             setRefreshCSS('refresh loading');

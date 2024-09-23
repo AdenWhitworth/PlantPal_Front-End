@@ -4,22 +4,21 @@ import Button from '../../Components/Button/Button';
 import InputField from '../../Components/InputField/InputField';
 import Modal from '../../Components/Modal/Modal';
 import './ResetPasswordModal.css';
+import { ResetPasswordModalProps } from "./ResetPasswordModalTypes";
 
-interface ResetPasswordModalProps {
-    handleReturnHome: () => void;
-    message: string | null;
-    error: string | null;
-    handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
+/**
+ * ResetPasswordModal component for allowing users to reset their password.
+ *
+ * @param {ResetPasswordModalProps} props - The props for the component. 
+ * @returns {JSX.Element} The rendered component.
+ */
 export default function ResetPasswordModal ({ 
     handleReturnHome, 
     message,
     error,
     handleInputChange,
     handleSubmit,
-}: ResetPasswordModalProps) {
+}: ResetPasswordModalProps): JSX.Element {
     return(
         <Modal 
             addClose={true} 
