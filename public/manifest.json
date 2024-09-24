@@ -1,6 +1,6 @@
 {
   "short_name": "PlantPal",
-  "name": "PlantPal",
+  "name": "PlantPal Home",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,4 +13,5 @@
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
+
 
