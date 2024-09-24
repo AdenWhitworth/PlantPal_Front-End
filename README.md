@@ -6,6 +6,7 @@ Welcome to the **PlantPal Front-End**! This repository contains the code for the
 
 ## Table of Contents
 - [Overview](#overview)
+- [PlantPal Live Demo](#PlantPal-Live-Demo)
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
