@@ -23,6 +23,19 @@ Welcome to the **PlantPal Front-End**! This repository contains the code for the
 
 The PlantPal Front-End is built using React and provides an intuitive user interface that connects to the PlantPal back-end. Users can view their plants, monitor conditions, and manage their settings through this interactive application.
 
+## PlantPal Live Demo
+
+The PlantPal application is live and can be accessed at [PlantPal Demo](https://www.plantpalhome.com/). This application integrates seamlessly with the PlantPal back-end, offering an intuitive experience for managing your plants remotely.
+
+### Test User Credentials
+
+You can explore the full functionality of the PlantPal application using the following demo account:
+
+- **Email:** support@plantpalhome.com
+- **Password:** testpassword123
+
+Please note that this test account is connected to an actual PlantPal device in my kitchen, so any interactions may affect its operation. Feel free to explore, but please be considerate of its usage!
+
 ## Features
 
 - **User Authentication**: Secure login and registration for users.
