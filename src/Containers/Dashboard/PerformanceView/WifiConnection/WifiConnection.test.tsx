@@ -124,7 +124,7 @@ describe('WifiConnection', () => {
         expect(closeBtn).toBeInTheDocument();
         fireEvent.click(closeBtn);
 
-        expect(screen.getByText('Connected')).toBeInTh
+        expect(screen.getByText('Connected')).toBeInTheDocument();
     });
 
     /**
