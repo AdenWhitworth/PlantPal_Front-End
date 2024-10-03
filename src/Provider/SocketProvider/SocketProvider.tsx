@@ -33,6 +33,7 @@ export const useSocket = (): SocketContextType => {
 export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }: SocketProviderProps): JSX.Element => {
   const [isConnected, setIsConnected] = useState(false);
   const [errorSocket, setErrorSocket] = useState<string | null>(null);
+  const [refreshShadow, setRefreshShadow] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [errorReconnect, setErrorReconnect] = useState(false);
   const socketRef = useRef<Socket | null>(null);
@@ -139,15 +140,17 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }:
     });
 
     socketInstance.on('shadowUpdatePumpWater', (data) => {
+      console.log("Shadow Pump Update", data);
       setIsConnected(true);
       setErrorSocket(null);
-      setRefresh(true);
+      setRefreshShadow(true);
     });
 
     socketInstance.on('shadowUpdateAuto', (data) => {
+      console.log("Shadow Auto Update", data);
       setIsConnected(true);
       setErrorSocket(null);
-      setRefresh(true);
+      setRefreshShadow(true);
     });
 
   }, [url, user, handleRefreshAccessToken, sendAddUser]);
@@ -233,7 +236,7 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ url, children }:
 
   return (
     <SocketContext.Provider value={{
-      isConnected, errorSocket, refresh, errorReconnect, setErrorReconnect, setRefresh,
+      isConnected, errorSocket, refresh, refreshShadow, errorReconnect, setErrorReconnect, setRefresh, setRefreshShadow,
       sendAddUser, sendRemoveUser, sendCheckSocket, connectSocket, disconnectSocket
     }}>
       {children}

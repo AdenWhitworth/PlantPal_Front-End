@@ -16,8 +16,6 @@ import { PerformanceViewProps } from './PerformanceViewTypes';
 export default function PerformanceView({
     handleRefreshClick,  
     setConnectDeviceToggle, 
-    autoSwitch, 
-    setAutoSwitch, 
     setConfirmAuto, 
 }: PerformanceViewProps): JSX.Element {
 
@@ -32,9 +30,7 @@ export default function PerformanceView({
 
             <WaterStatus></WaterStatus>
 
-            <AutoManualWater 
-                autoSwitch={autoSwitch} 
-                setAutoSwitch={setAutoSwitch} 
+            <AutoManualWater
                 setConfirmAuto={setConfirmAuto}
             ></AutoManualWater>
         </>

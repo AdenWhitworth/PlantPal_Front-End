@@ -4,6 +4,8 @@ import Dashboard from './Dashboard';
 import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { useSocket } from '../../Provider/SocketProvider/SocketProvider';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
+import { DeviceShadow } from '../../Provider/DeviceProvider/DeviceProviderTypes';
 import { useDeviceData } from '../../Hooks/useDeviceData/useDeviceData';
 
 //Mocking the PerformanceView
@@ -12,7 +14,6 @@ jest.mock('./PerformanceView/PerformanceView', () => (props: any) => (
         Performance View
         <button onClick={props.setConnectDeviceToggle}>Connect Device</button>
         <button onClick={props.handleRefreshClick}>Refresh</button>
-        <button onClick={props.setAutoSwitch}>Set Auto Switch</button>
         <button onClick={props.setConfirmAuto}>Set Confirm Auto</button>
     </div>
 ));
@@ -41,7 +42,6 @@ jest.mock('../../Modals/AddDeviceModal/AddDeviceModal', () => (props: any) => (
 jest.mock('../../Modals/ConfirmActionModal/ConfirmActionModal', () => (props: any) => (
     <div>
         Confirm Action Modal
-        <button onClick={props.setAutoSwitch}>Set Auto Switch</button>
         <button onClick={props.setConfirmAuto}>Set Confirm Auto</button>
     </div>
 ));
@@ -88,6 +88,8 @@ jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
         sendCheckSocket: jest.fn(),
         refresh: false,
         setRefresh: jest.fn(),
+        refreshShadow: false,
+        setRefreshShadow: jest.fn(),
         errorReconnect: false,
         setErrorReconnect: jest.fn(),
     })),
@@ -97,8 +99,32 @@ jest.mock('../../Provider/SocketProvider/SocketProvider', () => ({
 jest.mock('../../Hooks/useDeviceData/useDeviceData', () => ({
     useDeviceData: jest.fn(() => ({
         fetchUserDevices: jest.fn(),
+        fetchUserDevice: jest.fn(),
         isDevicesLoading: false, 
         isDevicesLoaded: false,
+    })),
+}));
+
+const mockShadow: DeviceShadow = { 
+    state: { 
+        reported: { 
+            welcome: "aws", 
+            connected: true, 
+            auto: true, 
+            pump: false 
+        }, desired: { 
+            welcome: "aws", 
+            connected: true, 
+            auto: true, 
+            pump: false 
+        } 
+    }, metadata: {} 
+  };
+  
+//Mocking the DeviceProvider
+jest.mock('../../Provider/DeviceProvider/DeviceProvider', () => ({
+    useDevice: jest.fn(() => ({
+        deviceShadow: mockShadow,
     })),
 }));
 
@@ -119,12 +145,7 @@ describe('Dashboard Component', () => {
   const mockSendRemoveUser = jest.fn();
   const mockSendCheckSocket = jest.fn();
   const mockFetchUserDevices = jest.fn();
-
-  const deviceDataMock = {
-    fetchUserDevices: mockFetchUserDevices,
-    isDevicesLoading: false,
-    isDevicesLoaded: true,
-  };
+  const mockFetchUserDevice = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -147,8 +168,13 @@ describe('Dashboard Component', () => {
 
     (useDeviceData as jest.Mock).mockReturnValue({
         fetchUserDevices: mockFetchUserDevices,
+        fetchUserDevice: mockFetchUserDevice,
         isDevicesLoading: false,
         isDevicesLoaded: true,
+    });
+
+    (useDevice as jest.Mock).mockReturnValue({
+        deviceShadow: mockShadow,
     });
 
   });
@@ -294,6 +320,35 @@ describe('Dashboard Component', () => {
     expect(mockClearUser).toHaveBeenCalled();
     expect(mockClearAccessToken).toHaveBeenCalled();
     expect(mockNavigate).toHaveBeenCalledWith('/auth', { "replace": true });
+  });
+
+  /**
+   * Test case to verify 'fetchUserDevice' is called when refresh shadow is initiated.
+   */
+  test('handles refresh shadow', async () => {
+    (useSocket as jest.Mock).mockReturnValue({
+        isConnected: true,
+        sendRemoveUser: mockSendRemoveUser,
+        sendCheckSocket: mockSendCheckSocket,
+        refresh: false,
+        setRefresh: jest.fn(),
+        refreshShadow: true,
+        setRefreshShadow: jest.fn(),
+        errorReconnect: false,
+        setErrorReconnect: jest.fn(),
+    });
+    
+    render(
+        <MemoryRouter initialEntries={['/dashboard']}>
+            <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+        </MemoryRouter>
+    );
+
+    await waitFor(() => {
+        expect(mockFetchUserDevice).toHaveBeenCalled();
+    });
   });
   
 });

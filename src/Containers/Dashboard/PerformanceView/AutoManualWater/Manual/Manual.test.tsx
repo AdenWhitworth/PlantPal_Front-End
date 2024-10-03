@@ -78,7 +78,7 @@ describe('Manual Component', () => {
     });
 
     /**
-     * Test case: renders time image when pump is on and reported state is off.
+     * Test case: renders time image when pump desired is sent and reported state is not true yet.
      */
     test('renders time image when pump is on and reported state is off', () => {
         (useDevice as jest.Mock).mockReturnValue({
@@ -94,7 +94,8 @@ describe('Manual Component', () => {
     });
 
     /**
-     * Test case: renders nothing when pump state does not match any condition.
+     * Test case: renders loading time image when pump desired and reported are both true.
+     * Waiting for backend-to reset state.
      */
     test('renders nothing when pump state does not match any condition', () => {
         (useDevice as jest.Mock).mockReturnValue({
@@ -104,7 +105,8 @@ describe('Manual Component', () => {
 
         render(<Manual handleUpdatePumpWaterClick={mockHandleUpdatePumpWaterClick} />);
 
-        const images = screen.queryAllByRole('img');
-        expect(images).toHaveLength(0);
+        const timeImage = screen.getByAltText('Time Icon');
+        expect(timeImage).toBeInTheDocument();
+        expect(timeImage).toHaveClass('flip-image');
     });
 });

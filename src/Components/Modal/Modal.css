@@ -16,16 +16,17 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
+    position: relative;
 }
 
 .modal-close{
-    width: 96%;
-    display: flex;
-    justify-content: right;
-    margin-top: 2%;
-    margin-left: 2%;
+    top: 10%;
+    right: 5%;
     cursor: pointer;
+    position: absolute;
 }
+
 
 .modal-close img{
     width: 40px;
@@ -41,8 +42,17 @@
     width: auto;
 }
 
+.modal-check{
+    height: 80px;
+}
+
+.modal-check img{
+    height: 100%;
+    width: auto;
+}
+
 .modal-content h4{
-    color: #55883B;
+    color: #000000;
     font-weight: bold;
 }
 

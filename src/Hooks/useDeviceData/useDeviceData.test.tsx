@@ -60,6 +60,7 @@ describe('useDeviceData', () => {
     const mockSetLastLog = jest.fn();
     const mockSetRefreshDate = jest.fn();
     const mockHandleLogout = jest.fn();
+    const mockLogDate = new Date('2024-10-02T10:00:00Z').toISOString();
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -76,7 +77,7 @@ describe('useDeviceData', () => {
             setLastLog: mockSetLastLog,
             setRefreshDate: mockSetRefreshDate,
             device: { cat_num: '123', thing_name: 'test-thing' },
-            lastLog: { log_date: new Date().toISOString() },
+            lastLog: { log_date: mockLogDate },
         });
     });
 
@@ -139,6 +140,56 @@ describe('useDeviceData', () => {
 
         await waitFor(() => {
             expect(mockHandleLogout).toHaveBeenCalled();
+        });
+    });
+
+    /**
+     * Test case for handling setting the last log correctly.
+     */
+    it('should set the lastLog and refreshDate correctly when lastLog exists', async () => {
+        const mockLogDate = new Date().toISOString();
+        (getDeviceLogs as jest.Mock).mockResolvedValue({ data: { deviceLogs: [], lastLog: { log_date: mockLogDate } } });
+        (getDeviceShadow as jest.Mock).mockResolvedValue({ data: { deviceShadow: {} } });
+
+        render(<TestComponent handleLogout={mockHandleLogout}/>);
+
+        await waitFor(() => {
+            expect(mockSetLastLog).toHaveBeenCalledWith({ log_date: mockLogDate });
+            expect(mockSetRefreshDate).toHaveBeenCalled();
+        });
+    });
+
+    /**
+     * Test case for formatting the refresh date when lastLog exists.
+     */
+    it('should format the refresh date based on the lastLog', async () => {
+        const expectedFormattedDate = new Date(mockLogDate).toLocaleString();
+
+        render(<TestComponent handleLogout={mockHandleLogout}/>);
+
+        await waitFor(() => {
+            expect(mockSetRefreshDate).toHaveBeenCalledWith(expectedFormattedDate);
+        });
+    });
+
+    /**
+     * Test case for handling empty lastLog.
+     */
+    it('should set the refresh date to an empty string when lastLog is empty', async () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            setDevices: mockSetDevices,
+            setDeviceShadow: mockSetDeviceShadow,
+            setDeviceLogs: mockSetDeviceLogs,
+            setLastLog: mockSetLastLog,
+            setRefreshDate: mockSetRefreshDate,
+            device: { cat_num: '123', thing_name: 'test-thing' },
+            lastLog: null,
+        });
+
+        render(<TestComponent handleLogout={mockHandleLogout}/>);
+
+        await waitFor(() => {
+            expect(mockSetRefreshDate).toHaveBeenCalledWith("");
         });
     });
 });

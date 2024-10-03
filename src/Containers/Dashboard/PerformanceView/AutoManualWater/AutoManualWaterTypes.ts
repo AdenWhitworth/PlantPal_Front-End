@@ -2,13 +2,9 @@
  * Props for the AutoManualWater component.
  * 
  * @interface AutoManualWaterProps
- * @property {boolean} autoSwitch - Indicates whether the automatic switching is enabled.
- * @property {function} setAutoSwitch - Function to set the state of the auto switch.
  * @property {function} setConfirmAuto - Function to confirm the automatic switching.
  */
 export interface AutoManualWaterProps {
-    autoSwitch: boolean;
-    setAutoSwitch: (value: boolean) => void;
     setConfirmAuto: (value: boolean) => void;
 }
 

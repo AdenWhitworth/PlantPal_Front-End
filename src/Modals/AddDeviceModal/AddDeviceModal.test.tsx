@@ -33,10 +33,9 @@ describe('AddDeviceModal', () => {
 
     render(<AddDeviceModal setConnectDeviceToggle={setConnectDeviceToggleMock} />);
 
-    expect(screen.getByText('Successfully to 12345')).toBeInTheDocument();
+    expect(screen.getByText('Successfully connected to 12345!')).toBeInTheDocument();
     expect(screen.queryByText('Connecting to 12345...')).not.toBeInTheDocument();
-    expect(screen.getByAltText('Plus Icon')).toBeInTheDocument();
-    expect(screen.queryByText('Press the network button on the device to connect. Led on device will turn green when successful.')).not.toBeInTheDocument();
+    expect(screen.getByAltText('Check Icon')).toBeInTheDocument();
   });
 
   /**
@@ -52,10 +51,9 @@ describe('AddDeviceModal', () => {
 
     render(<AddDeviceModal setConnectDeviceToggle={setConnectDeviceToggleMock} />);
 
-    expect(screen.queryByText('Successfully to 12345')).not.toBeInTheDocument();
+    expect(screen.queryByText('Successfully connected to 12345')).not.toBeInTheDocument();
     expect(screen.getByText('Connecting to 12345...')).toBeInTheDocument();
-    expect(screen.queryByAltText('Plus Icon')).not.toBeInTheDocument();
-    expect(screen.getByText('Press the network button on the device to connect. Led on device will turn green when successful.')).toBeInTheDocument();
+    expect(screen.queryByAltText('Check Icon')).not.toBeInTheDocument();
     expect(screen.getByAltText('Time Icon')).toBeInTheDocument();
   });
 

@@ -38,6 +38,7 @@ jest.mock('../../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
         handleUpdateWifi: jest.fn(),
         error: null, 
         resetError: jest.fn(),
+        setError: jest.fn(),
     })),
 }));
 
@@ -48,6 +49,7 @@ describe('WifiConnection', () => {
     const mockConnectBluetooth = jest.fn();
     const mockSendCredentials = jest.fn();
     const mockResetError = jest.fn();
+    const mockSetError = jest.fn();
     const mockHandleRefreshClick = jest.fn();
     const mockSetConnectDeviceToggle = jest.fn();
     
@@ -71,50 +73,64 @@ describe('WifiConnection', () => {
     });
 
     /**
-     * Test to verify that the EditWifiForm is rendered when a Bluetooth device is available.
+     * Test to verify that the EditWifiForm is rendered when change wifi button is clicked
      */
-    test('renders and shows EditWifiForm when bleDevice is present', () => {
+    test('renders and shows EditWifiForm when device is present', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
             device: { presence_connection: false, wifi_ssid: 'test_ssid' },
         });
 
-        (useBluetooth as jest.Mock).mockReturnValue({
-            connectBluetooth: jest.fn(),
-            sendCredentials: jest.fn(),
-            bleDevice: { cat_num: '12345' },
-        });
-
         render(<WifiConnection setConnectDeviceToggle={jest.fn()} handleRefreshClick={jest.fn()} />);
-
+        
+        fireEvent.click(screen.getByText('Change Wifi?'));
         expect(screen.getByTestId('wifi-form')).toBeInTheDocument();
     });
 
     /**
-     * Test to verify that connection details are displayed when a device is present and no Bluetooth device is available.
+     * Test to verify that connection details are displayed when a device is present and connection is available.
      */
-    test('renders connection details when device is present and bleDevice is not', () => {
+    test('renders connection details when device is present', () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
             device: { presence_connection: true, wifi_ssid: 'test_ssid' },
         });
 
-        (useBluetooth as jest.Mock).mockReturnValue({
-            connectBluetooth: jest.fn(),
-            sendCredentials: jest.fn(),
-            bleDevice: null,
-        });
-
         render(<WifiConnection setConnectDeviceToggle={jest.fn()} handleRefreshClick={jest.fn()} />);
-
+        
         expect(screen.getByText('Connected')).toBeInTheDocument();
         expect(screen.getByText('SSID: test_ssid')).toBeInTheDocument();
     });
 
     /**
-     * Test to verify that the connectBluetooth function is called with the correct device.cat_num when the button is clicked.
+     * Test to verify that edit wifi form can be closed.
      */
-    test('calls connectBluetooth with correct device.cat_num on button click', async () => {
+    test('renders wifi details when edit wifi form is closed', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            devices: [{ device_id: 1 }],
+            device: { presence_connection: true, wifi_ssid: 'test_ssid' },
+        });
+        
+        render(<WifiConnection setConnectDeviceToggle={jest.fn()} handleRefreshClick={jest.fn()} />);
+        
+        expect(screen.getByText('Connected')).toBeInTheDocument();
+        expect(screen.getByText('SSID: test_ssid')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('Change Wifi?'));
+
+        expect(screen.getByText('Connection')).toBeInTheDocument();
+        
+        const closeBtn = screen.getByAltText("Close Icon");
+        expect(closeBtn).toBeInTheDocument();
+        fireEvent.click(closeBtn);
+
+        expect(screen.getByText('Connected')).toBeInTh
+    });
+
+    /**
+     * Test to verify that the connectBluetooth function is called with the correct device.cat_num when the connect button is clicked.
+     */
+    test('calls connectBluetooth with correct device.cat_num on connect button click', async () => {
         (useDevice as jest.Mock).mockReturnValue({
             devices: [{ device_id: 1 }],
             device: { presence_connection: false, wifi_ssid: 'test_ssid', cat_num: 'cat123' },
@@ -129,6 +145,16 @@ describe('WifiConnection', () => {
         render(<WifiConnection setConnectDeviceToggle={jest.fn()} handleRefreshClick={jest.fn()} />);
 
         fireEvent.click(screen.getByText('Change Wifi?'));
+
+        fireEvent.change(screen.getByPlaceholderText('Wifi SSID'), {
+            target: { value: 'NewSSID' }
+        });
+
+        fireEvent.change(screen.getByPlaceholderText('Wifi Password'), {
+            target: { value: 'NewPassword' }
+        });
+
+        fireEvent.submit(screen.getByTestId('wifi-form'));
 
         await waitFor(() => {
             expect(mockConnectBluetooth).toHaveBeenCalledWith('cat123');
@@ -163,10 +189,13 @@ describe('WifiConnection', () => {
             handleUpdateWifi: mockHandleUpdateWifi,
             error: null,
             resetError: mockResetError,
+            setError: mockSetError,
         });
         
 
         render(<WifiConnection setConnectDeviceToggle={mockSetConnectDeviceToggle} handleRefreshClick={mockHandleRefreshClick} />);
+
+        fireEvent.click(screen.getByText('Change Wifi?'));
 
         fireEvent.change(screen.getByPlaceholderText('Wifi SSID'), {
             target: { value: 'NewSSID' }
@@ -178,6 +207,8 @@ describe('WifiConnection', () => {
 
         fireEvent.submit(screen.getByTestId('wifi-form'));
 
+        expect(screen.getByText("Connecting...")).toBeInTheDocument();
+        
         await waitFor(() => {
             expect(mockHandleUpdateWifi).toHaveBeenCalledWith('token123', expect.any(Function), {
                 device_id: 1,
@@ -189,7 +220,6 @@ describe('WifiConnection', () => {
         await waitFor(() => {
             expect(mockSendCredentials).toHaveBeenCalledWith('NewSSID', 'NewPassword');
             expect(mockResetError).toHaveBeenCalled();
-            expect(mockHandleRefreshClick).toHaveBeenCalled();
             expect(mockSetConnectDeviceToggle).toHaveBeenCalledWith(true);
         });
     });

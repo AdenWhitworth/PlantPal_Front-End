@@ -14,10 +14,10 @@ import { useDeviceData } from '../../Hooks/useDeviceData/useDeviceData';
 import LoadingDots from '../../Components/LoadingDots/LoadingDots';
 import './Dashboard.css';
 import { State, StateAction } from './DashboardTypes';
+import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 
 const initialState: State = {
   connectDeviceToggle: false,
-  autoSwitch: false,
   confirmAuto: false,
   currentDashboardView: 'performanceView',
   isSettingsVisible: false,
@@ -41,8 +41,6 @@ function reducer(state: State, action: StateAction): State {
       };
     case 'SET_CONNECT_DEVICE_TOGGLE':
       return { ...state, connectDeviceToggle: action.payload };
-    case 'SET_AUTO_SWITCH':
-      return { ...state, autoSwitch: action.payload };
     case 'SET_CONFIRM_AUTO':
       return { ...state, confirmAuto: action.payload };
     case 'RESET_STATE':
@@ -64,8 +62,9 @@ export default function Dashboard(): JSX.Element {
 
   const navigate = useNavigate();
   const { clearAccessToken, accessToken, user, clearUser } = useAuth();
-  const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh, errorReconnect, setErrorReconnect } = useSocket();
-  
+  const { sendRemoveUser, isConnected, sendCheckSocket, refresh, setRefresh, refreshShadow, setRefreshShadow, errorReconnect, setErrorReconnect } = useSocket();
+  const { deviceShadow } = useDevice();
+
   /**
    * Handles the user logout process, including removing the user from the socket, clearing user data, and redirecting to the login page.
    * 
@@ -84,7 +83,7 @@ export default function Dashboard(): JSX.Element {
     navigate("/auth", { replace: true });
   }, [user, sendRemoveUser, clearUser, clearAccessToken, navigate]);
 
-  const { fetchUserDevices, isDevicesLoading, isDevicesLoaded } = useDeviceData({handleLogout});
+  const { fetchUserDevices, fetchUserDevice, isDevicesLoading, isDevicesLoaded } = useDeviceData({handleLogout});
 
   /**
    * Handles the "PlantPal" button click, navigating the user to the homepage.
@@ -117,8 +116,6 @@ export default function Dashboard(): JSX.Element {
           <PerformanceView
             handleRefreshClick={fetchUserDevices}
             setConnectDeviceToggle={(toggle) => dispatch({ type: 'SET_CONNECT_DEVICE_TOGGLE', payload: toggle })}
-            autoSwitch={state.autoSwitch}
-            setAutoSwitch={(autoSwitch) => dispatch({ type: 'SET_AUTO_SWITCH', payload: autoSwitch })}
             setConfirmAuto={(confirmAuto) => dispatch({ type: 'SET_CONFIRM_AUTO', payload: confirmAuto })}
           />
         );
@@ -136,8 +133,6 @@ export default function Dashboard(): JSX.Element {
           <PerformanceView
             handleRefreshClick={fetchUserDevices}
             setConnectDeviceToggle={(toggle) => dispatch({ type: 'SET_CONNECT_DEVICE_TOGGLE', payload: toggle })}
-            autoSwitch={state.autoSwitch}
-            setAutoSwitch={(autoSwitch) => dispatch({ type: 'SET_AUTO_SWITCH', payload: autoSwitch })}
             setConfirmAuto={(confirmAuto) => dispatch({ type: 'SET_CONFIRM_AUTO', payload: confirmAuto })}
           />
         );
@@ -180,16 +175,25 @@ export default function Dashboard(): JSX.Element {
     }
   }, [isConnected, refresh, fetchUserDevices, setRefresh]);
 
+  /**
+   * useEffect hook that refreshes user device when the socket connection is restored.
+   * - If the socket is connected and the refresh flag is set, it fetches the user's device.
+   */
+  useEffect(() => {
+    if (isConnected && refreshShadow) {
+      fetchUserDevice();
+      setRefreshShadow(false);
+    }
+  }, [isConnected, refreshShadow, fetchUserDevices, setRefreshShadow]);
+
   return (
     <section className="dashboard">
       {state.connectDeviceToggle && <AddDeviceModal setConnectDeviceToggle={() => dispatch({ type: 'SET_CONNECT_DEVICE_TOGGLE', payload: false })} />}
       {state.confirmAuto && (
         <ConfirmActionModal
-          autoSwitch={state.autoSwitch}
           setConfirmAuto={(confirmAuto: boolean) => dispatch({ type: 'SET_CONFIRM_AUTO', payload: confirmAuto })}
-          setAutoSwitch={(autoSwitch: boolean) => dispatch({ type: 'SET_AUTO_SWITCH', payload: autoSwitch })}
           mainIcon={triangle}
-          children={state.autoSwitch ? "Confirm setting PlantPal to automatic watering." : "Confirm setting PlantPal to manual watering"}
+          children={deviceShadow?.state?.reported?.auto? "Confirm setting PlantPal to manual watering" : "Confirm setting PlantPal to automatic watering."}
         />
       )}
       <div className={isDevicesLoading ? 'dashboard-grid-loading' : state.isSettingsVisible ? 'dashboard-grid-settings' : 'dashboard-grid'}>

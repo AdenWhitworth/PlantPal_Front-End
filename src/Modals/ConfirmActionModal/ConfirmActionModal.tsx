@@ -15,9 +15,7 @@ import { ConfirmActionModalProps } from './ConfirmActionModalTypes';
 export default function ConfirmActionModal({
     children, 
     mainIcon, 
-    setAutoSwitch, 
-    setConfirmAuto, 
-    autoSwitch
+    setConfirmAuto,
 }: ConfirmActionModalProps): JSX.Element {
 
     const { accessToken, setAccessToken } = useAuth();
@@ -30,13 +28,7 @@ export default function ConfirmActionModal({
      * @function
      */
     const handleCloseClick = () => {
-        if (autoSwitch){
-            setAutoSwitch(false);
-            setConfirmAuto(false);
-        } else {
-            setAutoSwitch(true);
-            setConfirmAuto(false);
-        }
+        setConfirmAuto(false);
     }
 
     /**
@@ -52,10 +44,14 @@ export default function ConfirmActionModal({
             return
         }
 
-        handleUpdateAuto(accessToken, setAccessToken, deviceShadow, autoSwitch ,{ 
+        const newAutoState = !deviceShadow?.state?.reported?.auto
+
+        handleUpdateAuto(accessToken, setAccessToken, deviceShadow, newAutoState ,{ 
             device_id: device.device_id, 
-            automate: autoSwitch
+            automate: newAutoState
         });
+
+        setConfirmAuto(false);
     }
 
     /**

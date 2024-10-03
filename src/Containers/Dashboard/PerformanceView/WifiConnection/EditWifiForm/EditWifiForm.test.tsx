@@ -8,6 +8,7 @@ import EditWifiForm from './EditWifiForm';
 describe('EditWifiForm Component', () => {
     const mockHandleInputChange = jest.fn();
     const mockHandleUpdateWifiSubmit = jest.fn();
+    const mockHandleCloseClick = jest.fn();
     const errorMessage = 'This is an error message';
 
     /**
@@ -19,13 +20,15 @@ describe('EditWifiForm Component', () => {
                 handleInputChange={mockHandleInputChange}
                 handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
                 error={null}
+                connectionLoading={false}
+                handleCloseClick={mockHandleCloseClick}
             />
         );
 
         expect(screen.getByText('Connection')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Wifi SSID')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Wifi Password')).toBeInTheDocument();
-        expect(screen.getByText('Connect Wifi?')).toBeInTheDocument();
+        expect(screen.getByText('Connect Device?')).toBeInTheDocument();
     });
 
     /**
@@ -37,6 +40,8 @@ describe('EditWifiForm Component', () => {
                 handleInputChange={mockHandleInputChange}
                 handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
                 error={null}
+                connectionLoading={false}
+                handleCloseClick={mockHandleCloseClick}
             />
         );
 
@@ -59,6 +64,8 @@ describe('EditWifiForm Component', () => {
                 handleInputChange={mockHandleInputChange}
                 handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
                 error={null}
+                connectionLoading={false}
+                handleCloseClick={mockHandleCloseClick}
             />
         );
 
@@ -75,9 +82,46 @@ describe('EditWifiForm Component', () => {
                 handleInputChange={mockHandleInputChange}
                 handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
                 error={errorMessage}
+                connectionLoading={false}
+                handleCloseClick={mockHandleCloseClick}
             />
         );
 
         expect(screen.getByText(errorMessage)).toBeInTheDocument();
+    });
+
+    /**
+     * Test to verify that the close button works correctly.
+     */
+    test('handles close button click', () => {
+        render(
+            <EditWifiForm
+                handleInputChange={mockHandleInputChange}
+                handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
+                error={null}
+                connectionLoading={false}
+                handleCloseClick={mockHandleCloseClick}
+            />
+        );
+
+        fireEvent.click(screen.getByAltText('Close Icon'));
+        expect(mockHandleCloseClick).toHaveBeenCalled();
+    });
+
+    /**
+     * Test to verify the loading state of the button during form submission.
+     */
+    test('shows loading state when connectionLoading is true', () => {
+        render(
+            <EditWifiForm
+                handleInputChange={mockHandleInputChange}
+                handleUpdateWifiSubmit={mockHandleUpdateWifiSubmit}
+                error={null}
+                connectionLoading={true}
+                handleCloseClick={mockHandleCloseClick}
+            />
+        );
+
+        expect(screen.getByText('Connecting...')).toBeInTheDocument();
     });
 });

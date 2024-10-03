@@ -29,10 +29,10 @@ export default function Manual({
                         <img src={tap_locked} alt='Tap Gray Icon'></img>
                     ))
                     :
-                    ( deviceShadow?.state?.desired?.pump === true && deviceShadow?.state?.reported?.pump === false ? (
-                        <img className='flip-image' src={time} alt='Time Icon'></img>)
+                    ( deviceShadow?.state?.desired?.pump === true && deviceShadow?.state?.reported?.pump === false ? 
+                        (<img className='flip-image' src={time} alt='Time Icon'></img>)
                         :
-                        (<></>)
+                        (<img className='flip-image' src={time} alt='Time Icon'></img>)
                     )
                 }
             </div>

@@ -4,6 +4,7 @@ import ConfirmActionModal from './ConfirmActionModal';
 import { useAuth } from '../../Provider/AuthProvider/AuthProvider';
 import { useDevice } from '../../Provider/DeviceProvider/DeviceProvider';
 import { useSettingsHandlers } from '../../Hooks/useSettingsHandlers/useSettingsHandlers';
+import { DeviceShadow } from '../../Provider/DeviceProvider/DeviceProviderTypes';
 
 //Mocking the AuthProvider
 jest.mock('../../Provider/AuthProvider/AuthProvider', () => ({
@@ -34,10 +35,24 @@ jest.mock('../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
  * Test suite for the ConfirmActionModal component.
  */
 describe('ConfirmActionModal', () => {
-    const mockSetAutoSwitch = jest.fn();
     const mockSetConfirmAuto = jest.fn();
     const mockHandleUpdateAuto = jest.fn();
     const mockResetError = jest.fn();
+    const mockShadow: DeviceShadow = { 
+      state: { 
+          reported: { 
+              welcome: "on", 
+              connected: true, 
+              auto: true, 
+              pump: true 
+          }, desired: { 
+              welcome: "off", 
+              connected: false, 
+              auto: false, 
+              pump: false 
+          } 
+      }, metadata: {} 
+    };
 
   beforeEach(() => {
       jest.clearAllMocks();
@@ -49,7 +64,7 @@ describe('ConfirmActionModal', () => {
   
       (useDevice as jest.Mock).mockReturnValue({
           device: { device_id: '12345' },
-          deviceShadow: {},
+          deviceShadow: mockShadow,
       });
   
       (useSettingsHandlers as jest.Mock).mockReturnValue({
@@ -66,9 +81,7 @@ describe('ConfirmActionModal', () => {
     render(
       <ConfirmActionModal
         mainIcon="test-icon.svg"
-        setAutoSwitch={mockSetAutoSwitch}
         setConfirmAuto={mockSetConfirmAuto}
-        autoSwitch={false}
       >
         Confirm Action
       </ConfirmActionModal>
@@ -80,35 +93,30 @@ describe('ConfirmActionModal', () => {
   });
 
   /**
-   * Test that clicking the close button calls setAutoSwitch and setConfirmAuto with the correct values.
+   * Test that clicking the close button calls setConfirmAuto with the correct value.
    */
-  it('should call setAutoSwitch and setConfirmAuto with correct values when close button is clicked', () => {
+  it('should call setConfirmAuto with correct value when close button is clicked', () => {
     render(
       <ConfirmActionModal
         mainIcon="test-icon.svg"
-        setAutoSwitch={mockSetAutoSwitch}
         setConfirmAuto={mockSetConfirmAuto}
-        autoSwitch={false}
       >
         Confirm Action
       </ConfirmActionModal>
     );
 
     fireEvent.click(screen.getByAltText('Close Icon'));
-    expect(mockSetAutoSwitch).toHaveBeenCalledWith(true);
     expect(mockSetConfirmAuto).toHaveBeenCalledWith(false);
   });
 
   /**
-   * Test that clicking the Accept button calls handleUpdateAuto with correct parameters.
+   * Test that clicking the Accept button calls handleUpdateAuto with correct parameters and closes modal.
    */
   it('should call handleUpdateAuto with correct parameters when Accept button is clicked', async () => {
     render(
       <ConfirmActionModal
         mainIcon="test-icon.svg"
-        setAutoSwitch={mockSetAutoSwitch}
         setConfirmAuto={mockSetConfirmAuto}
-        autoSwitch={true}
       >
         Confirm Action
       </ConfirmActionModal>
@@ -120,18 +128,19 @@ describe('ConfirmActionModal', () => {
       expect(mockHandleUpdateAuto).toHaveBeenCalledWith(
         'test-access-token',
         expect.any(Function),
-        {},
-        true,
-        { device_id: '12345', automate: true }
+        mockShadow,
+        !mockShadow.state.reported.auto,
+        { device_id: '12345', automate: !mockShadow.state.reported.auto }
       );
     });
+
+    expect(mockSetConfirmAuto).toHaveBeenCalledWith(false);
   });
 
   /**
    * Test that the error message is rendered when an error exists.
    */
   it('should render error message when error exists', () => {
-
     (useSettingsHandlers as jest.Mock).mockReturnValue({
       handleUpdateAuto: mockHandleUpdateAuto,
       error: 'An error occurred',
@@ -141,9 +150,7 @@ describe('ConfirmActionModal', () => {
     render(
       <ConfirmActionModal
         mainIcon="test-icon.svg"
-        setAutoSwitch={mockSetAutoSwitch}
         setConfirmAuto={mockSetConfirmAuto}
-        autoSwitch={false}
       >
         Confirm Action
       </ConfirmActionModal>
@@ -159,9 +166,7 @@ describe('ConfirmActionModal', () => {
     render(
       <ConfirmActionModal
         mainIcon="test-icon.svg"
-        setAutoSwitch={mockSetAutoSwitch}
         setConfirmAuto={mockSetConfirmAuto}
-        autoSwitch={false}
       >
         Confirm Action
       </ConfirmActionModal>

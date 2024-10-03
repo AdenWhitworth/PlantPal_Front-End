@@ -20,9 +20,11 @@ export interface SocketContextType {
     isConnected: boolean;
     errorSocket: string | null;
     refresh: boolean;
+    refreshShadow: boolean;
     errorReconnect: boolean;
     setErrorReconnect: React.Dispatch<React.SetStateAction<boolean>>;
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
+    setRefreshShadow: React.Dispatch<React.SetStateAction<boolean>>;
     sendAddUser: (user_id: string) => void;
     sendRemoveUser: (user_id: string) => void;
     sendCheckSocket: (user_id: string) => void;

@@ -14,7 +14,7 @@ jest.mock('@mui/x-charts/BarChart', () => ({
 // Mocking the SocketProvider
 jest.mock('../../../../Provider/SocketProvider/SocketProvider', () => ({
     useSocket: jest.fn(() => ({
-        setRefresh: jest.fn(),
+        setRefreshShadow: jest.fn(),
     })),
 }));
 
@@ -47,9 +47,8 @@ jest.mock('../../../../Hooks/useSettingsHandlers/useSettingsHandlers', () => ({
  * Test suite for the AutoManualWater component.
  */
 describe('AutoManualWater Component', () => {
-    const mockSetAutoSwitch = jest.fn();
     const mockSetConfirmAuto = jest.fn();
-    const mockSetRefresh = jest.fn();
+    const mockSetRefreshShadow = jest.fn();
     const mockHandleUpdatePumpWater = jest.fn();
     const mockSetAccessToken = jest.fn();
 
@@ -62,7 +61,7 @@ describe('AutoManualWater Component', () => {
         });
 
         (useSocket as jest.Mock).mockReturnValue({
-            setRefresh: mockSetRefresh,
+            setRefreshShadow: mockSetRefreshShadow,
         });
 
         (useDevice as jest.Mock).mockReturnValue({
@@ -72,8 +71,8 @@ describe('AutoManualWater Component', () => {
             deviceLogs: [],
             deviceShadow: {
                 state: {
-                    desired: { pump: false },
-                    reported: { pump: false },
+                    desired: { pump: false, auto: false },
+                    reported: { pump: false, auto: false },
                 },
             },
         });
@@ -97,8 +96,6 @@ describe('AutoManualWater Component', () => {
 
         render(
             <AutoManualWater
-                autoSwitch={false}
-                setAutoSwitch={mockSetAutoSwitch}
                 setConfirmAuto={mockSetConfirmAuto}
             />
         );
@@ -111,10 +108,21 @@ describe('AutoManualWater Component', () => {
      * Test to ensure that handleUpdatePumpWaterClick is called when the Manual button is clicked.
      */
     test('calls handleUpdatePumpWaterClick when Manual button is clicked', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            devices: [{ device_id: 1, presence_connection: true }],
+            lastLog: {},
+            device: { device_id: 1, presence_connection: true },
+            deviceLogs: [],
+            deviceShadow: {
+                state: {
+                    desired: { pump: false, auto: false },
+                    reported: { pump: false, auto: false },
+                },
+            },
+        });
+
         render(
             <AutoManualWater
-                autoSwitch={false}
-                setAutoSwitch={mockSetAutoSwitch}
                 setConfirmAuto={mockSetConfirmAuto}
             />
         );
@@ -126,18 +134,59 @@ describe('AutoManualWater Component', () => {
     });
 
     /**
-     * Test to verify that the Auto component is displayed when autoSwitch is true.
+     * Test to verify that the Auto component is displayed when shadow auto is true.
      */
-    test('shows Auto component when autoSwitch is true', () => {
+    test('shows Auto component when when shadow auto is true', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            devices: [{ device_id: 1, presence_connection: true }],
+            lastLog: {},
+            device: { device_id: 1, presence_connection: true },
+            deviceLogs: [],
+            deviceShadow: {
+                state: {
+                    desired: { pump: false, auto: true },
+                    reported: { pump: false, auto: true },
+                },
+            },
+        });
+
         render(
             <AutoManualWater
-                autoSwitch={true}
-                setAutoSwitch={mockSetAutoSwitch}
                 setConfirmAuto={mockSetConfirmAuto}
             />
         );
 
         expect(screen.getByText('Auto')).toBeInTheDocument();
         expect(screen.queryByText('Manual')).toBeNull();
+    });
+
+    /**
+     * Test to verify that loading dots are shown when desired 
+     * and reported auto states don't match.
+     */
+    test('shows loading dots component when when shadow auto does not match', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            devices: [{ device_id: 1, presence_connection: true }],
+            lastLog: {},
+            device: { device_id: 1, presence_connection: true },
+            deviceLogs: [],
+            deviceShadow: {
+                state: {
+                    desired: { pump: false, auto: true },
+                    reported: { pump: false, auto: false },
+                },
+            },
+        });
+
+        render(
+            <AutoManualWater
+                setConfirmAuto={mockSetConfirmAuto}
+            />
+        );
+
+        const loadingDots = screen.getByTestId('loading-dots');
+        expect(loadingDots).toBeInTheDocument();
+        expect(screen.queryByText('Auto')).not.toBeInTheDocument();
+        expect(screen.queryByAltText('Tap Icon')).not.toBeInTheDocument();
     });
 });

@@ -47,7 +47,6 @@ const useBluetooth = () => {
         setServer(server);
         setService(service);
         setCharacteristic(characteristic);
-        console.log(characteristic);
         setBleStatus('Connected to Bluetooth device');
     } catch (error: unknown) {
       let errorMessage = 'An unexpected error occurred. Please try again later.';
@@ -91,34 +90,38 @@ const useBluetooth = () => {
    * @param {string} wifi_password - The Wi-Fi password to send.
    * @throws {Error} Throws an error if the characteristic is not available or if the credentials cannot be sent.
    */
-  const sendCredentials = async (wifi_ssid: string, wifi_password: string) => {
-    try {
-      console.log(characteristic);
-      if (!characteristic) throw new Error('No characteristic found');
-
-      const encoder = new TextEncoder();
-      await characteristic.writeValue(encoder.encode(`SSID:${wifi_ssid}\n`));
-      await characteristic.writeValue(encoder.encode(`PASS:${wifi_password}\n`));
-      setBleStatus('Credentials sent, waiting for response...');
-
-      characteristic.addEventListener('characteristicvaluechanged', (event: Event) => {
-        const target = event.target as BluetoothRemoteGATTCharacteristic;
-        const decoder = new TextDecoder();
-        const value = decoder.decode(target.value!);
-        setBleStatus(value);
-      });
-      await characteristic.startNotifications();
-    } catch (error: unknown) {
-      let errorMessage = 'An unexpected error occurred. Please try again later.';
-
-      if (error instanceof Error) {
-        errorMessage = 'Error sending WiFi credentials over ble';
+  const sendCredentials = async (wifi_ssid: string, wifi_password: string): Promise<string> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!characteristic) throw new Error('No characteristic found');
+  
+        const encoder = new TextEncoder();
+        const combinedCredentials = `SSID:${wifi_ssid};PASS:${wifi_password}`;
+  
+        await characteristic.startNotifications();
+        setBleStatus('Notifications started, ready to send credentials...');
+  
+        characteristic.addEventListener('characteristicvaluechanged', (event: Event) => {
+          const target = event.target as BluetoothRemoteGATTCharacteristic;
+          const decoder = new TextDecoder();
+          const value = decoder.decode(target.value!);
+          setBleStatus(value);
+          resolve(value);
+        });
+  
+        await characteristic.writeValue(encoder.encode(combinedCredentials));
+        setBleStatus('Credentials sent, waiting for response...');
+      } catch (error: unknown) {
+        let errorMessage = 'An unexpected error occurred. Please try again later.';
+  
+        if (error instanceof Error) {
+          errorMessage = 'Error sending WiFi credentials over BLE';
+        }
+        
+        setBleStatus(errorMessage);
+        reject(errorMessage);
       }
-      
-      setBleStatus(errorMessage);
-      console.error(errorMessage, error);
-      throw new Error(errorMessage);
-    }
+    });
   };
 
   /**

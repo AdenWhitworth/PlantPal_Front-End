@@ -58,7 +58,9 @@ export default function Modal({
                         <Button styleType={styleType} onClick={handleButtonClick}>{buttonLabel}</Button>
                     </div>
                     :
-                    <></>
+                    <div className='modal-btns hidden'>
+                        <Button styleType={styleType} >Hidden</Button>
+                    </div>
                 }
             </div>
         </div>

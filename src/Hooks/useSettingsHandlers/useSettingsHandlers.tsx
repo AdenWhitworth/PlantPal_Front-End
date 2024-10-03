@@ -73,7 +73,7 @@ export const useSettingsHandlers = () => {
      * @returns {boolean} True if validation passes, otherwise false.
      */
     const validateUpdateAuto = (autoData: AutoData): boolean => {
-        if (!autoData.device_id || !autoData.automate) {
+        if (!autoData.device_id || autoData.automate === undefined || autoData.automate === null) {
             setError('Device id, and Automate required');
             return false;
         }
@@ -87,7 +87,7 @@ export const useSettingsHandlers = () => {
      * @returns {boolean} True if validation passes, otherwise false.
      */
     const validateUpdatePump = (pumpData: PumpData): boolean => {
-        if (!pumpData.device_id || !pumpData.pump_water) {
+        if (!pumpData.device_id || pumpData.pump_water === undefined || pumpData.pump_water === null) {
             setError('Device id, and Pump Water required');
             return false;
         }
@@ -214,7 +214,7 @@ export const useSettingsHandlers = () => {
         if (!validateUpdateAuto(autoData)) return;
             setIsLoading(true);
         try {
-            await postUpdateAuto(accessToken, setAccessToken, autoData)
+            await postUpdateAuto(accessToken, setAccessToken, autoData);
         } catch (error) {
             let errorMessage = 'An unexpected error occurred. Please try again later.';
 
@@ -271,5 +271,5 @@ export const useSettingsHandlers = () => {
         setError(null);
     }, []);
     
-    return { handleUpdateUser, handleAddDevice, handleUpdateWifi, handleUpdateAuto, handleUpdatePumpWater, error, isLoading, resetError };
+    return { setError, handleUpdateUser, handleAddDevice, handleUpdateWifi, handleUpdateAuto, handleUpdatePumpWater, error, isLoading, resetError };
 }

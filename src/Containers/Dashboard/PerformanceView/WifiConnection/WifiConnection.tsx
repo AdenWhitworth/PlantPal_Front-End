@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import wifi from "../../../../Images/wifi-green.svg";
 import triangle from "../../../../Images/triangle-orange.svg";
 import { useDevice } from '../../../../Provider/DeviceProvider/DeviceProvider';
@@ -26,12 +26,13 @@ export default function WifiConnection({
         wifiSSID: '',
         wifiPassword: ''
     });
+    const [connectionLoading, setConnectionLoading] = useState<boolean>(false);
     const [isConnectionVisible, setIsConnectionVisible] = useState<boolean>(false);
     const [updateWifiToggle, setUpdateWifiToggle] = useState<boolean>(false);
     const { connectBluetooth, sendCredentials, bleDevice } = useBluetooth();
     const { devices, device } = useDevice();
     const { accessToken, setAccessToken } = useAuth();
-    const { handleUpdateWifi, error, resetError} = useSettingsHandlers();
+    const { handleUpdateWifi, error, resetError, setError} = useSettingsHandlers();
 
     /**
      * Handles input changes in the WiFi details form.
@@ -52,17 +53,18 @@ export default function WifiConnection({
      * 
      * @function
      */
-    const handleChangeWifiClick = async () => {
-        if(!device || !device.cat_num){
-            console.error("Device cat_num required")
-            return
-        }
-        
-        try {
-            await connectBluetooth(device.cat_num);
-        } catch (error) {
-            console.error(error);
-        }
+    const handleChangeWifiClick = () => {
+        setUpdateWifiToggle(true);
+    }
+
+    /**
+     * Handles the click event closing the update wifi form.
+     * 
+     * @function
+     */
+    const handleCloseClick = () => {
+        setUpdateWifiToggle(false);
+        resetError();
     }
 
     /**
@@ -74,8 +76,32 @@ export default function WifiConnection({
     const handleUpdateWifiSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if(!device || !device.cat_num){
+            setError("Device cat_num required")
+            return
+        }
+
+        setConnectionLoading(true);
+
+        try {
+            await connectBluetooth(device.cat_num);
+        } catch (error) {
+            setError("Bluetooth connection closed. Please try again.");
+            setConnectionLoading(false);
+        } 
+    }
+
+    /**
+     * Handles the Wi-Fi connection update process for the device. This function checks if the device 
+     * and its ID are available, then updates the device's Wi-Fi settings. If successful, it sends 
+     * the Wi-Fi credentials, resets any errors, refreshes the form, and toggles UI states.
+     * 
+     * @function
+     */
+    const handleUpdateConnection = useCallback(() => {
         if (!device || !device.device_id) {
-            console.error('Device is not available');
+            setError('Device is not available');
+            setConnectionLoading(false);
             return;
         }
 
@@ -83,15 +109,20 @@ export default function WifiConnection({
             device_id: device.device_id, 
             wifi_ssid: wifiDetails.wifiSSID, 
             wifi_password: wifiDetails.wifiPassword
-        }, () => {
-            sendCredentials(wifiDetails.wifiSSID,wifiDetails.wifiPassword);
-            resetError();
-            (document.getElementById("update-wifi") as HTMLFormElement)?.reset();
-            handleRefreshClick();
-            setUpdateWifiToggle(false);
-            setConnectDeviceToggle(true);
+        }, async () => {
+            try {
+                await sendCredentials(wifiDetails.wifiSSID, wifiDetails.wifiPassword);
+                resetError();
+                (document.getElementById("update-wifi") as HTMLFormElement)?.reset();
+                setUpdateWifiToggle(false);
+                setConnectDeviceToggle(true);
+            } catch (error) {
+                setError('Error during BLE communication:');
+            } finally {
+                setConnectionLoading(false);
+            }
         });
-    }
+    },[accessToken, device, wifiDetails, handleUpdateWifi, resetError, setError, sendCredentials, setAccessToken, handleRefreshClick, setUpdateWifiToggle, setConnectDeviceToggle])
 
     /**
      * Effect to set visibility based on available devices
@@ -105,9 +136,9 @@ export default function WifiConnection({
      */
     useEffect(() => {
         if (bleDevice){
-            setUpdateWifiToggle(true);
+            handleUpdateConnection();
         }
-    },[bleDevice]);
+    },[bleDevice, handleUpdateConnection]);
 
     return (
         <div data-testid="dashboard-connection" className={`dashboard-connection ${isConnectionVisible ? '' : 'hidden'}`}>
@@ -117,7 +148,9 @@ export default function WifiConnection({
                 <EditWifiForm
                     handleUpdateWifiSubmit={handleUpdateWifiSubmit}
                     handleInputChange={handleInputChange}
+                    handleCloseClick={handleCloseClick}
                     error={error}
+                    connectionLoading={connectionLoading}
                 ></EditWifiForm>
                 :
                 <div>

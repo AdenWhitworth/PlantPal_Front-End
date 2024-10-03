@@ -20,7 +20,7 @@ jest.mock('./WaterStatus/WaterStatus', () => () => <div>Water Status Component</
 jest.mock('./AutoManualWater/AutoManualWater', () => (props: any) => (
     <div>
         AutoManualWater Component
-        <button onClick={() => props.setAutoSwitch(true)}>Set Auto</button>
+        <button onClick={() => props.setConfirmAuto(true)}>Set Auto</button>
     </div>
 ));
 
@@ -30,14 +30,11 @@ jest.mock('./AutoManualWater/AutoManualWater', () => (props: any) => (
 describe('PerformanceView Component', () => {
     const mockSetConnectDeviceToggle = jest.fn();
     const mockHandleRefreshClick = jest.fn();
-    const mockSetAutoSwitch = jest.fn();
     const mockSetConfirmAuto = jest.fn();
 
     const defaultProps = {
         handleRefreshClick: mockHandleRefreshClick,
         setConnectDeviceToggle: mockSetConnectDeviceToggle,
-        autoSwitch: false,
-        setAutoSwitch: mockSetAutoSwitch,
         setConfirmAuto: mockSetConfirmAuto
     };
 
@@ -72,14 +69,14 @@ describe('PerformanceView Component', () => {
 
     /**
      * Test to verify that the correct props are passed to the AutoManualWater component
-     * and that the setAutoSwitch function is called with the correct value.
+     * and that the setConfirmAuto function is called when the toggle button is clicked.
      */
-    test('passes correct props to AutoManualWater component and interacts with setAutoSwitch', () => {
+    test('passes correct props to AutoManualWater component and interacts with setConfirmAuto', () => {
         render(<PerformanceView {...defaultProps} />);
 
         const setAutoButton = screen.getByText('Set Auto');
         setAutoButton.click();
 
-        expect(mockSetAutoSwitch).toHaveBeenCalledWith(true);
+        expect(mockSetConfirmAuto).toHaveBeenCalledWith(true);
     });
 });

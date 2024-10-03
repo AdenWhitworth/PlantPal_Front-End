@@ -128,6 +128,6 @@ export const useDeviceData = ({
     }, [lastLog, formatRefreshDate]);
 
     return {
-        fetchUserDevices, handleLogout, isDevicesLoading, isDeviceLoading, isDevicesLoaded
+        fetchUserDevices, fetchUserDevice, handleLogout, isDevicesLoading, isDeviceLoading, isDevicesLoaded
     };
 };

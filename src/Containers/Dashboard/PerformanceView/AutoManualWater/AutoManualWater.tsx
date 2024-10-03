@@ -9,6 +9,7 @@ import {useAuth} from '../../../../Provider/AuthProvider/AuthProvider';
 import { useSettingsHandlers } from '../../../../Hooks/useSettingsHandlers/useSettingsHandlers';
 import './AutoManualWater.css';
 import { AutoManualWaterProps, WaterOccurrence } from './AutoManualWaterTypes';
+import LoadingDots from '../../../../Components/LoadingDots/LoadingDots';
 
 /**
  * Component for managing automatic and manual watering settings.
@@ -16,41 +17,32 @@ import { AutoManualWaterProps, WaterOccurrence } from './AutoManualWaterTypes';
  * @component
  * @param {AutoManualWaterProps} props - The props for the component.
  * @returns {JSX.Element} The rendered component.
- * 
- * @example
- * <AutoManualWater 
- *   autoSwitch={true} 
- *   setAutoSwitch={setAutoSwitch} 
- *   setConfirmAuto={setConfirmAuto} 
- * />
  */
-export default function AutoManualWater({
-    autoSwitch, 
-    setAutoSwitch, 
+export default function AutoManualWater({ 
     setConfirmAuto
-}: AutoManualWaterProps) {
+}: AutoManualWaterProps): JSX.Element {
 
     const [waterOccurance, setWaterOccurance] = useState<WaterOccurrence[]>([]);
     const [isAutoVisible, setIsAuotVisible] = useState<boolean>(false);
-    const { setRefresh } = useSocket();
+    const { setRefreshShadow } = useSocket();
     const { accessToken, setAccessToken } = useAuth();
     const { handleUpdatePumpWater } = useSettingsHandlers();
     const { 
         devices, 
         lastLog, 
         device, 
-        deviceLogs
+        deviceLogs,
+        deviceShadow
     } = useDevice();
 
     /**
      * Handles the change of the auto switch.
-     * Updates the autoSwitch state and confirms the setting.
+     * Confirms the new setting with a modal.
      * 
      * @function
      * @param {React.ChangeEvent<HTMLInputElement>} e - The change event from the toggle switch.
      */
     const handleAutoSwitch = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAutoSwitch(e.target.checked);
         setConfirmAuto(true);
     };
 
@@ -70,7 +62,7 @@ export default function AutoManualWater({
             device_id: device.device_id, 
             pump_water: true
         }, () => {
-            setRefresh(true);
+            setRefreshShadow(true);
         });
     };
 
@@ -122,19 +114,23 @@ export default function AutoManualWater({
                 :
             
                 <div className='auto-status'>
-
+                    
                     <ToggleSwitch 
-                        checked={autoSwitch} 
+                        checked={!!deviceShadow?.state?.reported?.auto} 
                         onChange={handleAutoSwitch} 
-                        label={autoSwitch? "Auto": "Manual"}
+                        label={deviceShadow?.state?.reported?.auto? "Auto": "Manual"}
                     ></ToggleSwitch>
 
-                    {autoSwitch?
-                        <Auto waterOccurance={waterOccurance}></Auto>
+                    {(deviceShadow?.state?.desired?.auto === deviceShadow?.state?.reported?.auto)?
+                        (!!deviceShadow?.state?.reported?.auto? 
+                            <Auto waterOccurance={waterOccurance}></Auto> 
+                            : 
+                            <Manual handleUpdatePumpWaterClick={handleUpdatePumpWaterClick}></Manual>
+                        )
                         :
-                        <Manual handleUpdatePumpWaterClick={handleUpdatePumpWaterClick}></Manual>
+                        <LoadingDots />
                     }
-                    
+
                 </div>
             }
         </div>

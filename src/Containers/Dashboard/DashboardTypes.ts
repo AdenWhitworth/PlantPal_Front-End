@@ -3,14 +3,12 @@
  * 
  * @interface State
  * @property {boolean} connectDeviceToggle - Indicates whether the device connection toggle is active.
- * @property {boolean} autoSwitch - Indicates whether the auto-switch feature is enabled.
  * @property {boolean} confirmAuto - Indicates whether the confirmation for auto-switch is required.
  * @property {string} currentDashboardView - The currently selected dashboard view.
  * @property {boolean} isSettingsVisible - Indicates whether the settings panel is visible.
  */
 export interface State {
     connectDeviceToggle: boolean;
-    autoSwitch: boolean;
     confirmAuto: boolean;
     currentDashboardView: string;
     isSettingsVisible: boolean;
@@ -28,9 +26,6 @@ export interface State {
  * @property {'SET_CONNECT_DEVICE_TOGGLE'} type - Action type to toggle the device connection.
  * @property {boolean} [payload] - Boolean indicating the state of the device connection toggle.
  * 
- * @property {'SET_AUTO_SWITCH'} type - Action type to toggle the auto-switch feature.
- * @property {boolean} [payload] - Boolean indicating the state of the auto-switch feature.
- * 
  * @property {'SET_CONFIRM_AUTO'} type - Action type to set the confirmation for auto-switch changes.
  * @property {boolean} [payload] - Boolean indicating whether auto-switch confirmation is required.
  * 
@@ -39,6 +34,5 @@ export interface State {
 export type StateAction =
   | { type: 'SET_VIEW'; payload: { view: string; settingsVisible: boolean } }
   | { type: 'SET_CONNECT_DEVICE_TOGGLE'; payload: boolean }
-  | { type: 'SET_AUTO_SWITCH'; payload: boolean }
   | { type: 'SET_CONFIRM_AUTO'; payload: boolean }
   | { type: 'RESET_STATE' };
