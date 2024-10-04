@@ -13,11 +13,12 @@ import { LandingHeaderProps, Link } from './LandingHeaderTypes';
  * @returns {JSX.Element} The rendered header component.
  */
 export default function DashboardHeader({
-    HandleManageDevicesClick
+    HandleManageDevicesClick,
+    HandleShopClick
 }: LandingHeaderProps): JSX.Element {
     
     const links: Link[] = [
-        { key: 1, alt: "Shopping cart logo", imgSrc: shopping_cart, onClick: () => console.log("clicked"), className: "shopping_cart" },
+        { key: 1, alt: "Shopping cart logo", imgSrc: shopping_cart, onClick: HandleShopClick, className: "shopping_cart" },
         { key: 2, alt: "User logo", imgSrc: user, onClick: HandleManageDevicesClick, className: "user" },
     ];
 

@@ -8,6 +8,7 @@ import house_plant from '../../Images/house-plant.png';
  */
 describe('LandingCallToAction Component', () => {
     const mockHandleManageDevicesClick = jest.fn();
+    const mockHandleShopClick = jest.fn();
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -17,7 +18,10 @@ describe('LandingCallToAction Component', () => {
      * Test that all elements are rendered correctly in the LandingCallToAction component.
      */
     test('renders all elements correctly', () => {
-        render(<LandingCallToAction HandleManageDevicesClick={mockHandleManageDevicesClick} />);
+        render(<LandingCallToAction 
+            HandleManageDevicesClick={mockHandleManageDevicesClick} 
+            HandleShopClick={mockHandleShopClick}
+        />);
 
         expect(screen.getByText('Never lose another house plant')).toBeInTheDocument();
         expect(screen.getByText(/Can’t remember when you last watered your plant/i)).toBeInTheDocument();
@@ -37,10 +41,27 @@ describe('LandingCallToAction Component', () => {
      * Test that the HandleManageDevicesClick function is called when the "Manage" button is clicked.
      */
     test('calls HandleManageDevicesClick when the "Manage" button is clicked', () => {
-        render(<LandingCallToAction HandleManageDevicesClick={mockHandleManageDevicesClick} />);
+        render(<LandingCallToAction 
+            HandleManageDevicesClick={mockHandleManageDevicesClick} 
+            HandleShopClick={mockHandleShopClick}
+        />);
 
         const manageButton = screen.getByText('Manage');
         fireEvent.click(manageButton);
         expect(mockHandleManageDevicesClick).toHaveBeenCalledTimes(1);
+    });
+
+    /**
+     * Test that the HandleShopClick function is called when the "Shop" button is clicked.
+     */
+    test('calls HandleManageDevicesClick when the "Manage" button is clicked', () => {
+        render(<LandingCallToAction 
+            HandleManageDevicesClick={mockHandleManageDevicesClick} 
+            HandleShopClick={mockHandleShopClick}
+        />);
+
+        const shopButton = screen.getByText('Shop');
+        fireEvent.click(shopButton);
+        expect(mockHandleShopClick).toHaveBeenCalledTimes(1);
     });
 });

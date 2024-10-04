@@ -12,7 +12,8 @@ import { LandingCallToActionProps } from './LandingCallToActionTypes';
  * @returns {JSX.Element} The rendered LandingCallToAction component.
  */
 export default function LandingCallToAction({
-    HandleManageDevicesClick
+    HandleManageDevicesClick,
+    HandleShopClick
 }:LandingCallToActionProps): JSX.Element {
     
     return (
@@ -23,7 +24,7 @@ export default function LandingCallToAction({
                     <p>Can’t remember when you last watered your plant? Going out of town and don’t want your plant to die? </p>
 
                     <div className="landing-body-1-btns">
-                        <Button styleType='primary' >Shop</Button>
+                        <Button styleType='primary' onClick={HandleShopClick}>Shop</Button>
                         <Button styleType='secondary' onClick={HandleManageDevicesClick}>Manage</Button>
                     </div>
                 </div>

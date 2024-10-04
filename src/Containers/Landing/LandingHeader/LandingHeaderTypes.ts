@@ -21,7 +21,9 @@ export interface Link {
  *
  * @interface LandingHeaderProps
  * @property {function} HandleManageDevicesClick - The function to handle clicks for managing devices.
+ * @property {function} HandleShopClick - The function to handle clicks for shopping.
  */
 export interface LandingHeaderProps {
     HandleManageDevicesClick: () => void;
+    HandleShopClick: () => void;
 }

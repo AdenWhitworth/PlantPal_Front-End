@@ -57,5 +57,47 @@ describe('Landing Component', () => {
 
         expect(mockNavigate).toHaveBeenCalledWith('/dashboard', { replace: true });
     });
+
+    /**
+     * Test that the "Shop" button opens the modal.
+     * Verifies that clicking the "Shop" button displays the modal.
+     */
+    test('should display the shop modal when the "Shop" button is clicked', () => {
+        render(
+            <MemoryRouter>
+                <Landing />
+            </MemoryRouter>
+        );
+
+        const shopButton = screen.getByText(/Shop/i);
+        fireEvent.click(shopButton);
+
+        expect(screen.getByAltText("Cart Icon")).toBeInTheDocument();
+        expect(screen.getByText('Stay tuned! PlantPal will be for sale soon!')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Acknowledge' })).toBeInTheDocument();
+    });
+    
+    /**
+     * Test that the modal closes when the "Acknowledge" button is clicked.
+     * Verifies that clicking the "Acknowledge" button hides the modal.
+     */
+    test('should close the shop modal when "Acknowledge" button is clicked', () => {
+        render(
+            <MemoryRouter>
+                <Landing />
+            </MemoryRouter>
+        );
+
+        const shopButton = screen.getByText(/Shop/i);
+        fireEvent.click(shopButton);
+
+        expect(screen.getByText('Stay tuned! PlantPal will be for sale soon!')).toBeInTheDocument();
+
+        const acknowledgeButton = screen.getByRole('button', { name: 'Acknowledge' });
+        fireEvent.click(acknowledgeButton);
+
+        expect(screen.queryByAltText("Cart Icon")).not.toBeInTheDocument();
+        expect(screen.queryByText('Stay tuned! PlantPal will be for sale soon!')).not.toBeInTheDocument();
+    });
 });
 
