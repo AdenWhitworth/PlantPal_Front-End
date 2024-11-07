@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from "../../../Components/Button/Button";
-import house_plant from "../../../Images/house-plant.png";
+import house_plant from "../../../Images/PlantPal Mockup.png";
 import './LandingCallToAction.css';
 import { LandingCallToActionProps } from './LandingCallToActionTypes';
 
@@ -30,7 +30,7 @@ export default function LandingCallToAction({
                 </div>
 
                 <div className="landing-body-1-img">
-                    <img className="house-plant" src={house_plant} alt="Stand alone house plant"></img>
+                    <img className="house-plant" src={house_plant} alt="PlantPal mockup"></img>
                 </div>
             </div>
         </section>

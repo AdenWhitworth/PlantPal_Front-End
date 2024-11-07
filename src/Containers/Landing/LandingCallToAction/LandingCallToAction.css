@@ -1,8 +1,11 @@
 
 .landing-body-1{
-    background-color: #E6F0DC;
+    background-image: url("../../../Images/PlantPal\ Mockup.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     width: 100%;
-    height: 40%;
+    height: 50%;
 }
 
 .landing-body-1-section{
@@ -10,19 +13,28 @@
     height: 100%;
     margin-left: 10%;
     display: flex;
+    align-items: center;
 }
 
 .landing-body-1-content{
     width: 50%;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-radius: 15px;
+    background-color: rgba(230, 240, 220, 0.9);
+    padding: 2%;
 }
 
 .landing-body-1-content h1{
     color: #55883B;
     padding: 0;
     margin: 0;
+}
+
+.landing-body-1-content p{
+    width: 100%;
 }
 
 .landing-body-1-img{
@@ -43,32 +55,44 @@
     gap: 2em;
 }
 
+.house-plant{
+    display: none;
+}
+
 @media (max-width: 768px) {
     .landing-body-1{
+        background-image: unset;
         height: unset;
     }
     
     .landing-body-1-section{
         height: unset;
         flex-direction: column;
+        gap: 30px;
     }
     
     .landing-body-1-content{
         width: 100%;
-        padding-top: 10%;
+        padding: 5%;
     }
     
     .landing-body-1-img{
-        width: 100%;
+        width: 110%;
         text-align: center;
+        position: relative;
     }
 
     .landing-body-1-img img{
-        width: 40%;
+        width: 100%;
         height: auto;
         position: unset;
         bottom: unset;
         right: unset;
+        border-radius: 15px;
+    }
+
+    .house-plant{
+        display: unset;
     }
     
 }

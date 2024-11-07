@@ -1,6 +1,6 @@
 .landing-body-2{
     width: 100%;
-    height: 46%;
+    height: 36%;
     margin-top: 2%;
     position: relative;
 }
@@ -44,5 +44,6 @@
         position: relative;
         width: 90%;
         gap: 30px;
+        padding-bottom: 30px;
     }
 }

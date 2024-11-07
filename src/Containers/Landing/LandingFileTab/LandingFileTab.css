@@ -31,7 +31,25 @@
     .file-tab-container{
         margin-left: 5%;
         width: 90%;
-        height: 50px;
+        height: 30px;
         display: flex;
+    }
+
+    .file-tab{
+        width: 200px;
+        height: 51px;
+    }
+    
+    .file-tab-adjust{
+        width: 100%;
+        height: 31px;
+        margin-left: -1px;
+    }
+    
+    .file-tab-adjust-2{
+        height: 32px;
+        margin-left: -1px;
+        width: 101%;
+        margin-top: -1px;
     }
 }

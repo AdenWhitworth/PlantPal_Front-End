@@ -12,11 +12,17 @@
     display: flex;
     cursor: unset;
     gap: 1em;
+    align-items: center;
+}
+
+.PlantPal-logo-img{
+    height: 60px;
+    width: auto;
 }
 
 .PlantPal-logo-txt{
     font-weight: normal;
-    font-size: 48px;
+    font-size: 42px;
     color: #55883B;
 }
 
