@@ -32,7 +32,7 @@ describe('LandingCallToAction Component', () => {
         const manageButton = screen.getByText('Manage');
         expect(manageButton).toBeInTheDocument();
 
-        const housePlantImage = screen.getByAltText('Stand alone house plant');
+        const housePlantImage = screen.getByAltText('PlantPal mockup');
         expect(housePlantImage).toBeInTheDocument();
         expect(housePlantImage).toHaveAttribute('src', house_plant);
     });
@@ -54,7 +54,7 @@ describe('LandingCallToAction Component', () => {
     /**
      * Test that the HandleShopClick function is called when the "Shop" button is clicked.
      */
-    test('calls HandleManageDevicesClick when the "Manage" button is clicked', () => {
+    test('calls HandleManageDevicesClick when the "SHop" button is clicked', () => {
         render(<LandingCallToAction 
             HandleManageDevicesClick={mockHandleManageDevicesClick} 
             HandleShopClick={mockHandleShopClick}
