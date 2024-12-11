@@ -168,7 +168,7 @@ The deployment process is triggered through the CI/CD pipeline, which performs t
 4. **Build Process**: Creates an optimized production build using `npm run build`.
 5. **Deployment**: Deploys the application to Vercel for hosting.
 
-The CI/CD pipeline is defined in [`.github/workflows/deploy.yml`](https://github.com/AdenWhitworth/PlantPal_Front-End/raw/master/github/workflows/deploy.yml).
+The CI/CD pipeline is defined in `.github/workflows/deploy.yml`
 
 ## Documentation
 
