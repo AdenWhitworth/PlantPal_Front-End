@@ -1,0 +1,40 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Ensure Jest is executable
+      run: chmod +x node_modules/.bin/jest
+
+    - name: Run Tests
+      run: npm run test
+
+    - name: Build React App
+      run: npm run build
+
+    - name: Deploy to Vercel
+      run: |
+        curl -fsSL https://vercel.com/download -o vercel-linux.zip
+        unzip vercel-linux.zip
+        ./vercel login ${{ secrets.VERCEL_TOKEN }}
+        ./vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
