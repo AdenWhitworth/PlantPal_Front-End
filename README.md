@@ -47,6 +47,7 @@ Please note that this test account is connected to an actual PlantPal device in 
 - **Real-Time Updates**: Receive live updates on plant conditions and statuses.
 - **Device Integration**: Connects with IoT devices for monitoring.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
+- **Automated CI/CD Pipeline**: Ensures code quality with automated testing, builds, and deployments. Features seamless integration with GitHub Actions and Vercel for frontend deployment, providing a streamlined and reliable development workflow.
 
 ## Technologies Used
 
@@ -62,6 +63,8 @@ Please note that this test account is connected to an actual PlantPal device in 
 - **Socket.IO**: A library that facilitates real-time, bidirectional communication between clients and servers, crucial for features like live updates and notifications.
 - **Jest**: A delightful JavaScript testing framework that ensures the reliability of the application by allowing developers to write unit tests for their functions and components.
 - **TypeDoc**: A documentation generator for TypeScript projects that creates consistent and user-friendly API documentation, making it easier for developers to understand and use the codebase.
+- **GitHub Actions**: A robust CI/CD platform that automates workflows such as testing, building, and deploying the application. GitHub Actions ensures consistent code quality and streamlines deployments to production environments.
+- **Vercel**: A cloud platform for hosting front-end applications. Vercel handles building and deploying the application, providing a seamless and fast experience for hosting React-based projects.
 
 
 ## Getting Started
