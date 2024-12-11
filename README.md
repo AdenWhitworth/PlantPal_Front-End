@@ -15,6 +15,7 @@ Welcome to the **PlantPal Front-End**! This repository contains the code for the
   - [Environment Variables](#environment-variables)
   - [Running the Application](#running-the-application)
 - [Testing](#testing)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [Documentation](#documentation)
 - [Future Features](#future-features)
 - [Contributing](#contributing)
@@ -118,6 +119,40 @@ You can view test coverage reports with:
 ```bash
 npm run coverage
 ```
+
+## CI/CD Pipeline
+
+The project uses **GitHub Actions** to automate testing, building, and deployment to **Vercel**. 
+
+### Vercel Setup
+
+1. **Restrict Automatic Builds**: Automatic builds from Git commits are disabled through the projects `vercel.json`.
+
+```json
+   {
+     "github": {
+       "enabled": false
+     }
+   }
+```
+
+3. **Environment Variables**: Configure the same environment variables in Vercel's project settings as defined locally in the `.env` file. These include:
+- `REACT_APP_BASE_URL`
+- `REACT_APP_BLE_SERVICE_UUID`
+- `REACT_APP_BLE_CHARACTERISTIC_UUID`
+- `REACT_APP_API_CLIENT_KEY`
+
+### GitHub Actions Deployment
+
+The deployment process is triggered through the CI/CD pipeline, which performs the following steps:
+
+1. **Code Checkout**: Fetches the latest changes from the repository.
+2. **Dependency Installation**: Installs all required dependencies using `npm install`.
+3. **Testing**: Runs the test suite with `Jest` to validate code quality and functionality.
+4. **Build Process**: Creates an optimized production build using `npm run build`.
+5. **Deployment**: Deploys the application to Vercel for hosting.
+
+The CI/CD pipeline is defined in [`.github/workflows/deploy.yml`](https://github.com/AdenWhitworth/PlantPal_Front-End/raw/master/github/workflows/deploy.yml).
 
 ## Documentation
 
