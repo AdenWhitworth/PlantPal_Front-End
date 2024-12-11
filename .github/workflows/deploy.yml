@@ -30,11 +30,8 @@ jobs:
     - name: Build React App
       run: npm run build
 
+    - name: Install Vercel CLI
+      run: npm install -g vercel
+
     - name: Deploy to Vercel
-      run: |
-        curl -fsSL https://vercel.com/download -o vercel-linux.zip
-        unzip vercel-linux.zip
-        ./vercel login ${{ secrets.VERCEL_TOKEN }}
-        ./vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
