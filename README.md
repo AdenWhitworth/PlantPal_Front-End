@@ -15,6 +15,7 @@ Welcome to the **PlantPal Front-End**! This repository contains the code for the
   - [Environment Variables](#environment-variables)
   - [Running the Application](#running-the-application)
 - [Testing](#testing)
+- [CI/CD Pipeline](#cicd-pipeline)
 - [Documentation](#documentation)
 - [Future Features](#future-features)
 - [Contributing](#contributing)
@@ -46,6 +47,7 @@ Please note that this test account is connected to an actual PlantPal device in 
 - **Real-Time Updates**: Receive live updates on plant conditions and statuses.
 - **Device Integration**: Connects with IoT devices for monitoring.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
+- **Automated CI/CD Pipeline**: Ensures code quality with automated testing, builds, and deployments. Features seamless integration with GitHub Actions and Vercel for frontend deployment, providing a streamlined and reliable development workflow.
 
 ## Technologies Used
 
@@ -61,6 +63,8 @@ Please note that this test account is connected to an actual PlantPal device in 
 - **Socket.IO**: A library that facilitates real-time, bidirectional communication between clients and servers, crucial for features like live updates and notifications.
 - **Jest**: A delightful JavaScript testing framework that ensures the reliability of the application by allowing developers to write unit tests for their functions and components.
 - **TypeDoc**: A documentation generator for TypeScript projects that creates consistent and user-friendly API documentation, making it easier for developers to understand and use the codebase.
+- **GitHub Actions**: A robust CI/CD platform that automates workflows such as testing, building, and deploying the application. GitHub Actions ensures consistent code quality and streamlines deployments to production environments.
+- **Vercel**: A cloud platform for hosting front-end applications. Vercel handles building and deploying the application, providing a seamless and fast experience for hosting React-based projects.
 
 
 ## Getting Started
@@ -118,6 +122,56 @@ You can view test coverage reports with:
 ```bash
 npm run coverage
 ```
+
+## CI/CD Pipeline
+
+The project uses **GitHub Actions** to automate testing, building, and deployment to **Vercel**. 
+
+### Vercel Setup
+
+1. **Vercel Projects**:  
+   - Ensure your frontend is set up as a Vercel Project.
+     
+2. **Restrict Automatic Builds**: Automatic builds from Git commits are disabled through the projects `vercel.json`.
+
+```json
+   {
+     "github": {
+       "enabled": false
+     }
+   }
+```
+
+3. **Environment Variables**: Configure the same environment variables in Vercel's project settings as defined locally in the `.env` file. These include:
+- `REACT_APP_BASE_URL`
+- `REACT_APP_BLE_SERVICE_UUID`
+- `REACT_APP_BLE_CHARACTERISTIC_UUID`
+- `REACT_APP_API_CLIENT_KEY`
+
+3. **Vercel Token**:  
+   - Generate an token in the Vercel dashboard under **My Account > Account Settings > Tokens**.  
+   - Add this token to your GitHub repository's secrets as `VERCEL_TOKEN` along with the project name as `VERCEL_NAME`
+
+### GitHub Actions Deployment
+
+#### Setup
+
+Ensure that the following variables are added to the GitHub repository's secrets:
+
+- `VERCEL_TOKEN`
+- `VERCEL_NAME`
+
+#### Pipeline
+
+The deployment process is triggered through the CI/CD pipeline, which performs the following steps:
+
+1. **Code Checkout**: Fetches the latest changes from the repository.
+2. **Dependency Installation**: Installs all required dependencies using `npm install`.
+3. **Testing**: Runs the test suite with `Jest` to validate code quality and functionality.
+4. **Build Process**: Creates an optimized production build using `npm run build`.
+5. **Deployment**: Deploys the application to Vercel for hosting.
+
+The CI/CD pipeline is defined in `.github/workflows/deploy.yml`
 
 ## Documentation
 
