@@ -126,7 +126,10 @@ The project uses **GitHub Actions** to automate testing, building, and deploymen
 
 ### Vercel Setup
 
-1. **Restrict Automatic Builds**: Automatic builds from Git commits are disabled through the projects `vercel.json`.
+1. **Vercel Projects**:  
+   - Ensure your frontend is set up as a Vercel Project.
+     
+2. **Restrict Automatic Builds**: Automatic builds from Git commits are disabled through the projects `vercel.json`.
 
 ```json
    {
@@ -142,7 +145,20 @@ The project uses **GitHub Actions** to automate testing, building, and deploymen
 - `REACT_APP_BLE_CHARACTERISTIC_UUID`
 - `REACT_APP_API_CLIENT_KEY`
 
+3. **Vercel Token**:  
+   - Generate an token in the Vercel dashboard under **My Account > Account Settings > Tokens**.  
+   - Add this token to your GitHub repository's secrets as `VERCEL_TOKEN` along with the project name as `VERCEL_NAME`
+
 ### GitHub Actions Deployment
+
+#### Setup
+
+Ensure that the following variables are added to the GitHub repository's secrets:
+
+- `VERCEL_TOKEN`
+- `VERCEL_NAME`
+
+#### Pipeline
 
 The deployment process is triggered through the CI/CD pipeline, which performs the following steps:
 
